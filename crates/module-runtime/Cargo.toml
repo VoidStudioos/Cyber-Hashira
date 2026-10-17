@@ -1,0 +1,27 @@
+[package]
+name = "cyber-hashira-module-runtime"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Secure module installer, registry client, and isolated runtime execution engine"
+
+[dependencies]
+cyber-hashira-plugin-sdk = { path = "../plugin-sdk" }
+cyber-hashira-core = { path = "../core" }
+cyber-hashira-scope-guard = { path = "../scope-guard" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
+flate2 = { workspace = true }
+tar = { workspace = true }
+zip = { workspace = true }
+reqwest = { workspace = true }
+async-trait = { workspace = true }
+rusqlite = { workspace = true }

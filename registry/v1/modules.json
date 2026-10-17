@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-10-17T12:00:00Z",
+  "modules": [
+    {
+      "id": "sample-dns",
+      "name": "DNS & Domain Reconnaissance",
+      "description": "Performs DNS record inspection, MX discovery, SPF/DMARC validation, and domain reconnaissance on authorized targets.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Reconnaissance & OSINT",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "dns:query"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "record_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "A",
+              "AAAA",
+              "MX",
+              "TXT"
+            ]
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "target": {
+              "type": "string"
+            },
+            "scope_approved": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "target",
+            "scope_approved"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/sample-dns-1.0.0.tar.gz",
+        "sha256": "bac9f39abc12e0dca908b022e07655d629aa269e2a0cea922877ec6d57034f16",
+        "size_bytes": 2905
+      },
+      "license": "Apache-2.0",
+      "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/sample-dns",
+      "changelog": "Initial release of DNS reconnaissance module"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[package]
+name = "cyber-hashira-scope-guard"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Target authorization and scope validation guard for Cyber Hashira"
+
+[dependencies]
+cyber-hashira-plugin-sdk = { path = "../plugin-sdk" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+ipnetwork = { workspace = true }
+url = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }

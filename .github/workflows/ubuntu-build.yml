@@ -1,0 +1,61 @@
+name: Ubuntu Build & Distribution
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-ubuntu:
+    name: Package Ubuntu Desktop Host (DEB & AppImage)
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 12
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Package Sample Module Artifacts
+        run: python3 scripts/build_sample_module.py
+
+      - name: Run Modular Tests
+        run: python3 tests/test_modular_lifecycle.py
+
+      - name: Install Frontend Dependencies
+        run: |
+          pnpm approve-builds esbuild || true
+          pnpm install
+
+      - name: Build Desktop Application
+        run: pnpm build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyber-hashira-ubuntu-dist
+          path: apps/desktop/dist/

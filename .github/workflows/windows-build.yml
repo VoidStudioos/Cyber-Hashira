@@ -1,0 +1,56 @@
+name: Windows Build & Distribution
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Package Windows Desktop Host
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 12
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Package Sample Module Artifacts
+        run: python scripts/build_sample_module.py
+
+      - name: Run Modular Tests
+        run: python tests/test_modular_lifecycle.py
+
+      - name: Install Frontend Dependencies
+        run: |
+          pnpm approve-builds esbuild || true
+          pnpm install
+
+      - name: Build Desktop Application
+        run: pnpm build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyber-hashira-windows-dist
+          path: apps/desktop/dist/

@@ -1,0 +1,14 @@
+{
+  "name": "cyber-hashira-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cyber Hashira - Ultimate Modular Cybersecurity & Penetration Testing Workstation",
+  "scripts": {
+    "dev": "pnpm --filter @cyber-hashira/desktop dev",
+    "build": "pnpm --filter @cyber-hashira/desktop build",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

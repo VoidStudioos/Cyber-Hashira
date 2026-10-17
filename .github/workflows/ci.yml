@@ -1,0 +1,58 @@
+name: Host CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  host-ci:
+    name: Host Tests & Lint
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 12
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Frontend Dependencies
+        run: |
+          pnpm approve-builds esbuild || true
+          pnpm install
+
+      - name: Build Frontend
+        run: pnpm build
+
+      - name: Check Rust Crates
+        run: |
+          cargo check --package cyber-hashira-plugin-sdk
+          cargo check --package cyber-hashira-scope-guard
+          cargo check --package cyber-hashira-core
+          cargo check --package cyber-hashira-module-runtime
+
+      - name: Run Modular Lifecycle Verification Tests
+        run: python tests/test_modular_lifecycle.py

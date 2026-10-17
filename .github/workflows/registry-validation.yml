@@ -1,0 +1,28 @@
+name: Module Registry Validation
+
+on:
+  push:
+    paths:
+      - 'registry/**'
+      - 'modules/**'
+  pull_request:
+    paths:
+      - 'registry/**'
+      - 'modules/**'
+
+jobs:
+  validate-registry:
+    name: Verify Module Registry Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate Registry and Checksums
+        run: |
+          python3 tests/test_modular_lifecycle.py
