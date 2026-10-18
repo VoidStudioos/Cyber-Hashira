@@ -1,0 +1,88 @@
+{
+  "id": "api-security",
+  "name": "API Security & Schema Assessment",
+  "description": "REST, GraphQL, and OpenAPI schema security evaluation, endpoint fuzzing, broken object level authorization (BOLA) tests, and rate limit analysis.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "API Security",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "rate_limit_checks": {
+        "type": "boolean",
+        "default": true
+      },
+      "test_graphql_introspection": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "api_type": {
+          "type": "string",
+          "enum": [
+            "rest",
+            "graphql",
+            "openapi"
+          ]
+        },
+        "options": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "endpoint"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "endpoints_analyzed": {
+          "type": "array"
+        },
+        "security_score": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/api-security-1.0.0.tar.gz",
+    "sha256": "34bd323e49528eea2b5b89ba52ff93d51336e4e5ca453fb1e7cda2748f59ef7e",
+    "size_bytes": 3967
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/api-security",
+  "changelog": "Initial release of API Security & Schema Assessment module"
+}

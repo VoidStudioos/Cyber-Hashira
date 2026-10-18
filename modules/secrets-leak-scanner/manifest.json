@@ -1,0 +1,79 @@
+{
+  "id": "secrets-leak-scanner",
+  "name": "Secrets, API Keys & PII Leak Scanner",
+  "description": "Analyzes source code, configuration files, and git commit diffs to discover inadvertently committed credentials, AWS/GCP/Azure access keys, private keys (RSA/SSH), OpenAI/Stripe/GitHub tokens, and sensitive PII using high-entropy calculation and regex signature matching.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "DevSecOps & Secrets",
+  "icon": "key",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "entropy_threshold": {
+        "type": "number",
+        "default": 4.5
+      },
+      "detect_pii": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "target_path": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "secrets_found": {
+          "type": "integer"
+        },
+        "high_entropy_tokens": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/secrets-leak-scanner-1.0.0.tar.gz",
+    "sha256": "74a00b2f648d8687184ea95374ae5c9536165190297742041a8cebd27dafe6f2",
+    "size_bytes": 3729
+  }
+}

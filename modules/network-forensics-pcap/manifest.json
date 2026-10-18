@@ -1,0 +1,83 @@
+{
+  "id": "network-forensics-pcap",
+  "name": "Network Forensics & PCAP Credential Extractor",
+  "description": "Deep packet inspection and network capture forensic analysis (inspired by BruteShark): parses PCAP files, reconstructs network sessions, extracts cleartext passwords (HTTP, FTP, Telnet, IMAP), and recovers Kerberos / NTLM challenge-response authentication hashes.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Network Forensics",
+  "icon": "forensics",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "evidence:write",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "extract_ntlm_hashes": {
+        "type": "boolean",
+        "default": true
+      },
+      "extract_cleartext_passwords": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "pcap_path": {
+          "type": "string"
+        },
+        "raw_stream": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "credentials_recovered": {
+          "type": "array"
+        },
+        "sessions_analyzed": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/network-forensics-pcap-1.0.0.tar.gz",
+    "sha256": "56b6d413d20a216f07f40f8d8476011d413b863a15052f89fa0cc0f0e77f15ae",
+    "size_bytes": 3529
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/network-forensics-pcap",
+  "changelog": "Initial release of Network Forensics & PCAP Credential Extractor"
+}

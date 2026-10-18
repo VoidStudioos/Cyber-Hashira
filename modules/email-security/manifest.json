@@ -1,0 +1,86 @@
+{
+  "id": "email-security",
+  "name": "Email Security & Anti-Spoofing Auditor",
+  "description": "Audits domain email security posture including SPF, DMARC policies (p=reject vs none), DKIM DNS alignments, BIMI, MTA-STS, and parses raw .eml emails for spoofing, anomalous hops, and suspicious Authentication-Results.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Email & Phishing Defense",
+  "icon": "mail",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:dns",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_spf": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_dmarc": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_bimi_mta_sts": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "raw_eml": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "security_score": {
+          "type": "integer"
+        },
+        "spf_evaluation": {
+          "type": "object"
+        },
+        "dmarc_evaluation": {
+          "type": "object"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/email-security-1.0.0.tar.gz",
+    "sha256": "74114f085bca762d3335070f175f79c478af3e000f9212128b2962060aa0548c",
+    "size_bytes": 4433
+  }
+}

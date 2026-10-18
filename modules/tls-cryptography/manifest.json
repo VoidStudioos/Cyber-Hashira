@@ -1,0 +1,87 @@
+{
+  "id": "tls-cryptography",
+  "name": "TLS & Cryptography Inspector",
+  "description": "TLS certificate chain validation, expiration auditing, weak cipher suite discovery (RC4, 3DES, CBC), TLS 1.0/1.1 deprecation checks, and cryptographic security scoring.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "TLS & Cryptography",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "port": {
+        "type": "integer",
+        "default": 443
+      },
+      "min_tls_version": {
+        "type": "string",
+        "default": "TLSv1.2"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "hostname": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "default": 443
+        }
+      },
+      "required": [
+        "hostname"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "certificate": {
+          "type": "object"
+        },
+        "tls_version": {
+          "type": "string"
+        },
+        "cipher": {
+          "type": "object"
+        },
+        "crypto_score": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/tls-cryptography-1.0.0.tar.gz",
+    "sha256": "9bca562e7a1b563cd3b3e6bcf092b1b588fde8911edf6f1e2ca87ef80e04a40e",
+    "size_bytes": 3777
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/tls-cryptography",
+  "changelog": "Initial release of TLS & Cryptography Inspector module"
+}

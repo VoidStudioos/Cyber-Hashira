@@ -3,6 +3,1340 @@
   "generated_at": "2026-10-17T12:00:00Z",
   "modules": [
     {
+      "id": "api-security",
+      "name": "API Security & Schema Assessment",
+      "description": "REST, GraphQL, and OpenAPI schema security evaluation, endpoint fuzzing, broken object level authorization (BOLA) tests, and rate limit analysis.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "API Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "rate_limit_checks": {
+            "type": "boolean",
+            "default": true
+          },
+          "test_graphql_introspection": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "endpoint": {
+              "type": "string"
+            },
+            "api_type": {
+              "type": "string",
+              "enum": [
+                "rest",
+                "graphql",
+                "openapi"
+              ]
+            },
+            "options": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "endpoint"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "endpoints_analyzed": {
+              "type": "array"
+            },
+            "security_score": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/api-security-1.0.0.tar.gz",
+        "sha256": "84708655338dcc7a56579f6359557a6e7bb4375ac54426f436d48fe2f43253d7",
+        "size_bytes": 3962
+      }
+    },
+    {
+      "id": "canbus-automotive-security",
+      "name": "CAN Bus & Automotive Vehicle Security",
+      "description": "Automotive Controller Area Network (CAN) security assessment: audits standard 11-bit and extended 29-bit CAN IDs, detects frame spoofing, denial-of-service bus flooding (ID 0x000), diagnostic OBD-II / UDS service exposures, and unauthorized actuator overrides.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Automotive & Hardware",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "bitrate": {
+            "type": "integer",
+            "default": 500000
+          },
+          "detect_dos_flooding": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "interface": {
+              "type": "string"
+            },
+            "can_dump": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "bus_health_score": {
+              "type": "integer"
+            },
+            "frames_analyzed": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/canbus-automotive-security-1.0.0.tar.gz",
+        "sha256": "99b7ebf92b25a7b2219feb52239376cdec2052a04a9769e4c3ca0fdd78610b4c",
+        "size_bytes": 3642
+      }
+    },
+    {
+      "id": "cloud-iac-security",
+      "name": "Infrastructure as Code (IaC) & Cloud Security Posture Auditor",
+      "description": "Evaluates Terraform (HCL/JSON), Kubernetes manifests (YAML), and CloudFormation templates against CIS Cloud Benchmarks to detect public S3 buckets, permissive security groups (0.0.0.0/0 on sensitive ports), unencrypted disks/databases, and root/privileged containers.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Cloud & IaC Security",
+      "icon": "cloud",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_terraform": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_kubernetes": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "template_type": {
+              "type": "string",
+              "enum": [
+                "terraform",
+                "kubernetes",
+                "cloudformation"
+              ]
+            },
+            "content": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "compliance_score": {
+              "type": "integer"
+            },
+            "misconfigurations": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloud-iac-security-1.0.0.tar.gz",
+        "sha256": "6a8c2acca5c20fa3e65debdd1707befd78d53c4a045fe767ca478daf3a700e88",
+        "size_bytes": 3808
+      }
+    },
+    {
+      "id": "container-security",
+      "name": "Container & Dockerfile Security Inspector",
+      "description": "Static Dockerfile and container configuration auditing: detects root user execution, dangerous capabilities (CAP_SYS_ADMIN), unpinned base images, sensitive socket mounting (/var/run/docker.sock), and CIS Docker Benchmark violations.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Container Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "enforce_non_root": {
+            "type": "boolean",
+            "default": true
+          },
+          "forbid_privileged": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "dockerfile_content": {
+              "type": "string"
+            },
+            "dockerfile_path": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "security_score": {
+              "type": "integer"
+            },
+            "rules_evaluated": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/container-security-1.0.0.tar.gz",
+        "sha256": "9ca9d7b8d5e39b60cd650411d5e4def0d1a276c12c1f0bc8ef08f1e1f8476553",
+        "size_bytes": 4471
+      }
+    },
+    {
+      "id": "cookie-session-hygiene",
+      "name": "Cookie Security & Session Hygiene Inspector",
+      "description": "Audits session tokens and HTTP cookies: checks for missing Secure, HttpOnly, and SameSite (Strict/Lax/None) flags, validates modern __Host- and __Secure- cookie prefixes, and calculates session ID entropy to detect predictable tokens.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "key",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "enforce_cookie_prefixes": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_samesite": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "cookies": {
+              "type": "array"
+            },
+            "target_url": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "cookie_hygiene_score": {
+              "type": "integer"
+            },
+            "total_cookies": {
+              "type": "integer"
+            },
+            "insecure_cookies": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cookie-session-hygiene-1.0.0.tar.gz",
+        "sha256": "427ec63b8d954bb6209190411f753ade6c6a75fd027a742f4797c5e8462092b3",
+        "size_bytes": 3892
+      }
+    },
+    {
+      "id": "cors-websocket-audit",
+      "name": "CORS & WebSocket Security Auditor",
+      "description": "Audits Cross-Origin Resource Sharing (CORS) policies against dangerous misconfigurations (reflected origin with credentials, null origin trust, wildcard leaks) and inspects WebSocket upgrade handshakes against Cross-Site WebSocket Hijacking (CSWSH).",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "globe",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_cors_reflection": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_websocket_origin": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "endpoint": {
+              "type": "string"
+            },
+            "cors_headers": {
+              "type": "object"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "cors_risk_level": {
+              "type": "string"
+            },
+            "vulnerabilities": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cors-websocket-audit-1.0.0.tar.gz",
+        "sha256": "198bb5f1effbed86cfc9bc281af299fa812ee30d3777c92b6ceb52fbcf4cb611",
+        "size_bytes": 3470
+      }
+    },
+    {
+      "id": "csp-headers-evaluator",
+      "name": "Content Security Policy (CSP) & Header Auditor",
+      "description": "Deeply audits Content Security Policy (CSP Level 3) directives (script-src, object-src, unsafe-inline, unsafe-eval, nonce/hash validation, frame-ancestors for Clickjacking defense), HSTS preloading, COOP, COEP, and Permissions-Policy.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_clickjacking": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_hsts_preload": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "headers": {
+              "type": "object"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "csp_score": {
+              "type": "integer"
+            },
+            "clickjacking_protected": {
+              "type": "boolean"
+            },
+            "parsed_directives": {
+              "type": "object"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/csp-headers-evaluator-1.0.0.tar.gz",
+        "sha256": "7eef91a74ea72a76eff6101cb5ca76b7f240566c0ee8b291f41f08342e4e30f3",
+        "size_bytes": 4266
+      }
+    },
+    {
+      "id": "digital-forensics",
+      "name": "Digital Forensics & Malware Triage",
+      "description": "Cryptographic file hashing (MD5, SHA-1, SHA-256), binary Shannon entropy calculation for packed malware detection, suspicious string extraction, and immutable chain-of-custody logging.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Digital Forensics",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "evidence:write",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "entropy_threshold": {
+            "type": "number",
+            "default": 7.0
+          },
+          "min_string_length": {
+            "type": "integer",
+            "default": 4
+          },
+          "evidence_storage_path": {
+            "type": "string",
+            "default": "./evidence"
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "file_path": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "file_path"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "hashes": {
+              "type": "object"
+            },
+            "entropy": {
+              "type": "number"
+            },
+            "is_packed": {
+              "type": "boolean"
+            },
+            "suspicious_indicators": {
+              "type": "array"
+            },
+            "chain_of_custody": {
+              "type": "object"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/digital-forensics-1.0.0.tar.gz",
+        "sha256": "a64b2203919cbc1c9539463e18cc79a7b015aa21a5c34dfea3b239e00298a4e0",
+        "size_bytes": 4639
+      }
+    },
+    {
+      "id": "email-security",
+      "name": "Email Security & Anti-Spoofing Auditor",
+      "description": "Audits domain email security posture including SPF, DMARC policies (p=reject vs none), DKIM DNS alignments, BIMI, MTA-STS, and parses raw .eml emails for spoofing, anomalous hops, and suspicious Authentication-Results.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Email & Phishing Defense",
+      "icon": "mail",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:dns",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_spf": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_dmarc": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_bimi_mta_sts": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "domain": {
+              "type": "string"
+            },
+            "raw_eml": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "security_score": {
+              "type": "integer"
+            },
+            "spf_evaluation": {
+              "type": "object"
+            },
+            "dmarc_evaluation": {
+              "type": "object"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/email-security-1.0.0.tar.gz",
+        "sha256": "6a39e6f9dcb69c0b167941dc77489d3939067a5d98ab7fa3de37b886f2736466",
+        "size_bytes": 4442
+      }
+    },
+    {
+      "id": "github-actions-security",
+      "name": "GitHub Actions & CI/CD Security Audit",
+      "description": "OWASP CI/CD Top 10 scanner and Wiz Code best-practice auditor: detects script injections in workflow run steps, unpinned third-party actions, overprivileged tokens (write-all), dangerous pull_request_target triggers, and secret leaks.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Source Code & CI/CD",
+      "icon": "github",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "require_pinned_hashes": {
+            "type": "boolean",
+            "default": true
+          },
+          "enforce_read_only_permissions": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "repo_path": {
+              "type": "string"
+            },
+            "workflow_content": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "workflows_scanned": {
+              "type": "integer"
+            },
+            "compliance_score": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/github-actions-security-1.0.0.tar.gz",
+        "sha256": "14fe9af3b28b994fd30f70ec62cda44a6bd13ce4d91fa63d2ca4d9ac988519d0",
+        "size_bytes": 5392
+      }
+    },
+    {
+      "id": "graphql-security-audit",
+      "name": "GraphQL Schema & Query Depth Auditor",
+      "description": "Audits GraphQL APIs against common security weaknesses: enabled production Introspection (__schema), circular query depth Denial of Service, batching query amplification, field suggestion leaks, and missing complexity limiters.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "API Security",
+      "icon": "code",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_introspection": {
+            "type": "boolean",
+            "default": true
+          },
+          "max_allowed_depth": {
+            "type": "integer",
+            "default": 7
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "graphql_endpoint": {
+              "type": "string"
+            },
+            "schema_or_query": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "introspection_enabled": {
+              "type": "boolean"
+            },
+            "max_query_depth_detected": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-security-audit-1.0.0.tar.gz",
+        "sha256": "d4bc292a2e85e51e0de70588923ced4f15ba18392fef94b38908cc6a5a7d7a74",
+        "size_bytes": 3200
+      }
+    },
+    {
+      "id": "hashira-ai",
+      "name": "Hashira AI Defensive Security Assistant",
+      "description": "AI-powered defensive security workstation assistant: automated findings triage, CVE/CWE explanations, remediation code patching, secret redaction, and bilingual security report drafting (EN & FA).",
+      "author": "Cyber Hashira AI Labs",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Hashira AI",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:read"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "endpoint_type": {
+            "type": "string",
+            "enum": [
+              "local",
+              "custom_openai"
+            ],
+            "default": "local"
+          },
+          "api_url": {
+            "type": "string",
+            "default": "http://127.0.0.1:11434/v1"
+          },
+          "redact_secrets": {
+            "type": "boolean",
+            "default": true
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "fa"
+            ],
+            "default": "en"
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "query": {
+              "type": "string"
+            },
+            "finding": {
+              "type": "object"
+            },
+            "language": {
+              "type": "string"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "response": {
+              "type": "string"
+            },
+            "remediation_patch": {
+              "type": "string"
+            },
+            "sanitized": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/hashira-ai-1.0.0.tar.gz",
+        "sha256": "19154e4e9b697f29c8ac49c4e641807650e82c83ae3045c1a581b9c4b68bc6e7",
+        "size_bytes": 8188
+      }
+    },
+    {
+      "id": "identity-ad-hygiene",
+      "name": "Active Directory & Identity Hygiene Auditor",
+      "description": "Evaluates Active Directory and enterprise identity configurations against CIS Benchmarks, auditing stale accounts, accounts with non-expiring passwords, Kerberos pre-authentication bypass risk, SMBv1/NTLMv1 exposure, and over-privileged Domain Admin group memberships.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Identity & Access Management",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_stale_accounts": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_kerberos_risks": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "domain": {
+              "type": "string"
+            },
+            "directory_data": {
+              "type": "object"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "identity_hygiene_score": {
+              "type": "integer"
+            },
+            "critical_misconfigurations": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/identity-ad-hygiene-1.0.0.tar.gz",
+        "sha256": "06081013f3da55d986d48b51dac0f1c8d81848b2be155db9393a731360fb3547",
+        "size_bytes": 3810
+      }
+    },
+    {
+      "id": "jwt-security-analyzer",
+      "name": "JWT & Cryptographic Token Analyzer",
+      "description": "Audits JSON Web Tokens (JWT) for critical security flaws: 'alg: none' signature bypass, weak HMAC secrets, RSA-to-HMAC algorithm confusion (CVE-2015-9235), expired tokens with invalid exp/nbf handling, and unvalidated 'kid' header parameter injections.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "key",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_algorithm_none": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_key_confusion": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "object"
+            },
+            "payload": {
+              "type": "object"
+            },
+            "vulnerabilities": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/jwt-security-analyzer-1.0.0.tar.gz",
+        "sha256": "8f8c4a2afcd32f777276f917a85c6759537e0ab95cce07ff99b9a58822ceb377",
+        "size_bytes": 3990
+      }
+    },
+    {
+      "id": "network-forensics-pcap",
+      "name": "Network Forensics & PCAP Credential Extractor",
+      "description": "Deep packet inspection and network capture forensic analysis (inspired by BruteShark): parses PCAP files, reconstructs network sessions, extracts cleartext passwords (HTTP, FTP, Telnet, IMAP), and recovers Kerberos / NTLM challenge-response authentication hashes.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Network Forensics",
+      "icon": "forensics",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "evidence:write",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "extract_ntlm_hashes": {
+            "type": "boolean",
+            "default": true
+          },
+          "extract_cleartext_passwords": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "pcap_path": {
+              "type": "string"
+            },
+            "raw_stream": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "credentials_recovered": {
+              "type": "array"
+            },
+            "sessions_analyzed": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/network-forensics-pcap-1.0.0.tar.gz",
+        "sha256": "b8776801dd34c4fd9f52a0bd424ba93c5b68d6e5d299fd3e024a80badc35a167",
+        "size_bytes": 3532
+      }
+    },
+    {
+      "id": "network-security",
+      "name": "Network & Port Discovery (Nmap Core)",
+      "description": "Authorized network reconnaissance, port scanning, service version detection, and topology mapping with native Nmap integration and fallback engine.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Network Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "port_profile": {
+            "type": "string",
+            "enum": [
+              "top-20",
+              "top-100",
+              "top-1000",
+              "custom"
+            ],
+            "default": "top-100"
+          },
+          "custom_ports": {
+            "type": "string",
+            "default": "80,443,22,21,3389,8080"
+          },
+          "service_versioning": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "target": {
+              "type": "string"
+            },
+            "scope_approved": {
+              "type": "boolean"
+            },
+            "options": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "target",
+            "scope_approved"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array"
+            },
+            "discovered_ports": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/network-security-1.0.0.tar.gz",
+        "sha256": "8910b819ddb65dd9587498e5cb1289c93078bce7c8702b45b6a11d132c9f5897",
+        "size_bytes": 4669
+      }
+    },
+    {
       "id": "sample-dns",
       "name": "DNS & Domain Reconnaissance",
       "description": "Performs DNS record inspection, MX discovery, SPF/DMARC validation, and domain reconnaissance on authorized targets.",
@@ -10,6 +1344,8 @@
       "version": "1.0.0",
       "min_host_version": "0.1.0",
       "category": "Reconnaissance & OSINT",
+      "icon": "shield",
+      "banner_url": "",
       "supported_os": [
         "windows",
         "linux",
@@ -73,13 +1409,1095 @@
         }
       },
       "artifact": {
-        "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/sample-dns-1.0.0.tar.gz",
-        "sha256": "bac9f39abc12e0dca908b022e07655d629aa269e2a0cea922877ec6d57034f16",
-        "size_bytes": 2905
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sample-dns-1.0.0.tar.gz",
+        "sha256": "21cb4edc008059528c3565c88d77eb263aea620984b73ad559c257b82c9d4a31",
+        "size_bytes": 2912
+      }
+    },
+    {
+      "id": "sast-source-scanner",
+      "name": "Static Application Security Testing (SAST) Scanner",
+      "description": "Scans application source code (Python, JavaScript/TypeScript, PHP, Go) for dangerous source-to-sink vulnerability patterns: SQL injection string concatenation, command injection (eval, exec, system, shell=True), path traversal, and insecure deserialization (pickle, yaml.load).",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Source Code & CI/CD",
+      "icon": "code",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
       },
-      "license": "Apache-2.0",
-      "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/sample-dns",
-      "changelog": "Initial release of DNS reconnaissance module"
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_sql_injection": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_command_injection": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "source_code": {
+              "type": "string"
+            },
+            "file_name": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "vulnerabilities_detected": {
+              "type": "integer"
+            },
+            "sast_score": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sast-source-scanner-1.0.0.tar.gz",
+        "sha256": "3a4255527436896d09372fef98a41b477117a86c2f9cac226f6dd3c16fa0b401",
+        "size_bytes": 3663
+      }
+    },
+    {
+      "id": "sbom-dependency-audit",
+      "name": "Software Bill of Materials & Dependency Auditor",
+      "description": "Generates and inspects CycloneDX / SPDX Software Bill of Materials (SBOM), evaluates manifest files (package.json, requirements.txt, go.mod, Cargo.toml), matches known vulnerable components (CVEs) and warns against risky open-source licenses.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Supply Chain Security",
+      "icon": "package",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_cves": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_licenses": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "manifest_type": {
+              "type": "string",
+              "enum": [
+                "package.json",
+                "requirements.txt",
+                "go.mod",
+                "Cargo.toml"
+              ]
+            },
+            "content": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "sbom_format": {
+              "type": "string"
+            },
+            "total_dependencies": {
+              "type": "integer"
+            },
+            "vulnerable_components": {
+              "type": "array"
+            },
+            "license_risks": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sbom-dependency-audit-1.0.0.tar.gz",
+        "sha256": "4d0bc5cb5ac98956b537ecd2f73e386f31c3fc89c9d488a4ad55eb4566b5c085",
+        "size_bytes": 4074
+      }
+    },
+    {
+      "id": "secrets-leak-scanner",
+      "name": "Secrets, API Keys & PII Leak Scanner",
+      "description": "Analyzes source code, configuration files, and git commit diffs to discover inadvertently committed credentials, AWS/GCP/Azure access keys, private keys (RSA/SSH), OpenAI/Stripe/GitHub tokens, and sensitive PII using high-entropy calculation and regex signature matching.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "DevSecOps & Secrets",
+      "icon": "key",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "entropy_threshold": {
+            "type": "number",
+            "default": 4.5
+          },
+          "detect_pii": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "target_path": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "secrets_found": {
+              "type": "integer"
+            },
+            "high_entropy_tokens": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/secrets-leak-scanner-1.0.0.tar.gz",
+        "sha256": "7596cfe0f94280bce5ff69db879ca0648ce737e405beb298c08642a1b6324518",
+        "size_bytes": 3756
+      }
+    },
+    {
+      "id": "sensor-coverage-attack",
+      "name": "MITRE Sensor Mappings & Detection Coverage Auditor",
+      "description": "Based on MITRE Center for Threat-Informed Defense (CTID) Sensor Mappings to ATT&CK (SMAP): evaluates telemetry sensor coverage (Sysmon, Windows Event Logs, Linux Auditd, Zeek, Suricata, eBPF) against ATT&CK data sources and adversary TTPs, identifying blind spots in defensive detection pipelines.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Detection & Threat Intel",
+      "icon": "radar",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_endpoint_sensors": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_network_sensors": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "active_sensors": {
+              "type": "array"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "detection_coverage_score": {
+              "type": "integer"
+            },
+            "covered_techniques": {
+              "type": "array"
+            },
+            "blind_spots": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sensor-coverage-attack-1.0.0.tar.gz",
+        "sha256": "09c99d28fce79185c4f02a68d6e16f39bee85dbfbd0b5c5347b741b73f4f0b32",
+        "size_bytes": 4068
+      }
+    },
+    {
+      "id": "sigma-threat-hunting",
+      "name": "Sigma & YARA Threat Hunting Rule Engine",
+      "description": "Validates and executes Sigma detection rules and YARA signatures against system event logs (Windows Security, Sysmon, Linux Auditd) and suspicious artifacts, identifying threat indicators and translating Sigma rules into SIEM queries (Splunk, Elasticsearch, OpenSearch).",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Threat Detection & Hunting",
+      "icon": "search",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "filesystem:read",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "target_siem": {
+            "type": "string",
+            "default": "splunk"
+          },
+          "strict_rule_validation": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "rule_content": {
+              "type": "string"
+            },
+            "log_events": {
+              "type": "array"
+            },
+            "target_siem": {
+              "type": "string",
+              "enum": [
+                "splunk",
+                "elasticsearch",
+                "opensearch",
+                "kql"
+              ]
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "rule_metadata": {
+              "type": "object"
+            },
+            "compiled_query": {
+              "type": "string"
+            },
+            "matched_events": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sigma-threat-hunting-1.0.0.tar.gz",
+        "sha256": "5d5e35335971726f496507ca26e691313cbe236c27096d76943b2ccf2384dbe6",
+        "size_bytes": 3862
+      }
+    },
+    {
+      "id": "ssrf-guard-validator",
+      "name": "SSRF & Cloud Metadata Defense Validator",
+      "description": "Audits URLs, webhooks, and outbound request endpoints against Server-Side Request Forgery (SSRF) and metadata theft, detecting private RFC 1918 ranges, AWS/GCP/Azure instance metadata endpoints, IPv6 bypasses, and decimal/octal IP obfuscation.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_cloud_metadata": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_obfuscated_ips": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "url_or_ips": {
+              "type": "array"
+            },
+            "target_endpoint": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "ssrf_risk_detected": {
+              "type": "boolean"
+            },
+            "dangerous_targets": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ssrf-guard-validator-1.0.0.tar.gz",
+        "sha256": "cf87ae52382bb8808cb65207e4b9a543423407044a49f164cbde0d181f34c0b3",
+        "size_bytes": 3847
+      }
+    },
+    {
+      "id": "subdomain-takeover-audit",
+      "name": "Subdomain Takeover & Dangling DNS Auditor",
+      "description": "Scans DNS records and CNAME aliases to discover dangling pointers to deleted or deprovisioned cloud services (AWS S3, GitHub Pages, Heroku, Azure Traffic Manager, Zendesk, Fastly, Shopify) where attackers could hijack the subdomain.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "radar",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:dns",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_cname_fingerprints": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "domain": {
+              "type": "string"
+            },
+            "cname_records": {
+              "type": "array"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "takeover_risk_detected": {
+              "type": "boolean"
+            },
+            "dangling_subdomains": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/subdomain-takeover-audit-1.0.0.tar.gz",
+        "sha256": "14eef644b136ed047ccace85ae67b5938fe321a1215d3c0ac25327b3bf61bca0",
+        "size_bytes": 3328
+      }
+    },
+    {
+      "id": "threat-intelligence",
+      "name": "Threat Intelligence & MITRE ATT&CK Engine",
+      "description": "IOC enrichment (IP, domain, hash), MITRE ATT&CK technique mapping, threat correlation, and offline intelligence caching.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Threat Intelligence",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "cache_offline": {
+            "type": "boolean",
+            "default": true
+          },
+          "threat_threshold": {
+            "type": "integer",
+            "default": 60
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "ioc": {
+              "type": "string"
+            },
+            "ioc_type": {
+              "type": "string",
+              "enum": [
+                "ip",
+                "domain",
+                "hash",
+                "cve"
+              ]
+            },
+            "options": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "ioc"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "threat_score": {
+              "type": "integer"
+            },
+            "mitre_techniques": {
+              "type": "array"
+            },
+            "reputation": {
+              "type": "string"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/threat-intelligence-1.0.0.tar.gz",
+        "sha256": "5eb80f5ff9fbf2199cc0d6df53d06c8ba152c977aed57c10022774e053abbe93",
+        "size_bytes": 3919
+      }
+    },
+    {
+      "id": "tls-cryptography",
+      "name": "TLS & Cryptography Inspector",
+      "description": "TLS certificate chain validation, expiration auditing, weak cipher suite discovery (RC4, 3DES, CBC), TLS 1.0/1.1 deprecation checks, and cryptographic security scoring.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "TLS & Cryptography",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "port": {
+            "type": "integer",
+            "default": 443
+          },
+          "min_tls_version": {
+            "type": "string",
+            "default": "TLSv1.2"
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "type": "string"
+            },
+            "port": {
+              "type": "integer",
+              "default": 443
+            }
+          },
+          "required": [
+            "hostname"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "certificate": {
+              "type": "object"
+            },
+            "tls_version": {
+              "type": "string"
+            },
+            "cipher": {
+              "type": "object"
+            },
+            "crypto_score": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/tls-cryptography-1.0.0.tar.gz",
+        "sha256": "6b37c06e185933ee0994db923cdeca36b945f4e42a2b94d68bf93b06a0967186",
+        "size_bytes": 3777
+      }
+    },
+    {
+      "id": "vulnerability-assessment",
+      "name": "Vulnerability Assessment (Nuclei Core)",
+      "description": "Rule-based vulnerability scanner and template evaluation engine mapping CVEs, CWEs, and CVSS scores with false-positive reduction.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Vulnerability Assessment",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "string",
+            "enum": [
+              "fast",
+              "balanced",
+              "comprehensive"
+            ],
+            "default": "balanced"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "cve",
+              "misconfig",
+              "exposure",
+              "default-logins"
+            ]
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "target": {
+              "type": "string"
+            },
+            "scope_approved": {
+              "type": "boolean"
+            },
+            "options": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "target",
+            "scope_approved"
+          ]
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array"
+            },
+            "templates_executed": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/vulnerability-assessment-1.0.0.tar.gz",
+        "sha256": "c98d3dd1a4ac4ed49414d872effea79036ed0750e13cc287b5762d31d6c7fbd6",
+        "size_bytes": 3987
+      }
+    },
+    {
+      "id": "waf-evasion-defense",
+      "name": "WAF & Normalization Defense Validator",
+      "description": "Audits Web Application Firewall (WAF) rule efficacy and input normalization defenses against evasion vectors: Unicode overlong encoding, HTTP parameter pollution (HPP), path traversal normalization discrepancies, and chunked transfer smuggling flags.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "audit_unicode_normalization": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_path_discrepancies": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "endpoint": {
+              "type": "string"
+            },
+            "waf_rules": {
+              "type": "array"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "evasion_defense_score": {
+              "type": "integer"
+            },
+            "detected_evasion_risks": {
+              "type": "array"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/waf-evasion-defense-1.0.0.tar.gz",
+        "sha256": "7498deba827d8398c420fcecb06f60cbd37544b1771997aa2e0bd5532157d363",
+        "size_bytes": 3316
+      }
+    },
+    {
+      "id": "web-security",
+      "name": "Web Application Security Suite",
+      "description": "Burp & ZAP inspired web security workspace: HTTP/HTTPS proxy engine, Repeater, Decoder/Encoder, HTTP history, and automated passive vulnerability analysis.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:listen",
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "listen_host": {
+            "type": "string",
+            "default": "127.0.0.1"
+          },
+          "listen_port": {
+            "type": "integer",
+            "default": 8080
+          },
+          "passive_scan": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "target": {
+              "type": "string"
+            },
+            "scope_approved": {
+              "type": "boolean"
+            },
+            "repeater_request": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array"
+            },
+            "response": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/web-security-1.0.0.tar.gz",
+        "sha256": "78f94baad8cdf89a155e7f50112241520101548f7362f8277923283624f71266",
+        "size_bytes": 5015
+      }
+    },
+    {
+      "id": "wireless-security",
+      "name": "Wireless & 802.11 WiFi Security Auditor",
+      "description": "802.11 wireless network auditing: analyzes WEP, WPA, WPA2-PSK (TKIP/CCMP), and WPA3-SAE security postures, detects WPS PIN vulnerability risks, PMKID exposure, rogue APs, and weak pre-shared keys.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Wireless Security",
+      "icon": "network",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:listen",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "channel_hop": {
+            "type": "boolean",
+            "default": true
+          },
+          "audit_wps": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "interface": {
+              "type": "string"
+            },
+            "bssid": {
+              "type": "string"
+            },
+            "options": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "networks_audited": {
+              "type": "array"
+            },
+            "risk_score": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "array"
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/wireless-security-1.0.0.tar.gz",
+        "sha256": "5766ca6906ae3ac035248b181a7d98bf8b7fa66e6cf659f70204b30a3ddca1e2",
+        "size_bytes": 3711
+      }
     }
   ]
 }

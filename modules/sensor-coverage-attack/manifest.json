@@ -1,0 +1,82 @@
+{
+  "id": "sensor-coverage-attack",
+  "name": "MITRE Sensor Mappings & Detection Coverage Auditor",
+  "description": "Based on MITRE Center for Threat-Informed Defense (CTID) Sensor Mappings to ATT&CK (SMAP): evaluates telemetry sensor coverage (Sysmon, Windows Event Logs, Linux Auditd, Zeek, Suricata, eBPF) against ATT&CK data sources and adversary TTPs, identifying blind spots in defensive detection pipelines.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Detection & Threat Intel",
+  "icon": "radar",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_endpoint_sensors": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_network_sensors": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "active_sensors": {
+          "type": "array"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "detection_coverage_score": {
+          "type": "integer"
+        },
+        "covered_techniques": {
+          "type": "array"
+        },
+        "blind_spots": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/sensor-coverage-attack-1.0.0.tar.gz",
+    "sha256": "01fcdc998edc5a1f44f8651071e2a96d893510d58394b50dd686686d9b29efba",
+    "size_bytes": 4072
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/sensor-coverage-attack",
+  "changelog": "Initial release of MITRE Sensor Mappings to ATT&CK Coverage Auditor"
+}

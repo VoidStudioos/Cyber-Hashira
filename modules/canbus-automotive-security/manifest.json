@@ -1,0 +1,82 @@
+{
+  "id": "canbus-automotive-security",
+  "name": "CAN Bus & Automotive Vehicle Security",
+  "description": "Automotive Controller Area Network (CAN) security assessment: audits standard 11-bit and extended 29-bit CAN IDs, detects frame spoofing, denial-of-service bus flooding (ID 0x000), diagnostic OBD-II / UDS service exposures, and unauthorized actuator overrides.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Automotive & Hardware",
+  "icon": "shield",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "bitrate": {
+        "type": "integer",
+        "default": 500000
+      },
+      "detect_dos_flooding": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "interface": {
+          "type": "string"
+        },
+        "can_dump": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "bus_health_score": {
+          "type": "integer"
+        },
+        "frames_analyzed": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/canbus-automotive-security-1.0.0.tar.gz",
+    "sha256": "d8e95891a5a7568c40346e37e6c66aef8bab31f6ba9fe2451e8c5149e69b05ab",
+    "size_bytes": 3654
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/canbus-automotive-security",
+  "changelog": "Initial release of CAN Bus & Automotive Vehicle Security Auditor"
+}

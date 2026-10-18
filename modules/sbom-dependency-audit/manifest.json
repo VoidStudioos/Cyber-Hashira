@@ -1,0 +1,91 @@
+{
+  "id": "sbom-dependency-audit",
+  "name": "Software Bill of Materials & Dependency Auditor",
+  "description": "Generates and inspects CycloneDX / SPDX Software Bill of Materials (SBOM), evaluates manifest files (package.json, requirements.txt, go.mod, Cargo.toml), matches known vulnerable components (CVEs) and warns against risky open-source licenses.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Supply Chain Security",
+  "icon": "package",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_cves": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_licenses": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "manifest_type": {
+          "type": "string",
+          "enum": [
+            "package.json",
+            "requirements.txt",
+            "go.mod",
+            "Cargo.toml"
+          ]
+        },
+        "content": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "sbom_format": {
+          "type": "string"
+        },
+        "total_dependencies": {
+          "type": "integer"
+        },
+        "vulnerable_components": {
+          "type": "array"
+        },
+        "license_risks": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sbom-dependency-audit-1.0.0.tar.gz",
+    "sha256": "1e63bbab49f9c3fca9aea909a78ac2fa49948d25866dddfceb4b42dbd47aadea",
+    "size_bytes": 4063
+  }
+}

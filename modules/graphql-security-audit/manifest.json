@@ -1,0 +1,79 @@
+{
+  "id": "graphql-security-audit",
+  "name": "GraphQL Schema & Query Depth Auditor",
+  "description": "Audits GraphQL APIs against common security weaknesses: enabled production Introspection (__schema), circular query depth Denial of Service, batching query amplification, field suggestion leaks, and missing complexity limiters.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "API Security",
+  "icon": "code",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_introspection": {
+        "type": "boolean",
+        "default": true
+      },
+      "max_allowed_depth": {
+        "type": "integer",
+        "default": 7
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "graphql_endpoint": {
+          "type": "string"
+        },
+        "schema_or_query": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "introspection_enabled": {
+          "type": "boolean"
+        },
+        "max_query_depth_detected": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-security-audit-1.0.0.tar.gz",
+    "sha256": "04719e839c8224f28233a755ac88ab170d950862687d63cdbe173da7b58b41f1",
+    "size_bytes": 3199
+  }
+}

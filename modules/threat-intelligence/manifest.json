@@ -1,0 +1,92 @@
+{
+  "id": "threat-intelligence",
+  "name": "Threat Intelligence & MITRE ATT&CK Engine",
+  "description": "IOC enrichment (IP, domain, hash), MITRE ATT&CK technique mapping, threat correlation, and offline intelligence caching.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Threat Intelligence",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "cache_offline": {
+        "type": "boolean",
+        "default": true
+      },
+      "threat_threshold": {
+        "type": "integer",
+        "default": 60
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "ioc": {
+          "type": "string"
+        },
+        "ioc_type": {
+          "type": "string",
+          "enum": [
+            "ip",
+            "domain",
+            "hash",
+            "cve"
+          ]
+        },
+        "options": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "ioc"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "threat_score": {
+          "type": "integer"
+        },
+        "mitre_techniques": {
+          "type": "array"
+        },
+        "reputation": {
+          "type": "string"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/threat-intelligence-1.0.0.tar.gz",
+    "sha256": "4717f6110bff1adb8b2010e96700d34f18e9be705c0354a4cd86f5ce36685c93",
+    "size_bytes": 3919
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/threat-intelligence",
+  "changelog": "Initial release of Threat Intelligence and MITRE ATT&CK correlation module"
+}

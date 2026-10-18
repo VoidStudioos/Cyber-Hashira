@@ -1,0 +1,91 @@
+{
+  "id": "network-security",
+  "name": "Network & Port Discovery (Nmap Core)",
+  "description": "Authorized network reconnaissance, port scanning, service version detection, and topology mapping with native Nmap integration and fallback engine.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Network Security",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "port_profile": {
+        "type": "string",
+        "enum": [
+          "top-20",
+          "top-100",
+          "top-1000",
+          "custom"
+        ],
+        "default": "top-100"
+      },
+      "custom_ports": {
+        "type": "string",
+        "default": "80,443,22,21,3389,8080"
+      },
+      "service_versioning": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "scope_approved": {
+          "type": "boolean"
+        },
+        "options": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "target",
+        "scope_approved"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "discovered_ports": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/network-security-1.0.0.tar.gz",
+    "sha256": "6ad6a2cc19e7cdcf8659c71e24d694c4414fc24df6dcd60f6ac2326f5b01e291",
+    "size_bytes": 4668
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/network-security",
+  "changelog": "Initial release of Network & Port Discovery module with Nmap adapter and socket fallback"
+}

@@ -1,0 +1,78 @@
+{
+  "id": "jwt-security-analyzer",
+  "name": "JWT & Cryptographic Token Analyzer",
+  "description": "Audits JSON Web Tokens (JWT) for critical security flaws: 'alg: none' signature bypass, weak HMAC secrets, RSA-to-HMAC algorithm confusion (CVE-2015-9235), expired tokens with invalid exp/nbf handling, and unvalidated 'kid' header parameter injections.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "key",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_algorithm_none": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_key_confusion": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "header": {
+          "type": "object"
+        },
+        "payload": {
+          "type": "object"
+        },
+        "vulnerabilities": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/jwt-security-analyzer-1.0.0.tar.gz",
+    "sha256": "f59260ca65b5cdee5d4feee03dde678c8da44e2e1b3a4ebc0e199b11857cf1e6",
+    "size_bytes": 3999
+  }
+}

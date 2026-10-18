@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Shield,
+  ShieldAlert,
   LayoutDashboard,
   FolderGit2,
   Crosshair,
@@ -13,8 +14,17 @@ import {
   ChevronRight,
   Globe,
   Network,
-  Cpu,
   Terminal,
+  GitFork,
+  Sparkles,
+  Radar,
+  FileSearch,
+  Code2,
+  Lock,
+  Github,
+  Code,
+  Cloud,
+  Key,
 } from "lucide-react";
 import { InstalledModuleInfo } from "../types";
 
@@ -38,6 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: "projects", label: "Projects", icon: FolderGit2 },
     { id: "targets", label: "Targets & Scope", icon: Crosshair },
     { id: "findings", label: "Findings", icon: Bug },
+    { id: "workflow", label: "Automation Pipelines", icon: GitFork },
     { id: "activity", label: "Activity Logs", icon: ScrollText },
   ];
 
@@ -55,16 +66,105 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const dynamicModuleNavItems = installedModules
     .filter((m) => m.status === "enabled")
     .map((m) => {
-      let icon = Terminal;
-      if (m.id.includes("dns") || m.id.includes("recon")) icon = Globe;
-      if (m.id.includes("net") || m.id.includes("nmap")) icon = Network;
-      if (m.id.includes("ai")) icon = Cpu;
+    if (m.id === "web-security") {
       return {
-        id: `module:${m.id}`,
+        id: "web-security",
         label: m.name,
-        icon,
+        icon: Globe,
       };
-    });
+    }
+    if (m.id === "network-security") {
+      return {
+        id: "network-security",
+        label: m.name,
+        icon: Network,
+      };
+    }
+    if (m.id === "vulnerability-assessment") {
+      return {
+        id: "vulnerability-assessment",
+        label: m.name,
+        icon: ShieldAlert,
+      };
+    }
+    if (m.id === "hashira-ai") {
+      return {
+        id: "hashira-ai",
+        label: m.name,
+        icon: Sparkles,
+      };
+    }
+    if (m.id === "threat-intelligence") {
+      return {
+        id: "threat-intelligence",
+        label: m.name,
+        icon: Radar,
+      };
+    }
+    if (m.id === "digital-forensics") {
+      return {
+        id: "digital-forensics",
+        label: m.name,
+        icon: FileSearch,
+      };
+    }
+    if (m.id === "api-security") {
+      return {
+        id: "api-security",
+        label: m.name,
+        icon: Code2,
+      };
+    }
+    if (m.id === "tls-cryptography") {
+      return {
+        id: "tls-cryptography",
+        label: m.name,
+        icon: Lock,
+      };
+    }
+    if (m.id === "github-actions-security") {
+      return {
+        id: "github-actions-security",
+        label: m.name,
+        icon: Github,
+      };
+    }
+    if (m.id === "container-security") {
+      return {
+        id: "container-security",
+        label: m.name,
+        icon: Boxes,
+      };
+    }
+    if (m.id === "sast-source-scanner") {
+      return {
+        id: "sast-source-scanner",
+        label: m.name,
+        icon: Code,
+      };
+    }
+    if (m.id === "cloud-iac-security") {
+      return {
+        id: "cloud-iac-security",
+        label: m.name,
+        icon: Cloud,
+      };
+    }
+    if (m.id === "secrets-leak-scanner") {
+      return {
+        id: "secrets-leak-scanner",
+        label: m.name,
+        icon: Key,
+      };
+    }
+    let icon = Terminal;
+    if (m.id.includes("dns") || m.id.includes("recon")) icon = Globe;
+    return {
+      id: `module:${m.id}`,
+      label: m.name,
+      icon,
+    };
+  });
 
   return (
     <aside

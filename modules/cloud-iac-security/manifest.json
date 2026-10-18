@@ -1,0 +1,84 @@
+{
+  "id": "cloud-iac-security",
+  "name": "Infrastructure as Code (IaC) & Cloud Security Posture Auditor",
+  "description": "Evaluates Terraform (HCL/JSON), Kubernetes manifests (YAML), and CloudFormation templates against CIS Cloud Benchmarks to detect public S3 buckets, permissive security groups (0.0.0.0/0 on sensitive ports), unencrypted disks/databases, and root/privileged containers.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Cloud & IaC Security",
+  "icon": "cloud",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_terraform": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_kubernetes": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "template_type": {
+          "type": "string",
+          "enum": [
+            "terraform",
+            "kubernetes",
+            "cloudformation"
+          ]
+        },
+        "content": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "compliance_score": {
+          "type": "integer"
+        },
+        "misconfigurations": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloud-iac-security-1.0.0.tar.gz",
+    "sha256": "20cda81d206de1b5c7ffc3d78baf20ba76981c5e49a8b35fbe08e0ba3c5bfecb",
+    "size_bytes": 3810
+  }
+}

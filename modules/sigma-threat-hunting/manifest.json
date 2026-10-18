@@ -1,0 +1,91 @@
+{
+  "id": "sigma-threat-hunting",
+  "name": "Sigma & YARA Threat Hunting Rule Engine",
+  "description": "Validates and executes Sigma detection rules and YARA signatures against system event logs (Windows Security, Sysmon, Linux Auditd) and suspicious artifacts, identifying threat indicators and translating Sigma rules into SIEM queries (Splunk, Elasticsearch, OpenSearch).",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Threat Detection & Hunting",
+  "icon": "search",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "target_siem": {
+        "type": "string",
+        "default": "splunk"
+      },
+      "strict_rule_validation": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "rule_content": {
+          "type": "string"
+        },
+        "log_events": {
+          "type": "array"
+        },
+        "target_siem": {
+          "type": "string",
+          "enum": [
+            "splunk",
+            "elasticsearch",
+            "opensearch",
+            "kql"
+          ]
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "rule_metadata": {
+          "type": "object"
+        },
+        "compiled_query": {
+          "type": "string"
+        },
+        "matched_events": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sigma-threat-hunting-1.0.0.tar.gz",
+    "sha256": "3679d338fde1d46930b642dbab71bfdedb517068eeddda123017c4dc363a68df",
+    "size_bytes": 3864
+  }
+}

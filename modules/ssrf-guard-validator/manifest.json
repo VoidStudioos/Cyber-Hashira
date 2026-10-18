@@ -1,0 +1,79 @@
+{
+  "id": "ssrf-guard-validator",
+  "name": "SSRF & Cloud Metadata Defense Validator",
+  "description": "Audits URLs, webhooks, and outbound request endpoints against Server-Side Request Forgery (SSRF) and metadata theft, detecting private RFC 1918 ranges, AWS/GCP/Azure instance metadata endpoints, IPv6 bypasses, and decimal/octal IP obfuscation.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "shield",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_cloud_metadata": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_obfuscated_ips": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "url_or_ips": {
+          "type": "array"
+        },
+        "target_endpoint": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "ssrf_risk_detected": {
+          "type": "boolean"
+        },
+        "dangerous_targets": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ssrf-guard-validator-1.0.0.tar.gz",
+    "sha256": "4a170d43dd715984e48585b71743e7478722a742da17aee4addc36fb6b00bf23",
+    "size_bytes": 3848
+  }
+}

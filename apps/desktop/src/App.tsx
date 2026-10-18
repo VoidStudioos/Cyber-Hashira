@@ -9,6 +9,20 @@ import { InstalledModulesView } from "./views/InstalledModulesView";
 import { FindingsView } from "./views/FindingsView";
 import { ActivityLogsView } from "./views/ActivityLogsView";
 import { SettingsView } from "./views/SettingsView";
+import { WebSecurityView } from "./views/WebSecurityView";
+import { NetworkSecurityView } from "./views/NetworkSecurityView";
+import { VulnerabilityView } from "./views/VulnerabilityView";
+import { HashiraAiView } from "./views/HashiraAiView";
+import { WorkflowAutomationView } from "./views/WorkflowAutomationView";
+import { ThreatIntelligenceView } from "./views/ThreatIntelligenceView";
+import { ForensicsView } from "./views/ForensicsView";
+import { ApiSecurityView } from "./views/ApiSecurityView";
+import { TlsCryptographyView } from "./views/TlsCryptographyView";
+import { GitHubActionsSecurityView } from "./views/GitHubActionsSecurityView";
+import { ContainerSecurityView } from "./views/ContainerSecurityView";
+import { SastSourceScannerView } from "./views/SastSourceScannerView";
+import { CloudIacSecurityView } from "./views/CloudIacSecurityView";
+import { SecretsLeakScannerView } from "./views/SecretsLeakScannerView";
 import { api } from "./api/client";
 import {
   AuditLogEntry,
@@ -227,6 +241,101 @@ export const App: React.FC = () => {
               targets={targets}
               activeProject={activeProject}
               onRunTask={handleRunTask}
+            />
+          )}
+
+          {currentView === "web-security" && (
+            <WebSecurityView
+              activeProject={activeProject}
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "network-security" && (
+            <NetworkSecurityView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "vulnerability-assessment" && (
+            <VulnerabilityView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "hashira-ai" && (
+            <HashiraAiView
+              findings={findings}
+              targets={targets}
+              onRunTask={handleRunTask}
+            />
+          )}
+
+          {currentView === "threat-intelligence" && (
+            <ThreatIntelligenceView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "digital-forensics" && (
+            <ForensicsView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "api-security" && (
+            <ApiSecurityView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "tls-cryptography" && (
+            <TlsCryptographyView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "github-actions-security" && (
+            <GitHubActionsSecurityView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "container-security" && (
+            <ContainerSecurityView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
+            />
+          )}
+
+          {currentView === "sast-source-scanner" && <SastSourceScannerView />}
+
+          {currentView === "cloud-iac-security" && <CloudIacSecurityView />}
+
+          {currentView === "secrets-leak-scanner" && <SecretsLeakScannerView />}
+
+          {currentView === "workflow" && (
+            <WorkflowAutomationView
+              targets={targets}
+              onRunTask={handleRunTask}
+              onRefreshFindings={loadAllData}
             />
           )}
 

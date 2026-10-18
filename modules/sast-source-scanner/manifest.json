@@ -1,0 +1,79 @@
+{
+  "id": "sast-source-scanner",
+  "name": "Static Application Security Testing (SAST) Scanner",
+  "description": "Scans application source code (Python, JavaScript/TypeScript, PHP, Go) for dangerous source-to-sink vulnerability patterns: SQL injection string concatenation, command injection (eval, exec, system, shell=True), path traversal, and insecure deserialization (pickle, yaml.load).",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Source Code & CI/CD",
+  "icon": "code",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_sql_injection": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_command_injection": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "source_code": {
+          "type": "string"
+        },
+        "file_name": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "vulnerabilities_detected": {
+          "type": "integer"
+        },
+        "sast_score": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sast-source-scanner-1.0.0.tar.gz",
+    "sha256": "1dbb5b95c8b8d94c63e72f3a4139d9f7ebf22d785227fad0e7bb83ca725f0f62",
+    "size_bytes": 3663
+  }
+}

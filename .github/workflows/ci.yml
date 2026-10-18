@@ -54,5 +54,35 @@ jobs:
           cargo check --package cyber-hashira-core
           cargo check --package cyber-hashira-module-runtime
 
-      - name: Run Modular Lifecycle Verification Tests
-        run: python tests/test_modular_lifecycle.py
+      - name: Run Modular Verification Test Suites (30 Modules)
+        run: |
+          python tests/test_modular_lifecycle.py
+          python tests/test_web_security_module.py
+          python tests/test_network_security_module.py
+          python tests/test_vulnerability_module.py
+          python tests/test_hashira_ai_module.py
+          python tests/test_threat_intel_module.py
+          python tests/test_forensics_module.py
+          python tests/test_api_security_module.py
+          python tests/test_tls_cryptography_module.py
+          python tests/test_github_actions_module.py
+          python tests/test_container_security_module.py
+          python tests/test_wireless_security_module.py
+          python tests/test_canbus_security_module.py
+          python tests/test_network_forensics_pcap_module.py
+          python tests/test_sensor_coverage_module.py
+          python tests/test_email_security_module.py
+          python tests/test_sbom_dependency_module.py
+          python tests/test_secrets_leak_module.py
+          python tests/test_cloud_iac_module.py
+          python tests/test_sigma_threat_hunting_module.py
+          python tests/test_identity_hygiene_module.py
+          python tests/test_csp_headers_module.py
+          python tests/test_cors_websocket_module.py
+          python tests/test_cookie_session_module.py
+          python tests/test_subdomain_takeover_module.py
+          python tests/test_ssrf_guard_module.py
+          python tests/test_graphql_security_module.py
+          python tests/test_jwt_security_module.py
+          python tests/test_waf_evasion_module.py
+          python tests/test_sast_scanner_module.py

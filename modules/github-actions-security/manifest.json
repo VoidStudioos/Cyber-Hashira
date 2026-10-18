@@ -1,0 +1,82 @@
+{
+  "id": "github-actions-security",
+  "name": "GitHub Actions & CI/CD Security Audit",
+  "description": "OWASP CI/CD Top 10 scanner and Wiz Code best-practice auditor: detects script injections in workflow run steps, unpinned third-party actions, overprivileged tokens (write-all), dangerous pull_request_target triggers, and secret leaks.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Source Code & CI/CD",
+  "icon": "github",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "require_pinned_hashes": {
+        "type": "boolean",
+        "default": true
+      },
+      "enforce_read_only_permissions": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "repo_path": {
+          "type": "string"
+        },
+        "workflow_content": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "workflows_scanned": {
+          "type": "integer"
+        },
+        "compliance_score": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/github-actions-security-1.0.0.tar.gz",
+    "sha256": "935993873bc932baade8f692bcc5849c5c1367a5ed1001fa5f04938180eecd19",
+    "size_bytes": 5392
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/github-actions-security",
+  "changelog": "Initial release of GitHub Actions & CI/CD Security Auditor"
+}

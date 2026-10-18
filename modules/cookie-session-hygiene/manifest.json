@@ -1,0 +1,82 @@
+{
+  "id": "cookie-session-hygiene",
+  "name": "Cookie Security & Session Hygiene Inspector",
+  "description": "Audits session tokens and HTTP cookies: checks for missing Secure, HttpOnly, and SameSite (Strict/Lax/None) flags, validates modern __Host- and __Secure- cookie prefixes, and calculates session ID entropy to detect predictable tokens.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "key",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "enforce_cookie_prefixes": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_samesite": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "cookies": {
+          "type": "array"
+        },
+        "target_url": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "cookie_hygiene_score": {
+          "type": "integer"
+        },
+        "total_cookies": {
+          "type": "integer"
+        },
+        "insecure_cookies": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cookie-session-hygiene-1.0.0.tar.gz",
+    "sha256": "ad4043fae8fa26b63f7f846e049ab2c07c8b110abc7a8891ed3679c80ecfdd63",
+    "size_bytes": 3890
+  }
+}

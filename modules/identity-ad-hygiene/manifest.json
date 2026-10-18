@@ -1,0 +1,79 @@
+{
+  "id": "identity-ad-hygiene",
+  "name": "Active Directory & Identity Hygiene Auditor",
+  "description": "Evaluates Active Directory and enterprise identity configurations against CIS Benchmarks, auditing stale accounts, accounts with non-expiring passwords, Kerberos pre-authentication bypass risk, SMBv1/NTLMv1 exposure, and over-privileged Domain Admin group memberships.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Identity & Access Management",
+  "icon": "shield",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_stale_accounts": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_kerberos_risks": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "directory_data": {
+          "type": "object"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "identity_hygiene_score": {
+          "type": "integer"
+        },
+        "critical_misconfigurations": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/identity-ad-hygiene-1.0.0.tar.gz",
+    "sha256": "dc8a7b4a77eec37f39d7ca841aae1223804124b3dc683b16f0277664960d2612",
+    "size_bytes": 3800
+  }
+}

@@ -62,6 +62,8 @@ export interface ModuleManifest {
   };
   license: string;
   documentation_url?: string;
+  icon?: string;
+  banner_url?: string;
 }
 
 export interface InstalledModuleInfo {

@@ -1,0 +1,99 @@
+{
+  "id": "hashira-ai",
+  "name": "Hashira AI Defensive Security Assistant",
+  "description": "AI-powered defensive security workstation assistant: automated findings triage, CVE/CWE explanations, remediation code patching, secret redaction, and bilingual security report drafting (EN & FA).",
+  "author": "Cyber Hashira AI Labs",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Hashira AI",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:read"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "endpoint_type": {
+        "type": "string",
+        "enum": [
+          "local",
+          "custom_openai"
+        ],
+        "default": "local"
+      },
+      "api_url": {
+        "type": "string",
+        "default": "http://127.0.0.1:11434/v1"
+      },
+      "redact_secrets": {
+        "type": "boolean",
+        "default": true
+      },
+      "language": {
+        "type": "string",
+        "enum": [
+          "en",
+          "fa"
+        ],
+        "default": "en"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "finding": {
+          "type": "object"
+        },
+        "language": {
+          "type": "string"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        },
+        "remediation_patch": {
+          "type": "string"
+        },
+        "sanitized": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/hashira-ai-1.0.0.tar.gz",
+    "sha256": "8a91b7b11ebbd027fa02efd62f3d47745a315545ba7d524ffa7bb1ce61a67d13",
+    "size_bytes": 5186
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/hashira-ai",
+  "changelog": "Initial release of Hashira AI defensive security assistant with bilingual reasoning and secret redaction"
+}

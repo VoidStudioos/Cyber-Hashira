@@ -1,0 +1,94 @@
+{
+  "id": "digital-forensics",
+  "name": "Digital Forensics & Malware Triage",
+  "description": "Cryptographic file hashing (MD5, SHA-1, SHA-256), binary Shannon entropy calculation for packed malware detection, suspicious string extraction, and immutable chain-of-custody logging.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Digital Forensics",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "evidence:write",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "entropy_threshold": {
+        "type": "number",
+        "default": 7.0
+      },
+      "min_string_length": {
+        "type": "integer",
+        "default": 4
+      },
+      "evidence_storage_path": {
+        "type": "string",
+        "default": "./evidence"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "file_path": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "file_path"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "hashes": {
+          "type": "object"
+        },
+        "entropy": {
+          "type": "number"
+        },
+        "is_packed": {
+          "type": "boolean"
+        },
+        "suspicious_indicators": {
+          "type": "array"
+        },
+        "chain_of_custody": {
+          "type": "object"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/digital-forensics-1.0.0.tar.gz",
+    "sha256": "6d03610666f0bdc0b8b1a45de4f1d4dfc62fc3f31dcfc655be3d484eb1369bf6",
+    "size_bytes": 4633
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/forensics",
+  "changelog": "Initial release of Digital Forensics & Malware Triage module"
+}

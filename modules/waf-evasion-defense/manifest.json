@@ -1,0 +1,79 @@
+{
+  "id": "waf-evasion-defense",
+  "name": "WAF & Normalization Defense Validator",
+  "description": "Audits Web Application Firewall (WAF) rule efficacy and input normalization defenses against evasion vectors: Unicode overlong encoding, HTTP parameter pollution (HPP), path traversal normalization discrepancies, and chunked transfer smuggling flags.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "shield",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_unicode_normalization": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_path_discrepancies": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "waf_rules": {
+          "type": "array"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "evasion_defense_score": {
+          "type": "integer"
+        },
+        "detected_evasion_risks": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/waf-evasion-defense-1.0.0.tar.gz",
+    "sha256": "276f0545e43f48ab6d412476b7fdb266f2c688813aa03accbff3f70b18120598",
+    "size_bytes": 3314
+  }
+}

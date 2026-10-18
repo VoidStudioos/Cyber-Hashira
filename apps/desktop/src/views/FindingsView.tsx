@@ -7,8 +7,18 @@ import {
   ChevronUp,
   FileCode,
   CheckCircle,
+  Download,
+  FileText,
+  FileSpreadsheet,
+  Printer,
 } from "lucide-react";
 import { Finding, Severity } from "../types";
+import {
+  generateHtmlReport,
+  generateSarifReport,
+  generateMarkdownReport,
+  downloadBlob,
+} from "../utils/reportGenerator";
 
 interface FindingsViewProps {
   findings: Finding[];
@@ -18,6 +28,7 @@ export const FindingsView: React.FC<FindingsViewProps> = ({ findings }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [severityFilter, setSeverityFilter] = useState<string>("All");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showExportModal, setShowExportModal] = useState(false);
 
   const filtered = findings.filter((f) => {
     const matchSearch =
@@ -89,8 +100,112 @@ export const FindingsView: React.FC<FindingsViewProps> = ({ findings }) => {
               <option value="Informational">Informational</option>
             </select>
           </div>
+
+          <button
+            onClick={() => setShowExportModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl text-sm font-semibold shadow-lg shadow-cyan-900/30 transition"
+          >
+            <Download className="w-4 h-4" />
+            <span>Export Audit Report</span>
+          </button>
         </div>
       </div>
+
+      {/* Export Report Modal */}
+      {showExportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div className="p-6 border-b border-[#1e293b] flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Printer className="w-5 h-5 text-cyan-400" />
+                  <span>Generate Security Audit Report</span>
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Export normalized vulnerability records ({filtered.length} findings) into industry standard formats.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="text-slate-400 hover:text-white text-lg font-bold p-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div
+                onClick={() => {
+                  const html = generateHtmlReport(filtered);
+                  downloadBlob(html, `cyber_hashira_audit_report_${Date.now()}.html`, "text/html");
+                  setShowExportModal(false);
+                }}
+                className="p-4 bg-[#141e33] border border-cyan-500/30 hover:border-cyan-500/70 rounded-xl cursor-pointer transition group"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <div className="font-semibold text-white flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-cyan-400" />
+                    <span>Executive HTML Report (Print-to-PDF Ready)</span>
+                  </div>
+                  <span className="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded font-mono">Recommended</span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  Full standalone interactive report with risk matrix, executive summary, CVSS v3.1 scores, and print-to-PDF styles.
+                </p>
+              </div>
+
+              <div
+                onClick={() => {
+                  const sarif = generateSarifReport(filtered);
+                  downloadBlob(sarif, `cyber_hashira_findings_${Date.now()}.sarif`, "application/json");
+                  setShowExportModal(false);
+                }}
+                className="p-4 bg-[#141e33] border border-slate-700 hover:border-slate-500 rounded-xl cursor-pointer transition group"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <div className="font-semibold text-white flex items-center gap-2">
+                    <FileSpreadsheet className="w-4 h-4 text-amber-400" />
+                    <span>OASIS SARIF v2.1.0 Standard</span>
+                  </div>
+                  <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-mono">CI/CD Standard</span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  Static Analysis Results Interchange Format for GitHub Code Scanning, GitLab Security, SonarQube, and DefectDojo.
+                </p>
+              </div>
+
+              <div
+                onClick={() => {
+                  const md = generateMarkdownReport(filtered);
+                  downloadBlob(md, `AUDIT_REPORT_${Date.now()}.md`, "text/markdown");
+                  setShowExportModal(false);
+                }}
+                className="p-4 bg-[#141e33] border border-slate-700 hover:border-slate-500 rounded-xl cursor-pointer transition group"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <div className="font-semibold text-white flex items-center gap-2">
+                    <FileCode className="w-4 h-4 text-emerald-400" />
+                    <span>Markdown Audit Report (.md)</span>
+                  </div>
+                  <span className="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono">GFM Tables</span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  Clean GitHub-flavored markdown tables and remediations ready for documentation and pull request reviews.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 bg-[#0a0f1d] border-t border-[#1e293b] flex justify-end">
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Findings Table / Accordion */}
       {filtered.length === 0 ? (

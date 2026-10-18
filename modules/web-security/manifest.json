@@ -1,0 +1,85 @@
+{
+  "id": "web-security",
+  "name": "Web Application Security Suite",
+  "description": "Burp & ZAP inspired web security workspace: HTTP/HTTPS proxy engine, Repeater, Decoder/Encoder, HTTP history, and automated passive vulnerability analysis.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:listen",
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "listen_host": {
+        "type": "string",
+        "default": "127.0.0.1"
+      },
+      "listen_port": {
+        "type": "integer",
+        "default": 8080
+      },
+      "passive_scan": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "scope_approved": {
+          "type": "boolean"
+        },
+        "repeater_request": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "response": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/web-security-1.0.0.tar.gz",
+    "sha256": "a7d809e42801dd9e3c0ac40c18f898b42d5e38b2a38f1114073f63367436c0b2",
+    "size_bytes": 5013
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/web-security",
+  "changelog": "Initial release of Web Security Suite (Proxy, Repeater, Decoder, Passive Analysis)"
+}

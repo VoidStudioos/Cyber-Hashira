@@ -1,0 +1,82 @@
+{
+  "id": "container-security",
+  "name": "Container & Dockerfile Security Inspector",
+  "description": "Static Dockerfile and container configuration auditing: detects root user execution, dangerous capabilities (CAP_SYS_ADMIN), unpinned base images, sensitive socket mounting (/var/run/docker.sock), and CIS Docker Benchmark violations.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Container Security",
+  "icon": "shield",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "enforce_non_root": {
+        "type": "boolean",
+        "default": true
+      },
+      "forbid_privileged": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "dockerfile_content": {
+          "type": "string"
+        },
+        "dockerfile_path": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "security_score": {
+          "type": "integer"
+        },
+        "rules_evaluated": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/container-security-1.0.0.tar.gz",
+    "sha256": "cce6fa9ebad075d39644a7c8ad036879c20b9deea240c906e06c84ad40a8b335",
+    "size_bytes": 4474
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/container-security",
+  "changelog": "Initial release of Container & Dockerfile Security Inspector"
+}

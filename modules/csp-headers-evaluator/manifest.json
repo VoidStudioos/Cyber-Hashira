@@ -1,0 +1,82 @@
+{
+  "id": "csp-headers-evaluator",
+  "name": "Content Security Policy (CSP) & Header Auditor",
+  "description": "Deeply audits Content Security Policy (CSP Level 3) directives (script-src, object-src, unsafe-inline, unsafe-eval, nonce/hash validation, frame-ancestors for Clickjacking defense), HSTS preloading, COOP, COEP, and Permissions-Policy.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "shield",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_clickjacking": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_hsts_preload": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "object"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "csp_score": {
+          "type": "integer"
+        },
+        "clickjacking_protected": {
+          "type": "boolean"
+        },
+        "parsed_directives": {
+          "type": "object"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/csp-headers-evaluator-1.0.0.tar.gz",
+    "sha256": "917a3f1781f60f82ee1c43c27b662de2ada9b159751ad7c90e5d1b6ffed2ef2a",
+    "size_bytes": 4266
+  }
+}

@@ -70,8 +70,8 @@
   },
   "artifact": {
     "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/sample-dns-1.0.0.tar.gz",
-    "sha256": "bac9f39abc12e0dca908b022e07655d629aa269e2a0cea922877ec6d57034f16",
-    "size_bytes": 2905
+    "sha256": "33918798d70c25c2a164194b90d789118d4c6b5e770371599286ff5feac3de5f",
+    "size_bytes": 2918
   },
   "license": "Apache-2.0",
   "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/sample-dns",

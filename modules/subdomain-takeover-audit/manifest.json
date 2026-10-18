@@ -1,0 +1,75 @@
+{
+  "id": "subdomain-takeover-audit",
+  "name": "Subdomain Takeover & Dangling DNS Auditor",
+  "description": "Scans DNS records and CNAME aliases to discover dangling pointers to deleted or deprovisioned cloud services (AWS S3, GitHub Pages, Heroku, Azure Traffic Manager, Zendesk, Fastly, Shopify) where attackers could hijack the subdomain.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "radar",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:dns",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_cname_fingerprints": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "cname_records": {
+          "type": "array"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "takeover_risk_detected": {
+          "type": "boolean"
+        },
+        "dangling_subdomains": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/subdomain-takeover-audit-1.0.0.tar.gz",
+    "sha256": "068e66ed0bab7911269b4a6517e94b7b7c59253706a509381c5aca7210c50402",
+    "size_bytes": 3315
+  }
+}

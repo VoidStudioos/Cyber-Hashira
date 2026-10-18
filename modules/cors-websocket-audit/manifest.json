@@ -1,0 +1,79 @@
+{
+  "id": "cors-websocket-audit",
+  "name": "CORS & WebSocket Security Auditor",
+  "description": "Audits Cross-Origin Resource Sharing (CORS) policies against dangerous misconfigurations (reflected origin with credentials, null origin trust, wildcard leaks) and inspects WebSocket upgrade handshakes against Cross-Site WebSocket Hijacking (CSWSH).",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "globe",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_cors_reflection": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_websocket_origin": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "cors_headers": {
+          "type": "object"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "cors_risk_level": {
+          "type": "string"
+        },
+        "vulnerabilities": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cors-websocket-audit-1.0.0.tar.gz",
+    "sha256": "f3510ddd05cdbd9bc6584179574dca0d70e16b7aa6a581b3dd271f5963c6a8b5",
+    "size_bytes": 3478
+  }
+}

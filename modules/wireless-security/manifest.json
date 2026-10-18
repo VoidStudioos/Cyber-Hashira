@@ -1,0 +1,82 @@
+{
+  "id": "wireless-security",
+  "name": "Wireless & 802.11 WiFi Security Auditor",
+  "description": "802.11 wireless network auditing: analyzes WEP, WPA, WPA2-PSK (TKIP/CCMP), and WPA3-SAE security postures, detects WPS PIN vulnerability risks, PMKID exposure, rogue APs, and weak pre-shared keys.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Wireless Security",
+  "icon": "network",
+  "banner_url": "",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:listen",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "channel_hop": {
+        "type": "boolean",
+        "default": true
+      },
+      "audit_wps": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "interface": {
+          "type": "string"
+        },
+        "bssid": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "networks_audited": {
+          "type": "array"
+        },
+        "risk_score": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  "artifact": {
+    "download_url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v0.1.0/wireless-security-1.0.0.tar.gz",
+    "sha256": "c539f0512310f6c93464ef7fc86795d3a054f6e845a5fcca6aa3d027326705ca",
+    "size_bytes": 3719
+  },
+  "license": "Apache-2.0",
+  "documentation_url": "https://github.com/VoidStudioos/Cyber-Hashira/tree/main/modules/wireless-security",
+  "changelog": "Initial release of Wireless & 802.11 WiFi Security Auditor"
+}
