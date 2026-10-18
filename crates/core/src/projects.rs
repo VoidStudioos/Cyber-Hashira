@@ -1,6 +1,6 @@
 use crate::db::{Database, DbError};
 use chrono::Utc;
-use cyber_hashira_scope-guard::{ScopeGuard, ScopeRule, ScopeRuleType};
+use cyber_hashira_scope_guard::{ScopeGuard, ScopeRule, ScopeRuleType};
 use rusqlite::params;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;

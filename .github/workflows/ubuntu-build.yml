@@ -3,6 +3,7 @@ name: Ubuntu Build & Distribution
 on:
   workflow_dispatch:
   push:
+    branches: [ main ]
     tags:
       - 'v*'
 
@@ -11,7 +12,7 @@ permissions:
 
 jobs:
   build-ubuntu:
-    name: Package Ubuntu Desktop Host (DEB & AppImage)
+    name: Package Ubuntu Desktop Host (Linux x64)
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -41,7 +42,7 @@ jobs:
           python-version: "3.11"
 
       - name: Package All Verified Module Artifacts
-        run: python3 scripts/build_modules.py
+        run: python3 scripts/package_all_modules.py
 
       - name: Run Modular Verification Test Suites (30 Modules)
         run: |
@@ -81,11 +82,16 @@ jobs:
           pnpm approve-builds esbuild || true
           pnpm install
 
-      - name: Build Desktop Application
+      - name: Build Desktop Frontend Application
         run: pnpm build
 
-      - name: Upload Build Artifacts
+      - name: Build Linux Host Executable
+        run: cargo build --release --package cyber-hashira-desktop
+
+      - name: Upload Linux Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: cyber-hashira-ubuntu-dist
-          path: apps/desktop/dist/
+          name: cyber-hashira-linux-x64
+          path: |
+            target/release/cyber-hashira-desktop
+            apps/desktop/dist/
