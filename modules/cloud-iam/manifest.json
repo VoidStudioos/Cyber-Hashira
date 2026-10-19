@@ -1,0 +1,83 @@
+{
+  "id": "cloud-iam",
+  "name": "Cloud IAM & Excessive Privilege Auditor",
+  "description": "Multi-cloud identity & access management security auditor for AWS, GCP, and Azure. Detects wildcard policies (*:*), public cloud storage buckets, dangerous role assumption (sts:AssumeRole), and privilege escalation paths.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Cloud & Infrastructure",
+  "icon": "cloud",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_wildcard_permissions": {
+        "type": "boolean",
+        "default": true,
+        "description": "Detect overly permissive full administrative wildcard policies"
+      },
+      "audit_public_access": {
+        "type": "boolean",
+        "default": true,
+        "description": "Detect public storage buckets and unauthenticated cloud resource access"
+      },
+      "audit_trust_policies": {
+        "type": "boolean",
+        "default": true,
+        "description": "Analyze cross-account and external entity role trust boundaries"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "cloud_provider": {
+          "type": "string"
+        },
+        "iam_policy_json": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "policies_audited": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
