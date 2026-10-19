@@ -1,0 +1,83 @@
+{
+  "id": "database-audit",
+  "name": "Database Security & Configuration Auditor",
+  "description": "Read-only database security configuration and privilege auditor for PostgreSQL, MySQL, and MongoDB. Evaluates mandatory TLS enforcement, excessive superuser privileges, public network exposure, default administrative accounts, and audit logging.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Database Security",
+  "icon": "database",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_tls_enforcement": {
+        "type": "boolean",
+        "default": true,
+        "description": "Verify that database refuses unencrypted client connections"
+      },
+      "audit_superuser_accounts": {
+        "type": "boolean",
+        "default": true,
+        "description": "Identify non-administrative accounts possessing SUPERUSER or GRANT OPTION privileges"
+      },
+      "audit_network_listening": {
+        "type": "boolean",
+        "default": true,
+        "description": "Check if database listens on 0.0.0.0 without IP allowlists"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "engine": {
+          "type": "string"
+        },
+        "config_parameters": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "checks_performed": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
