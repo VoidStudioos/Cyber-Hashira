@@ -77,6 +77,7 @@ jobs:
           python3 tests/test_waf_evasion_module.py
           python3 tests/test_sast_scanner_module.py
           python3 tests/test_all_modules_matrix.py
+          python3 tests/test_reporting_engine.py
 
       - name: Install Frontend Dependencies
         run: |
