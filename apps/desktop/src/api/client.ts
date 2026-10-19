@@ -14,15 +14,13 @@ const isTauri = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window
 // Dynamic Tauri invoke loader
 async function invoke<T>(cmd: string, args?: Record<string, unknown>): Promise<T> {
   if (isTauri) {
-    try {
-      const { invoke: tauriInvoke } = await import("@tauri-apps/api/core");
-      return await tauriInvoke<T>(cmd, args);
-    } catch (e) {
-      console.warn(`Tauri invoke failed for '${cmd}', falling back to simulated memory store:`, e);
-    }
+    const { invoke: tauriInvoke } = await import("@tauri-apps/api/core");
+    // In production / desktop shell, never silently swallow errors or hide backend failures with mocks
+    return await tauriInvoke<T>(cmd, args);
   }
 
-  // Web/Dev Fallback Mock Data Store for responsive browser development & preview
+  // Web/Dev Fallback Mock Data Store for responsive browser development & preview only
+  console.warn(`[Dev Mode] Tauri native runtime unavailable. Using browser mock store for '${cmd}'.`);
   return mockInvoke<T>(cmd, args);
 }
 

@@ -15,6 +15,8 @@ pub enum InstallError {
     Io(#[from] io::Error),
     #[error("Database error: {0}")]
     Db(#[from] DbError),
+    #[error("SQLite error: {0}")]
+    Sqlite(#[from] rusqlite::Error),
     #[error("Integrity check failed: expected sha256 {expected}, got {actual}")]
     ChecksumMismatch { expected: String, actual: String },
     #[error("Invalid manifest: {0}")]
@@ -23,6 +25,8 @@ pub enum InstallError {
     UnsupportedPlatform(String),
     #[error("Security violation: path traversal detected '{0}'")]
     PathTraversal(String),
+    #[error("Security violation: symlink or hardlink not permitted in module archive")]
+    InsecureArchiveEntry,
     #[error("Module '{0}' is already installed")]
     AlreadyInstalled(String),
     #[error("Module '{0}' is not installed")]
@@ -89,11 +93,16 @@ impl ModuleInstaller {
 
         for entry_res in archive.entries()? {
             let mut entry = entry_res?;
-            let path = entry.path()?;
+            let entry_type = entry.header().entry_type();
+            if entry_type.is_symlink() || entry_type.is_hard_link() {
+                return Err(InstallError::InsecureArchiveEntry);
+            }
+
+            let path = entry.path()?.to_path_buf();
 
             // Check for path traversal: disallow any component that is ParentDir or absolute
             for comp in path.components() {
-                if comp == std::path::Component::ParentDir {
+                if comp == std::path::Component::ParentDir || comp == std::path::Component::RootDir {
                     return Err(InstallError::PathTraversal(path.display().to_string()));
                 }
             }

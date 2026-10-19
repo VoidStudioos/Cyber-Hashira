@@ -297,9 +297,31 @@ def handle_run_task(payload):
         sys.stdout.flush()
         return
 
-    # Default action: Full passive web security inspection
-    probe_result = execute_repeater_request(target_url, "GET", {})
-    findings = probe_result.get("findings", [])
+    if options.get("simulate_vulnerabilities"):
+        findings = [
+            {
+                "id": str(uuid.uuid4()),
+                "project_id": None,
+                "target_id": None,
+                "module_id": "web-security",
+                "title": "Missing Content-Security-Policy (CSP) Header",
+                "description": f"Target '{target_url}' does not enforce a Content-Security-Policy header.",
+                "severity": "Medium",
+                "cvss_v3": 5.4,
+                "cve": None,
+                "cwe": "CWE-693",
+                "evidence": "Response headers lack 'Content-Security-Policy'",
+                "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                "status": "Open",
+                "remediation": "Deploy a robust Content-Security-Policy header.",
+                "analyst_notes": "Deterministic lab test fixture."
+            }
+        ]
+        probe_result = {"status_code": 200, "elapsed_ms": 15, "error": None}
+    else:
+        # Default action: Full passive web security inspection
+        probe_result = execute_repeater_request(target_url, "GET", {})
+        findings = probe_result.get("findings", [])
 
     raw_output = (
         f"=== Cyber Hashira Passive Web Security Assessment for {target_url} ===\n"

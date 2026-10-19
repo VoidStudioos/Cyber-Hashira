@@ -50,8 +50,13 @@ def assess_api_endpoint(base_url, options):
     security_score = 100
 
     ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
+    # P0 Security: Enforce strict TLS certificate and hostname validation by default
+    if options.get("insecure_skip_verify") or options.get("allow_insecure_tls"):
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+    else:
+        ctx.check_hostname = True
+        ctx.verify_mode = ssl.CERT_REQUIRED
 
     if not (base_url.startswith("http://") or base_url.startswith("https://")):
         base_url = "https://" + base_url
@@ -206,7 +211,31 @@ def handle_run_task(payload):
         sys.stdout.flush()
         return
 
-    endpoint = options.get("endpoint", target)
+    endpoint = target
+    opt_endpoint = options.get("endpoint")
+    if opt_endpoint:
+        # Validate that opt_endpoint matches the approved target origin to prevent scope bypass
+        p_target = urllib.parse.urlparse(target if "://" in target else f"https://{target}")
+        p_opt = urllib.parse.urlparse(opt_endpoint if "://" in opt_endpoint else f"https://{opt_endpoint}")
+        if p_opt.netloc and p_target.netloc and p_opt.netloc.lower() == p_target.netloc.lower():
+            endpoint = opt_endpoint
+        elif not p_opt.netloc and opt_endpoint.startswith("/"):
+            endpoint = urllib.parse.urljoin(target if "://" in target else f"https://{target}", opt_endpoint)
+        else:
+            resp = {
+                "type": "TaskCompleted",
+                "payload": {
+                    "task_id": task_id,
+                    "success": False,
+                    "findings": [],
+                    "raw_output": None,
+                    "error": f"Security violation: Custom endpoint '{opt_endpoint}' is outside approved target scope '{target}'."
+                }
+            }
+            sys.stdout.write(json.dumps(resp) + "\n")
+            sys.stdout.flush()
+            return
+
     result = assess_api_endpoint(endpoint, options)
 
     raw_output = (

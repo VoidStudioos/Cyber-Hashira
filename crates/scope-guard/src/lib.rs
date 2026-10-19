@@ -134,7 +134,26 @@ impl ScopeGuard {
                 }
             }
             ScopeRuleType::UrlPrefix => {
-                norm_target.starts_with(&norm_pattern)
+                if let (Ok(target_url), Ok(pattern_url)) = (Url::parse(target), Url::parse(&rule.pattern)) {
+                    if target_url.scheme().to_lowercase() != pattern_url.scheme().to_lowercase() {
+                        return false;
+                    }
+                    if target_url.host_str().map(|h| h.to_lowercase()) != pattern_url.host_str().map(|h| h.to_lowercase()) {
+                        return false;
+                    }
+                    if target_url.port_or_known_default() != pattern_url.port_or_known_default() {
+                        return false;
+                    }
+                    let p_path = pattern_url.path().trim_end_matches('/');
+                    let t_path = target_url.path();
+                    if p_path.is_empty() {
+                        true
+                    } else {
+                        t_path == p_path || t_path.starts_with(&format!("{}/", p_path))
+                    }
+                } else {
+                    norm_target == norm_pattern || norm_target.starts_with(&format!("{}/", norm_pattern.trim_end_matches('/')))
+                }
             }
         }
     }
