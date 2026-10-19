@@ -71,6 +71,7 @@ jobs:
           python tests/test_jwt_security_module.py
           python tests/test_waf_evasion_module.py
           python tests/test_sast_scanner_module.py
+          python tests/test_all_modules_matrix.py
 
       - name: Install Frontend Dependencies
         run: |
