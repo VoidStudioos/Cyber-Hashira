@@ -112,29 +112,35 @@ def cmd_run(args):
     result = response.get("result", {})
     findings = result.get("findings", [])
 
-    # Format output
+    # Format output using reporting engine
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from reporting_engine import deduplicate_findings, export_sarif, export_html_report, redact_sensitive_data
+
+    deduped = deduplicate_findings(findings)
+    meta = {
+        "project_name": f"Cyber Hashira Audit ({mod_meta['name']})",
+        "target": args.target or (args.input_file if args.input_file else "Authorized Scope"),
+        "module_id": args.module
+    }
+
     output_text = ""
     if args.format == "sarif":
-        sarif = {
-            "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
-            "version": "2.1.0",
-            "runs": [{
-                "tool": {"driver": {"name": f"Cyber Hashira ({args.module})", "version": "1.0.0"}},
-                "results": [{"ruleId": f.get("id", "finding"), "message": {"text": f.get("description", "")}} for f in findings]
-            }]
-        }
-        output_text = json.dumps(sarif, indent=2)
+        output_text = export_sarif(deduped, meta)
+    elif args.format == "html":
+        output_text = export_html_report(deduped, meta)
     elif args.format == "markdown":
         output_text = f"# Audit Report: {mod_meta['name']}\n\n"
         output_text += f"- **Module:** `{args.module}`\n"
-        output_text += f"- **Total Findings:** {len(findings)}\n\n"
-        for idx, f in enumerate(findings, 1):
+        output_text += f"- **Total Findings (Deduplicated):** {len(deduped)}\n\n"
+        for idx, f in enumerate(deduped, 1):
             output_text += f"### {idx}. [{f.get('severity', 'MEDIUM').upper()}] {f.get('title', 'Finding')}\n"
             output_text += f"{f.get('description', '')}\n\n"
+            if f.get("evidence"):
+                output_text += f"```text\n{f['evidence']}\n```\n\n"
             if "remediation" in f:
                 output_text += f"> **Remediation:** {f['remediation']}\n\n"
     else:
-        output_text = json.dumps(response, indent=2)
+        output_text = json.dumps({"module": args.module, "total_findings": len(deduped), "findings": deduped}, indent=2)
 
     if args.output:
         with open(args.output, "w", encoding="utf-8") as out_f:
@@ -145,8 +151,8 @@ def cmd_run(args):
 
     # Check CI gate failure threshold
     if args.fail_on:
-        crit_count = sum(1 for f in findings if f.get("severity", "").lower() == "critical")
-        high_count = sum(1 for f in findings if f.get("severity", "").lower() in ["critical", "high"])
+        crit_count = sum(1 for f in deduped if f.get("severity", "").lower() == "critical")
+        high_count = sum(1 for f in deduped if f.get("severity", "").lower() in ["critical", "high"])
 
         if args.fail_on.lower() == "critical" and crit_count > 0:
             print(f"\n[!] CI Gate Blocked: {crit_count} Critical vulnerabilities discovered!")
@@ -155,7 +161,38 @@ def cmd_run(args):
             print(f"\n[!] CI Gate Blocked: {high_count} Critical/High vulnerabilities discovered!")
             sys.exit(2)
 
-    print(f"\n[+] Scan succeeded without blocking thresholds ({len(findings)} findings).")
+    print(f"\n[+] Scan succeeded without blocking thresholds ({len(deduped)} deduplicated findings).")
+
+def cmd_report(args):
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from reporting_engine import deduplicate_findings, export_sarif, export_html_report
+
+    if not os.path.isfile(args.input):
+        print(f"[!] Error: Findings input file not found: {args.input}")
+        sys.exit(1)
+
+    with open(args.input, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    findings = data if isinstance(data, list) else data.get("findings", [])
+    deduped = deduplicate_findings(findings)
+
+    meta = {
+        "project_name": args.project_name,
+        "target": args.target
+    }
+
+    if args.format == "sarif":
+        content = export_sarif(deduped, meta)
+    elif args.format == "html":
+        content = export_html_report(deduped, meta)
+    else:
+        content = json.dumps({"findings": deduped, "total": len(deduped)}, indent=2)
+
+    with open(args.output, "w", encoding="utf-8") as out_f:
+        out_f.write(content)
+
+    print(f"[+] Generated {args.format.upper()} report -> {args.output} ({len(deduped)} findings)")
 
 def main():
     parser = argparse.ArgumentParser(description="Cyber Hashira Headless CLI & CI Gate Runner")
@@ -170,15 +207,25 @@ def main():
     run_parser.add_argument("--target", default="", help="Target domain, IP, or URL")
     run_parser.add_argument("--input-file", default="", help="File path to inspect")
     run_parser.add_argument("--authorized-targets", default="", help="Comma-separated allowlist for ScopeGuard")
-    run_parser.add_argument("--format", choices=["json", "sarif", "markdown"], default="json", help="Output format")
+    run_parser.add_argument("--format", choices=["json", "sarif", "markdown", "html"], default="json", help="Output format")
     run_parser.add_argument("--output", default="", help="Save output to file")
     run_parser.add_argument("--fail-on", choices=["critical", "high"], default="", help="Exit with code 2 if matching severity findings are found")
+
+    # Report
+    rep_parser = subparsers.add_parser("report", help="Generate SARIF, HTML or JSON report from findings")
+    rep_parser.add_argument("--input", required=True, help="Input JSON findings file")
+    rep_parser.add_argument("--format", choices=["html", "sarif", "json"], default="html", help="Report format")
+    rep_parser.add_argument("--output", required=True, help="Output file path")
+    rep_parser.add_argument("--project-name", default="Cyber Hashira Penetration Test", help="Project title")
+    rep_parser.add_argument("--target", default="Enterprise Attack Surface", help="Target label")
 
     args = parser.parse_args()
     if args.command == "list":
         cmd_list(args)
     elif args.command == "run":
         cmd_run(args)
+    elif args.command == "report":
+        cmd_report(args)
     else:
         parser.print_help()
 
