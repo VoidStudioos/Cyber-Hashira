@@ -1,0 +1,86 @@
+{
+  "id": "authenticated-crawler",
+  "name": "Authenticated Web Crawler & Session Manager",
+  "description": "Consent-scoped web crawler and session manager. Traverses web endpoints, extracts forms, detects hidden administrative interfaces, and enforces domain boundaries.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "globe",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "max_depth": {
+        "type": "integer",
+        "default": 3,
+        "description": "Maximum crawl link depth"
+      },
+      "max_pages": {
+        "type": "integer",
+        "default": 50,
+        "description": "Maximum number of pages to crawl"
+      },
+      "extract_forms": {
+        "type": "boolean",
+        "default": true,
+        "description": "Extract forms and parameters for DAST scanning"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "session_cookie": {
+          "type": "string"
+        },
+        "auth_header": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "discovered_urls": {
+          "type": "array"
+        },
+        "discovered_forms": {
+          "type": "array"
+        },
+        "findings": {
+          "type": "array"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

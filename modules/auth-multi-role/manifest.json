@@ -1,0 +1,89 @@
+{
+  "id": "auth-multi-role",
+  "name": "Authorization & Multi-Role API Testing",
+  "description": "Automated BOLA (Broken Object Level Authorization) and BFLA (Broken Function Level Authorization) verification across isolated user roles, tenant boundaries, and privilege levels.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "API Security",
+  "icon": "shield-check",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_bola": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test Broken Object Level Authorization across role tokens"
+      },
+      "test_bfla": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test Broken Function Level Authorization against admin/privileged routes"
+      },
+      "test_unauthenticated": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test unauthenticated access to protected API resources"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "role_a_token": {
+          "type": "string"
+        },
+        "role_b_token": {
+          "type": "string"
+        },
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "security_score": {
+          "type": "number"
+        },
+        "tests_executed": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
