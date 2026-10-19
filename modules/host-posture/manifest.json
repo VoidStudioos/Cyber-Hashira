@@ -1,0 +1,86 @@
+{
+  "id": "host-posture",
+  "name": "Host & Endpoint Security Posture Inspector",
+  "description": "Multi-platform host security baseline evaluator for Windows and Linux. Audits Defender/EDR status, firewall profiles, BitLocker encryption, SSH daemon hardening, systemd root services, and kernel controls.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Endpoint & Host Security",
+  "icon": "terminal",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_firewall": {
+        "type": "boolean",
+        "default": true,
+        "description": "Audit host firewall active state across all profiles"
+      },
+      "audit_encryption": {
+        "type": "boolean",
+        "default": true,
+        "description": "Verify volume encryption (BitLocker / LUKS) on system volumes"
+      },
+      "audit_ssh_hardening": {
+        "type": "boolean",
+        "default": true,
+        "description": "Audit sshd_config parameters for root login and password authentication"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "os_type": {
+          "type": "string"
+        },
+        "config_snapshot": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "checks_evaluated": {
+          "type": "number"
+        },
+        "posture_score": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
