@@ -1,0 +1,87 @@
+{
+  "id": "kubernetes-posture",
+  "name": "Kubernetes Security Posture & RBAC Auditor",
+  "description": "Comprehensive Kubernetes posture assessment: evaluates Pod Security Standards (PSS), dangerous RBAC wildcard bindings, hostPID/hostNetwork escapes, privileged containers, missing network policies, and hostPath mounts.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Cloud & Infrastructure",
+  "icon": "server",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_rbac": {
+        "type": "boolean",
+        "default": true,
+        "description": "Audit ClusterRoles and RoleBindings for wildcard/escalation privileges"
+      },
+      "enforce_pss_restricted": {
+        "type": "boolean",
+        "default": true,
+        "description": "Check workloads against Kubernetes Restricted Pod Security Standard"
+      },
+      "audit_network_policies": {
+        "type": "boolean",
+        "default": true,
+        "description": "Verify presence of default-deny NetworkPolicies in active namespaces"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "manifest_yaml": {
+          "type": "string"
+        },
+        "manifest_path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "resources_scanned": {
+          "type": "number"
+        },
+        "compliance_score": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
