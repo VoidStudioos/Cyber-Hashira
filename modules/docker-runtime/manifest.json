@@ -1,0 +1,87 @@
+{
+  "id": "docker-runtime",
+  "name": "Docker Daemon & Container Runtime Hardening Inspector",
+  "description": "CIS Docker Benchmark daemon and container runtime evaluator. Audits daemon.json hardening, unencrypted TCP daemon exposures, rootless mode, userns-remap, default seccomp profiles, and runtime capability drops.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Container Security",
+  "icon": "box",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_daemon_json": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate /etc/docker/daemon.json configuration for CIS benchmark compliance"
+      },
+      "audit_tcp_socket": {
+        "type": "boolean",
+        "default": true,
+        "description": "Verify that Docker TCP socket enforces TLS mutual authentication (tlsverify)"
+      },
+      "require_userns_remap": {
+        "type": "boolean",
+        "default": true,
+        "description": "Check whether user namespace remapping is enabled to prevent container root from matching host root"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "daemon_config_json": {
+          "type": "string"
+        },
+        "daemon_config_path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "cis_benchmark_score": {
+          "type": "number"
+        },
+        "checks_performed": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
