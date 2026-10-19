@@ -1,0 +1,78 @@
+{
+  "id": "credentials-vault",
+  "name": "Secrets & Credential Vault Engine",
+  "description": "Encrypted credential vault, token hygiene auditor, expiration tracker, and automated rotation advisor for assessment sessions.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Identity & Access",
+  "icon": "key",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "storage:secure",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_expiry_days": {
+        "type": "integer",
+        "default": 90,
+        "description": "Flag credentials older than this threshold in days"
+      },
+      "enforce_encryption_at_rest": {
+        "type": "boolean",
+        "default": true,
+        "description": "Validate that stored secrets use AES-GCM encryption at rest"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "vault_path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "credentials_audited": {
+          "type": "number"
+        },
+        "expired_credentials": {
+          "type": "number"
+        },
+        "findings": {
+          "type": "array"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

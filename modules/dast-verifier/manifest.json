@@ -1,0 +1,75 @@
+{
+  "id": "dast-verifier",
+  "name": "DAST Evidence Verifier & Reproduction Engine",
+  "description": "Dynamic application security verification engine. Confirms suspected vulnerabilities through safe, non-destructive reproduction probes and assigns strict confidence labels.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "shield-alert",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "non_destructive_only": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enforce strictly read-only and non-destructive reproduction probes"
+      },
+      "max_probes_per_target": {
+        "type": "integer",
+        "default": 10,
+        "description": "Maximum reproduction probes per endpoint"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "suspected_findings": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "verified_findings": {
+          "type": "array"
+        },
+        "confirmation_rate": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
