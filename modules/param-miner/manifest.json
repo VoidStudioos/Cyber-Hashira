@@ -1,0 +1,83 @@
+{
+  "id": "param-miner",
+  "name": "Hidden Parameter & Debug Switch Miner",
+  "description": "High-throughput hidden parameter and debug switch discovery engine for bug bounty hunters. Detects unlinked GET/POST query parameters, administrative overrides (?admin=true, ?role=admin, ?debug=1), HTTP parameter pollution (HPP), and unkeyed headers through differential response analysis.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "sliders",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "probe_get_params": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for hidden GET query parameters"
+      },
+      "probe_post_params": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for hidden POST body parameters (form-urlencoded and JSON)"
+      },
+      "probe_debug_flags": {
+        "type": "boolean",
+        "default": true,
+        "description": "Check for common developer debug flags (debug, test, admin, trace, verbose)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "parameters_probed": {
+          "type": "number"
+        },
+        "hidden_parameters_found": {
+          "type": "array"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

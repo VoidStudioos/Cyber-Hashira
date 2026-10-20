@@ -1,0 +1,80 @@
+{
+  "id": "cache-poisoning-deception",
+  "name": "Web Cache Poisoning & Cache Deception Engine",
+  "description": "High-impact Web Cache Poisoning & Web Cache Deception (WCD) vulnerability auditor. Detects unkeyed headers (X-Forwarded-Host, X-Original-URL), cache key fat GET transformations, static extension path delimiters (;.css, /.ico), and unsafe Cache-Control directives.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "layers",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_unkeyed_headers": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for unkeyed HTTP headers (X-Forwarded-Host, X-Rewrite-URL, X-Forwarded-Scheme)"
+      },
+      "test_cache_deception": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test Web Cache Deception delimiter confusion on sensitive paths (;.css, /.png, %0a.js)"
+      },
+      "test_fat_get": {
+        "type": "boolean",
+        "default": true,
+        "description": "Detect cache key discrepancies when GET requests carry a request body"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "probes_executed": {
+          "type": "number"
+        },
+        "cache_posture_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "ssti-polyglot-engine",
+  "name": "Server-Side Template Injection (SSTI) Engine",
+  "description": "Safe, non-destructive Server-Side Template Injection (SSTI) and Expression Language (EL) vulnerability detector for bug bounty hunters. Employs cross-engine mathematical polyglots to distinguish between Jinja2, Twig, Freemarker, Pebble, Velocity, Smarty, Spring SpEL, and Ruby ERB template evaluation.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "terminal",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "polyglot_arithmetic": {
+        "type": "boolean",
+        "default": true,
+        "description": "Send safe mathematical evaluation probes ({{7*7}}, ${7*7}, <%= 7*7 %>)"
+      },
+      "detect_template_flavor": {
+        "type": "boolean",
+        "default": true,
+        "description": "Classify exact engine syntax (Jinja2 vs Twig vs Freemarker vs SpEL)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "param": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "engines_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

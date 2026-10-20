@@ -1,0 +1,83 @@
+{
+  "id": "js-endpoint-miner",
+  "name": "JavaScript Endpoint & Secret Miner",
+  "description": "High-speed client-side JavaScript bundle and source map analyzer. Extracts hidden API endpoints, administrative routes, GraphQL queries, AWS S3/GCP storage buckets, and hardcoded API tokens from compiled single-page applications.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "code",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "extract_source_maps": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for exposed .js.map source map files to recover original pre-compiled TypeScript/React source code"
+      },
+      "detect_cloud_buckets": {
+        "type": "boolean",
+        "default": true,
+        "description": "Extract references to Amazon S3, Google Cloud Storage, and Azure Blob storage containers"
+      },
+      "extract_hidden_endpoints": {
+        "type": "boolean",
+        "default": true,
+        "description": "Regex mining of internal REST routes (/api/v1/..., /internal/..., /admin/...)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "js_urls": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "endpoints_discovered": {
+          "type": "array"
+        },
+        "source_maps_exposed": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
