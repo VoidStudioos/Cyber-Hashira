@@ -1,0 +1,80 @@
+{
+  "id": "xxe-injection-auditor",
+  "name": "XML External Entity (XXE) & DTD Injection Auditor",
+  "description": "High-impact XML External Entity (XXE) and Document Type Definition (DTD) vulnerability auditor. Evaluates SOAP services, SVG file uploads, SAML token parsers, and Office XML documents for external entity expansion, out-of-band SSRF, and sensitive local file disclosure risks without causing denial of service.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "file-text",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "probe_standard_xxe": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for inline SYSTEM entity expansion in XML and SOAP payloads"
+      },
+      "probe_svg_xxe": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate safe SVG image structures containing XXE probes for upload endpoints"
+      },
+      "probe_parameter_entities": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate susceptibility to external parameter entity DTD wrappers (%dtd;)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "vectors_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

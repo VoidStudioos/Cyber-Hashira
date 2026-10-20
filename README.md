@@ -5,7 +5,7 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Passing-emerald.svg)](.github/workflows/ci.yml)
-[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-60%2F60%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
+[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-64%2F64%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
 [![Reporting Engine](https://img.shields.io/badge/SARIF%20v2.1.0-OASIS%20Compliant-blue.svg)](scripts/reporting_engine.py)
 [![Supported OS](https://img.shields.io/badge/OS-Windows%20%7C%20Ubuntu-orange.svg)](#2-supported-platforms)
 
@@ -18,7 +18,7 @@
 Unlike monolithic security suites that package gigabytes of unneeded dependencies into one rigid installer, Cyber Hashira adheres to a **Strict Modular Architecture**:
 
 - **Lightweight Host Application (Layer A):** Built with Tauri 2, React, TypeScript, Rust, and local SQLite WAL. Features workspace management, target authorization boundaries (ScopeGuard), unified findings normalization, evidence tracking, workflow automation, and a built-in Module Store.
-- **Independently Installable Modules (Layer B):** 60 specialized cybersecurity disciplines packaged and downloaded strictly on-demand with SHA-256 cryptographic verification.
+- **Independently Installable Modules (Layer B):** 64 specialized cybersecurity disciplines packaged and downloaded strictly on-demand with SHA-256 cryptographic verification.
 - **Enterprise Evidence & Reporting Pipeline:** Built-in secret redaction, cross-module finding deduplication, OASIS SARIF v2.1.0 compliance, and printable Executive/Technical HTML/PDF reporting.
 - **GitHub Distribution Infrastructure (Layer C):** Versioned JSON registry metadata, SHA-256 integrity verification, and releases distributed securely without persistent server dependencies.
 
@@ -101,9 +101,9 @@ Cyber Hashira operates 100% offline. Findings, targets, captured evidence, and a
 
 ---
 
-## 5. Certified Security Disciplines & Available Modules (60 Modules)
+## 5. Certified Security Disciplines & Available Modules (64 Modules)
 
-The official Cyber Hashira catalog currently distributes **60 independently packaged, certified modules**:
+The official Cyber Hashira catalog currently distributes **64 independently packaged, certified modules**:
 
 ### Web Application & API Security
 | Module ID | Name | Version | Capabilities |
@@ -120,6 +120,10 @@ The official Cyber Hashira catalog currently distributes **60 independently pack
 | `nosql-injection-auditor` | NoSQL Injection & MongoDB Operator Auditor | 1.0.0 | MongoDB operators ($ne, $gt, $regex), authentication bypass, blind data extraction |
 | `crlf-injection-engine` | CRLF Injection & HTTP Response Splitting Engine | 1.0.0 | %0d%0a CRLF encoding vectors, Set-Cookie session fixation, response splitting |
 | `dom-xss-postmessage` | DOM XSS & postMessage Security Auditor | 1.0.0 | DOM source-to-sink data flow tracking, window postMessage origin verification |
+| `xxe-injection-auditor` | XML External Entity & DTD Auditor | 1.0.0 | Inline SYSTEM entity parsing, SVG file upload XXE, external DTD parameter expansion |
+| `grpc-protobuf-security` | gRPC & Protocol Buffers Security | 1.0.0 | Server Reflection API dumping, unauthenticated RPC methods, protobuf schema recovery |
+| `open-redirect-chainer` | Open Redirect & Flow Chaining Engine | 1.0.0 | 20+ URL parser confusion bypasses, OAuth authorization code leakage chaining |
+| `graphql-batch-dos` | GraphQL Query Amplification & Batching | 1.0.0 | JSON array batching bypass, field alias multiplexing, circular query depth limits |
 | `api-security` | API Security & Schema Assessment | 1.0.0 | REST/GraphQL introspection, Swagger/OpenAPI exposure discovery, BOLA/IDOR checks |
 | `auth-multi-role` | Authorization & Multi-Role API Testing | 1.0.0 | BOLA (API1:2023) and BFLA (API5:2023) multi-tenant cross-role testing |
 | `authenticated-crawler` | Authenticated Web Crawler & Session Manager | 1.0.0 | Recursive crawl, session cookie preservation, form extraction, hidden admin detection |

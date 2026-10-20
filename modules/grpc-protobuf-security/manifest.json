@@ -1,0 +1,83 @@
+{
+  "id": "grpc-protobuf-security",
+  "name": "gRPC & Protocol Buffers Security Analyzer",
+  "description": "Enterprise gRPC microservice and Protocol Buffers security analyzer. Discovers unauthenticated RPC procedures, evaluates public gRPC Server Reflection API exposure, extracts complete Protobuf service definitions (.proto), and audits missing transport layer security or unauthenticated administrative RPC endpoints.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "API Security",
+  "icon": "cpu",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "probe_reflection_api": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for exposed gRPC Server Reflection Protocol (grpc.reflection.v1alpha.ServerReflection)"
+      },
+      "dump_proto_schemas": {
+        "type": "boolean",
+        "default": true,
+        "description": "Extract full Protocol Buffers service schemas and RPC message definitions"
+      },
+      "test_unauthenticated_methods": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test RPC methods without bearer authentication tokens"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "port": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "services_discovered": {
+          "type": "array"
+        },
+        "reflection_enabled": {
+          "type": "boolean"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

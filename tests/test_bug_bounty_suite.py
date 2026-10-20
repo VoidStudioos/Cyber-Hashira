@@ -201,9 +201,77 @@ def test_dom_xss_postmessage():
     assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
     assert any("CWE-79" == f.get("cwe") or "CWE-345" == f.get("cwe") for f in res["payload"]["findings"])
 
+def test_xxe_injection():
+    """Verify XML External Entity (XXE) injection auditor"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "xxe-injection-auditor", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "xxe-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-611" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_grpc_protobuf():
+    """Verify gRPC & Protobuf security analyzer"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "grpc-protobuf-security", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "grpc-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert len(res["payload"]["services_discovered"]) > 0
+
+def test_open_redirect():
+    """Verify Open Redirect & chaining engine"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "open-redirect-chainer", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "redir-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-601" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_graphql_batch_dos():
+    """Verify GraphQL query amplification & batching auditor"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "graphql-batch-dos", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "gqlbatch-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-776" == f.get("cwe") or "CWE-400" == f.get("cwe") for f in res["payload"]["findings"])
+
 def main():
     print("=" * 70)
-    print("CYBER HASHIRA - BUG BOUNTY ADVANCED VERIFICATION SUITE (8 ENGINES)")
+    print("CYBER HASHIRA - BUG BOUNTY ADVANCED VERIFICATION SUITE (12 ENGINES)")
     print("=" * 70)
 
     tests = [
@@ -214,7 +282,11 @@ def main():
         ("Module: Prototype Pollution (CWE-1321)", test_prototype_pollution),
         ("Module: NoSQL Injection & MongoDB Operators (CWE-943)", test_nosql_injection),
         ("Module: CRLF Injection & Response Splitting (CWE-113)", test_crlf_injection),
-        ("Module: DOM XSS & postMessage Origin Security (CWE-79/345)", test_dom_xss_postmessage)
+        ("Module: DOM XSS & postMessage Origin Security (CWE-79/345)", test_dom_xss_postmessage),
+        ("Module: XML External Entity & DTD Injection (CWE-611)", test_xxe_injection),
+        ("Module: gRPC & Protocol Buffers Security (CWE-306)", test_grpc_protobuf),
+        ("Module: Open Redirect & OAuth Chaining (CWE-601)", test_open_redirect),
+        ("Module: GraphQL Batching & Query Amplification (CWE-776)", test_graphql_batch_dos)
     ]
 
     passed = 0

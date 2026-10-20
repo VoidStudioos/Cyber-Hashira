@@ -1,0 +1,80 @@
+{
+  "id": "open-redirect-chainer",
+  "name": "Open Redirect & Flow Chaining Engine",
+  "description": "High-impact Open Redirect vulnerability discovery and attack-flow chaining engine. Evaluates parameter-based URL redirects (url=, redirect=, next=, return_to=) across 20+ filter bypass techniques (//, /\\, @, %2f%2f, scheme confusion) and automatically determines exploitability for OAuth authorization code leakage and SSRF gateway bypass.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "corner-up-right",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_filter_bypasses": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test prefix, slash, backslash, and userinfo (@) parser confusion bypasses"
+      },
+      "test_oauth_chaining": {
+        "type": "boolean",
+        "default": true,
+        "description": "Analyze if the redirection endpoint can be chained into OAuth redirect_uri parameters"
+      },
+      "test_header_redirects": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate redirects triggered by client-controllable request headers (X-Forwarded-Host)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "bypasses_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

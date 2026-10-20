@@ -1,0 +1,80 @@
+{
+  "id": "graphql-batch-dos",
+  "name": "GraphQL Query Amplification & Batching Auditor",
+  "description": "High-impact GraphQL query amplification and batching vulnerability auditor for bug bounty hunters. Detects JSON array-based query batching, alias multiplexing amplification, brute-force rate-limit bypasses, and circular relationship depth risks on Apollo, Yoga, and Hasura GraphQL gateways.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "API Security",
+  "icon": "share-2",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_array_batching": {
+        "type": "boolean",
+        "default": true,
+        "description": "Send JSON array batch queries ([{query: ...}, {query: ...}]) to test batching support"
+      },
+      "test_alias_amplification": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test field alias overloading (e.g. 50 aliases in a single query)"
+      },
+      "test_circular_depth": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for recursive relational object expansion (author { posts { author { posts } } })"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "amplification_vectors_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
