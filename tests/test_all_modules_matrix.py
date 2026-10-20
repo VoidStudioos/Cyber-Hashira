@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Cyber Hashira - Master Matrix Verification Harness for All 30 Modules
+Cyber Hashira - Master Matrix Verification Harness for All Certified Modules
 Implements Gate 1 & Gate 2 verification required by CYBER_HASHIRA_MODULE_AUDIT_AND_ROADMAP.md:
   - Manifest validation (Schema, ID, Version, Entrypoint, OS Support)
   - Registry artifact presence & SHA-256 checksum integrity
@@ -179,12 +179,11 @@ def verify_module(module_id, catalog_entry, catalog):
     return res
 
 def main():
-    print("=" * 80)
-    print("CYBER HASHIRA - ALL 30 MODULES TEST MATRIX & CONTRACT HARNESS")
-    print("=" * 80)
-    
     catalog = load_catalog()
     modules = sorted([d for d in os.listdir(MODULES_DIR) if os.path.isdir(os.path.join(MODULES_DIR, d))])
+    print("=" * 80)
+    print(f"CYBER HASHIRA - COMPLETE REGISTRY TEST MATRIX ({len(modules)} MODULES)")
+    print("=" * 80)
     
     results = []
     print(f"[*] Discovered {len(modules)} module directories. Executing test matrix...\n")
