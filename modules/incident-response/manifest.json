@@ -1,0 +1,82 @@
+{
+  "id": "incident-response",
+  "name": "Incident Response & Evidence Chain-of-Custody Manager",
+  "description": "Digital incident triage, forensic artifact cataloging, SHA-256 evidence hashing, event timeline correlation, and cryptographic chain-of-custody auditing.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Forensics & Incident Response",
+  "icon": "shield-alert",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "storage:secure",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "enforce_sha256_custody": {
+        "type": "boolean",
+        "default": true,
+        "description": "Calculate and verify cryptographic SHA-256 digests for all ingested forensic evidence"
+      },
+      "timeline_correlation_window_hours": {
+        "type": "integer",
+        "default": 24,
+        "description": "Event correlation time window in hours"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "case_id": {
+          "type": "string"
+        },
+        "evidence_files": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "artifacts_preserved": {
+          "type": "number"
+        },
+        "timeline_events": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

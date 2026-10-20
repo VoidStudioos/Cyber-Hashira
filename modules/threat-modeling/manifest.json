@@ -1,0 +1,81 @@
+{
+  "id": "threat-modeling",
+  "name": "Automated Threat Modeling & Attack Path Engine (STRIDE)",
+  "description": "System architecture threat modeling and attack path analysis. Maps data flow diagrams (DFD), trust boundaries, and threat classifications using the STRIDE and DREAD frameworks.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Architecture & Threat Modeling",
+  "icon": "git-merge",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "framework": {
+        "type": "string",
+        "default": "STRIDE",
+        "description": "Threat classification framework (STRIDE, DREAD, PASTA)"
+      },
+      "include_mitigations": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate architectural countermeasures for each identified threat"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "architecture_components": {
+          "type": "array"
+        },
+        "data_flows": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "threats_identified": {
+          "type": "number"
+        },
+        "resilience_score": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

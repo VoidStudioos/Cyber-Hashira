@@ -1,0 +1,81 @@
+{
+  "id": "automotive-uds-analyzer",
+  "name": "Automotive UDS Diagnostics & CAN Bus Security Analyzer",
+  "description": "Passive, read-only diagnostic security analyzer for Unified Diagnostic Services (UDS ISO 14229) and CAN bus log captures. Evaluates SecurityAccess (0x27) seed-key randomness, unprotected ECU flashing services, and diagnostic session escalation without physical vehicle writes.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Automotive & IoT Security",
+  "icon": "cpu",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "offline_only": {
+        "type": "boolean",
+        "default": true,
+        "description": "Safety gate: enforce strictly offline read-only analysis of recorded PCAP/CAN log traces"
+      },
+      "audit_security_access_entropy": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate Shannon entropy and static seed generation in UDS Service 0x27 exchanges"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "can_log_path": {
+          "type": "string"
+        },
+        "uds_frames": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "frames_analyzed": {
+          "type": "number"
+        },
+        "ecu_safety_score": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

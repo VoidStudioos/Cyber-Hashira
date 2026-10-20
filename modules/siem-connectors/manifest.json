@@ -1,0 +1,81 @@
+{
+  "id": "siem-connectors",
+  "name": "Enterprise SIEM & SOC Telemetry Ingestion Connector",
+  "description": "Read-only SIEM telemetry integration for Elastic Security, Splunk, and Wazuh. Ingests security alerts, correlates live telemetry with scan findings, and checks sensor forwarding health.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Threat Intelligence & SIEM",
+  "icon": "activity",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "siem_type": {
+        "type": "string",
+        "default": "elastic",
+        "description": "Target SIEM platform (elastic, splunk, wazuh)"
+      },
+      "max_alerts_to_fetch": {
+        "type": "integer",
+        "default": 100,
+        "description": "Maximum number of SIEM alerts to ingest per task"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "siem_endpoint": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "alerts_ingested": {
+          "type": "number"
+        },
+        "soc_readiness_score": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

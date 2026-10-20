@@ -1,0 +1,81 @@
+{
+  "id": "yara-offline-scanner",
+  "name": "YARA Offline Malware & Pattern Signature Scanner",
+  "description": "Safe, offline malware and pattern detection engine using YARA rules. Evaluates suspicious files, memory snapshots, and binaries against curated signature sets without executing untrusted code.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Forensics & Incident Response",
+  "icon": "search",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "scan_recursively": {
+        "type": "boolean",
+        "default": true,
+        "description": "Recursively scan subdirectories for matching YARA rules"
+      },
+      "max_file_size_mb": {
+        "type": "integer",
+        "default": 100,
+        "description": "Maximum file size in megabytes to inspect"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "file_path": {
+          "type": "string"
+        },
+        "yara_rules": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "files_scanned": {
+          "type": "number"
+        },
+        "rules_matched": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

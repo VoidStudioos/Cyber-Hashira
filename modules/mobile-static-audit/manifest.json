@@ -1,0 +1,81 @@
+{
+  "id": "mobile-static-audit",
+  "name": "Mobile Application Static Security Auditor (APK/IPA)",
+  "description": "Static application security testing (SAST) for Android APK and iOS IPA binaries. Audits AndroidManifest.xml permissions, cleartext traffic allowance, debuggable flags, and hardcoded API keys.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Mobile Security",
+  "icon": "smartphone",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_permissions": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate dangerous Android/iOS application permissions"
+      },
+      "audit_hardcoded_secrets": {
+        "type": "boolean",
+        "default": true,
+        "description": "Scan extracted strings and assets for embedded private keys and cloud tokens"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "package_type": {
+          "type": "string"
+        },
+        "manifest_content": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "permissions_evaluated": {
+          "type": "number"
+        },
+        "mobile_security_score": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
