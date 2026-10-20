@@ -1,0 +1,83 @@
+{
+  "id": "oauth-account-takeover",
+  "name": "OAuth 2.0 & SSO Account Takeover Vulnerability Auditor",
+  "description": "High-severity OAuth 2.0 and Single Sign-On (SSO) account takeover auditor for bug bounty hunters. Detects redirect_uri path traversal bypasses, open redirect chaining, missing state CSRF fixation, and unverified email pre-account takeovers.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "key",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_redirect_uri_traversal": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test redirect_uri parameter with directory traversal bypasses (/..;/, /%2e%2e/)"
+      },
+      "test_state_fixation": {
+        "type": "boolean",
+        "default": true,
+        "description": "Check if state parameter is omitted, static, or unverified against active session"
+      },
+      "test_pre_account_takeover": {
+        "type": "boolean",
+        "default": true,
+        "description": "Check if identity provider links unverified email accounts without password verification"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "oauth_authorize_url": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "vectors_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

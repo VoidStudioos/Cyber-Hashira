@@ -1,0 +1,80 @@
+{
+  "id": "http-request-smuggling",
+  "name": "HTTP Request Smuggling & Desync Vulnerability Auditor",
+  "description": "High-impact HTTP request smuggling vulnerability auditor for bug bounty hunters. Detects CL.TE, TE.CL, TE.TE obfuscations, and HTTP/2 downgrade desync anomalies across reverse proxies and CDNs without causing backend disruption.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "zap",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_cl_te": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test Content-Length vs Transfer-Encoding (CL.TE) desync discrepancies"
+      },
+      "test_te_cl": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test Transfer-Encoding vs Content-Length (TE.CL) desync discrepancies"
+      },
+      "test_te_obfuscation": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate Transfer-Encoding header obfuscation (TE: chunked, Transfer-Encoding: xchunked)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "desync_types_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

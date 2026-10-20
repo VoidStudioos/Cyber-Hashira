@@ -1,0 +1,86 @@
+{
+  "id": "race-condition-engine",
+  "name": "HTTP/2 Single-Packet Race Condition & Concurrency Flaw Tester",
+  "description": "High-impact business logic concurrency testing engine. Employs HTTP/2 single-packet synchronization to detect promo-code double-spending, balance overdrafts, and rate-limit bypasses on sensitive multi-step workflows.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "repeat",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "concurrency_limit": {
+        "type": "integer",
+        "default": 10,
+        "description": "Number of concurrent parallel synchronization requests (default: 10)"
+      },
+      "test_coupon_double_spend": {
+        "type": "boolean",
+        "default": true,
+        "description": "Simulate parallel gift card or promo code redemption"
+      },
+      "test_otp_concurrency": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test parallel verification attempts against OTP validation endpoints"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "payload_template": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "concurrent_probes": {
+          "type": "number"
+        },
+        "concurrency_delta_ms": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
