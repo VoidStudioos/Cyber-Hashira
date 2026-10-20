@@ -1,0 +1,81 @@
+{
+  "id": "sca-license-compliance",
+  "name": "Software Composition & Open Source License Compliance Auditor",
+  "description": "Software composition analysis (SCA) license auditor. Evaluates package dependencies for restrictive copyleft licenses (GPL, AGPL), commercial redistribution conflicts, unapproved SPDX identifiers, and license incompatibilities.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Supply Chain & SCA",
+  "icon": "file-text",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "fail_on_copyleft": {
+        "type": "boolean",
+        "default": true,
+        "description": "Flag viral copyleft licenses (GPL, AGPL) as high severity for proprietary distributions"
+      },
+      "allow_permissive_only": {
+        "type": "boolean",
+        "default": false,
+        "description": "Allow only permissive licenses (MIT, Apache-2.0, BSD, ISC)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "sbom_json": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "packages_audited": {
+          "type": "number"
+        },
+        "compliance_score": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

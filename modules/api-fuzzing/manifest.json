@@ -1,0 +1,86 @@
+{
+  "id": "api-fuzzing",
+  "name": "Schema-Aware API Fuzzer & Boundary Tester",
+  "description": "Rate-limited schema-aware API fuzzer. Tests REST and OpenAPI endpoints with mutated inputs, boundary payloads, unexpected data types, and injection patterns to identify server crashes and 500 internal errors.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "API Security",
+  "icon": "zap",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "rate_limit_rps": {
+        "type": "integer",
+        "default": 10,
+        "description": "Strict maximum requests per second budget"
+      },
+      "test_boundary_values": {
+        "type": "boolean",
+        "default": true,
+        "description": "Execute integer overflow, underflow, and max length tests"
+      },
+      "test_type_confusion": {
+        "type": "boolean",
+        "default": true,
+        "description": "Send unexpected types (arrays for strings, objects for booleans)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "openapi_url": {
+          "type": "string"
+        },
+        "endpoints": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "mutations_tested": {
+          "type": "number"
+        },
+        "anomalies_detected": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

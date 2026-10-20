@@ -1,0 +1,79 @@
+{
+  "id": "cicd-supply-chain",
+  "name": "CI/CD Supply Chain & Provenance Attestation Validator",
+  "description": "Software supply chain security and artifact provenance evaluator. Verifies Cosign digital signatures, SLSA provenance attestations, ephemeral runner isolation, and build integrity.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Supply Chain & SCA",
+  "icon": "git-commit",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "require_signed_artifacts": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enforce presence of valid Cosign / Sigstore artifact signatures"
+      },
+      "min_slsa_level": {
+        "type": "integer",
+        "default": 2,
+        "description": "Minimum acceptable SLSA build provenance level (1-4)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "artifact_hash": {
+          "type": "string"
+        },
+        "provenance_attestation": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "slsa_level_achieved": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

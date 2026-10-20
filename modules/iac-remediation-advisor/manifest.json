@@ -1,0 +1,78 @@
+{
+  "id": "iac-remediation-advisor",
+  "name": "Infrastructure as Code (IaC) Automated Remediation Advisor",
+  "description": "Automated security remediation engine for Terraform, CloudFormation, and Kubernetes manifests. Converts security posture violations into verifiable code diffs and minimal secure patches.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Cloud & Infrastructure",
+  "icon": "code",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "filesystem:read",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "generate_diffs": {
+        "type": "boolean",
+        "default": true,
+        "description": "Generate unified Git diffs for automated PR creation"
+      },
+      "target_framework": {
+        "type": "string",
+        "default": "all",
+        "description": "Target IaC framework (terraform, kubernetes, cloudformation, all)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "iac_source_type": {
+          "type": "string"
+        },
+        "iac_content": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "patches_generated": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
