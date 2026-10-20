@@ -1,0 +1,80 @@
+{
+  "id": "dom-xss-postmessage",
+  "name": "DOM XSS & postMessage Security Auditor",
+  "description": "Comprehensive client-side DOM Cross-Site Scripting (DOM XSS) and cross-window postMessage security auditor for single-page applications (React, Angular, Vue). Traces execution flows from untrusted DOM sources to dangerous execution sinks, and flags missing or wild-card origin validation in window message event listeners.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "code",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "audit_postmessage_origins": {
+        "type": "boolean",
+        "default": true,
+        "description": "Inspect window.addEventListener('message') handlers for missing or wildcard (*) origin checks"
+      },
+      "trace_dom_sinks": {
+        "type": "boolean",
+        "default": true,
+        "description": "Detect dangerous sink calls (innerHTML, outerHTML, eval, document.write, setTimeout) with dynamic inputs"
+      },
+      "detect_sink_gadgets": {
+        "type": "boolean",
+        "default": true,
+        "description": "Detect URL-controlled navigation sinks (location.href, window.open, iframe.src)"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "sinks_analyzed": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

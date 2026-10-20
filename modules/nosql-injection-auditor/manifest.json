@@ -1,0 +1,80 @@
+{
+  "id": "nosql-injection-auditor",
+  "name": "NoSQL Injection & MongoDB Operator Auditor",
+  "description": "High-impact NoSQL injection and operator injection vulnerability auditor for bug bounty hunters. Detects JSON operator injections ($gt, $ne, $regex, $in, $where), authentication bypass, and boolean/timing inference leaks in MongoDB, CouchDB, and DocumentDB backends without destructive data modification.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "database",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_operator_injection": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for MongoDB comparison operators ($ne, $gt, $nin) in login and lookup queries"
+      },
+      "test_regex_extraction": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate susceptibility to regex-based blind data exfiltration ($regex: '^a.*')"
+      },
+      "test_json_type_confusion": {
+        "type": "boolean",
+        "default": true,
+        "description": "Send JSON typed structures in place of primitive strings"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "operators_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

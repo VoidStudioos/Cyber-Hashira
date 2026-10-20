@@ -1,0 +1,80 @@
+{
+  "id": "crlf-injection-engine",
+  "name": "CRLF Injection & HTTP Response Splitting Engine",
+  "description": "High-impact Carriage Return Line Feed (CRLF, \\r\\n, %0d%0a) injection and HTTP response splitting auditor. Identifies header injection, arbitrary Set-Cookie session fixation, XSS via response body splitting, and proxy cache poisoning across web applications, reverse proxies, and load balancers.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "corner-down-left",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "test_header_injection": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe for injected arbitrary response headers (Set-Cookie, X-Injected-Header)"
+      },
+      "test_encoding_variations": {
+        "type": "boolean",
+        "default": true,
+        "description": "Test URL-encoded, double-encoded, and Unicode CRLF sequences (%0d%0a, %250d%250a, %E5%98%8D%E5%98%8A)"
+      },
+      "test_body_splitting": {
+        "type": "boolean",
+        "default": true,
+        "description": "Evaluate susceptibility to complete HTTP response splitting with fake HTML bodies"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "encodings_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

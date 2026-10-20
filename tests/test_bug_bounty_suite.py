@@ -133,16 +133,88 @@ def test_module_3_batch2_param_miner():
     assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
     assert "debug" in res["payload"]["hidden_parameters_found"]
 
+def test_prototype_pollution():
+    """Verify Prototype Pollution detection"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "prototype-pollution-detector", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "proto-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-1321" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_nosql_injection():
+    """Verify NoSQL operator injection detection"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "nosql-injection-auditor", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "nosql-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-943" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_crlf_injection():
+    """Verify CRLF injection and HTTP response splitting"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "crlf-injection-engine", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "crlf-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-113" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_dom_xss_postmessage():
+    """Verify DOM XSS and postMessage unvalidated origin auditor"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "dom-xss-postmessage", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "domxss-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-79" == f.get("cwe") or "CWE-345" == f.get("cwe") for f in res["payload"]["findings"])
+
 def main():
     print("=" * 70)
-    print("CYBER HASHIRA - BUG BOUNTY MODULES 2 & 3 VERIFICATION SUITE")
+    print("CYBER HASHIRA - BUG BOUNTY ADVANCED VERIFICATION SUITE (8 ENGINES)")
     print("=" * 70)
 
     tests = [
         ("Module 2: Race Condition & Concurrency Engine", test_module_2_race_condition),
         ("Module 3: OAuth 2.0 & SSO Account Takeover Auditor", test_module_3_oauth_account_takeover),
-        ("Module 2 (Batch 2): JavaScript Endpoint & Secret Miner", test_module_2_batch2_js_endpoint_miner),
-        ("Module 3 (Batch 2): Hidden Parameter & Debug Switch Miner", test_module_3_batch2_param_miner)
+        ("Module: JavaScript Endpoint & Secret Miner", test_module_2_batch2_js_endpoint_miner),
+        ("Module: Hidden Parameter & Debug Switch Miner", test_module_3_batch2_param_miner),
+        ("Module: Prototype Pollution (CWE-1321)", test_prototype_pollution),
+        ("Module: NoSQL Injection & MongoDB Operators (CWE-943)", test_nosql_injection),
+        ("Module: CRLF Injection & Response Splitting (CWE-113)", test_crlf_injection),
+        ("Module: DOM XSS & postMessage Origin Security (CWE-79/345)", test_dom_xss_postmessage)
     ]
 
     passed = 0

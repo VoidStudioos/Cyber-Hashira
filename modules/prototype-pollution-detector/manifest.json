@@ -1,0 +1,80 @@
+{
+  "id": "prototype-pollution-detector",
+  "name": "Client & Server Prototype Pollution Detector",
+  "description": "High-impact Prototype Pollution vulnerability auditor for modern JavaScript applications. Evaluates client-side DOM gadget chains and server-side object merge/clone operations (Node.js, Express, Fastify) for __proto__ and constructor.prototype property injections without causing service crashes.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Web Security",
+  "icon": "box",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_dependencies": {},
+  "optional_dependencies": {},
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "probe_url_params": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe query parameters for __proto__ and constructor.prototype injections"
+      },
+      "probe_json_body": {
+        "type": "boolean",
+        "default": true,
+        "description": "Probe JSON request bodies for nested recursive merge prototype pollution"
+      },
+      "detect_dom_gadgets": {
+        "type": "boolean",
+        "default": true,
+        "description": "Scan client-side scripts for exploitable DOM gadget properties"
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target"
+      ]
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array"
+        },
+        "vectors_tested": {
+          "type": "number"
+        },
+        "security_score": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
