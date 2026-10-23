@@ -1,0 +1,63 @@
+{
+  "id": "password-reuse-detector",
+  "name": "Password Reuse Detector",
+  "description": "Detects reused passwords across configuration files, databases, or git repositories.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Credential Hygiene",
+  "icon": "key",
+  "supported_os": ["windows", "linux", "macos"],
+  "supported_arch": ["x86_64", "aarch64"],
+  "required_permissions": ["network:connect", "findings:write"],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "paths": {
+        "type": "array",
+        "items": {"type": "string"},
+        "description": "List of file paths to scan for passwords (one password per line).",
+        "default": []
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "object",
+          "properties": {
+            "paths": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      },
+      "required": []
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cwe": {"type": "string"},
+              "title": {"type": "string"},
+              "description": {"type": "string"},
+              "evidence": {"type": "string"},
+              "detected_at": {"type": "string"}
+            },
+            "required": ["cwe", "title", "description", "evidence", "detected_at"]
+          }
+        }
+      }
+    }
+  },
+  "artifact": {"url": "", "sha256": "", "size_bytes": 0}
+}
