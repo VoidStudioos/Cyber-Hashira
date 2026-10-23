@@ -9637,6 +9637,456 @@
         "sha256": "26b7f2e9c3f5ec4ab78bf5f0f6f5df6277d496fbedd91ca46c0117e293caa987",
         "size_bytes": 3174
       }
+    },
+    {
+      "id": "dns-caa-record-auditor",
+      "name": "DNS CAA Policy & CA Authorization Auditor",
+      "description": "Inspects DNS Certification Authority Authorization (CAA) records to ensure only authorized Certificate Authorities can issue TLS certificates for root and wildcard domains (RFC 6844).",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "DNS Security",
+      "icon": "shield-check",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dns-caa-record-auditor-1.0.0.tar.gz",
+        "sha256": "1de96b25233eb789ead1b169398daa228932cc80e7c0f563ffbba77c0b154e64",
+        "size_bytes": 2189
+      }
+    },
+    {
+      "id": "hsts-preload-auditor",
+      "name": "HSTS Preload & Transport Security Auditor",
+      "description": "Audits HTTP Strict Transport Security (HSTS) headers for max-age >= 31536000, includeSubDomains, and preload directive compliance (RFC 6797).",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Headers",
+      "icon": "lock",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/hsts-preload-auditor-1.0.0.tar.gz",
+        "sha256": "87e024fe83de21bc088cea3e4634d6ef906cf39e7b1b70cf3ea75f340a867b70",
+        "size_bytes": 2260
+      }
+    },
+    {
+      "id": "cors-misconfiguration-auditor",
+      "name": "CORS Policy & Credentials Misconfiguration Auditor",
+      "description": "Analyzes Cross-Origin Resource Sharing (CORS) policies for wildcard origins with credentials reflection and null origin trust.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "globe",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cors-misconfiguration-auditor-1.0.0.tar.gz",
+        "sha256": "5e0e887d15293225f89ae76aba89fe92f5248c871cc5e1734a6da187928b72dd",
+        "size_bytes": 2158
+      }
+    },
+    {
+      "id": "subresource-integrity-auditor",
+      "name": "Subresource Integrity (SRI) Hash Validator",
+      "description": "Audits external script and stylesheet tags in web applications to verify Subresource Integrity (SRI) cryptographic hashes and crossorigin attributes.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "file-code",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/subresource-integrity-auditor-1.0.0.tar.gz",
+        "sha256": "e2bdc7d11a313788d604dc290e2c41ce812361257d0e013dc216e94677a68396",
+        "size_bytes": 2013
+      }
+    },
+    {
+      "id": "graphql-depth-limit-auditor",
+      "name": "GraphQL Query Depth & Complexity Limit Auditor",
+      "description": "Analyzes GraphQL endpoint schema configurations for query depth limits, complexity budget analysis, and recursive query protection (OWASP API4:2023).",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "API Security",
+      "icon": "layers",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-depth-limit-auditor-1.0.0.tar.gz",
+        "sha256": "3a72bb5a7c54f1fd833fbc9b8127c59dc4f5a9b7c1e4b1ae0a42b605ca3f8487",
+        "size_bytes": 1956
+      }
+    },
+    {
+      "id": "oauth-redirect-uri-validator",
+      "name": "OAuth 2.0 Strict Redirect URI & Wildcard Auditor",
+      "description": "Validates OAuth 2.0 authorization server configurations for strict redirect_uri matching, preventing path traversal and wildcard domain matching (RFC 6749 Section 10.6).",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Authentication & Token",
+      "icon": "key",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/oauth-redirect-uri-validator-1.0.0.tar.gz",
+        "sha256": "a1aaecd71afa6e4b384eae62b43307a020f9827bbd0249a5f267617830bae3e6",
+        "size_bytes": 2105
+      }
     }
   ]
 }
