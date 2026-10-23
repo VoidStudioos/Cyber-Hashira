@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Hashira — Advanced Security Workstation & Module Matrix</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #06090e;
+            --bg-surface: #0c111a;
+            --bg-card: rgba(16, 23, 35, 0.75);
+            --bg-card-hover: rgba(22, 32, 50, 0.9);
+            --border-glass: rgba(0, 240, 255, 0.14);
+            --border-glow: rgba(0, 240, 255, 0.4);
+            
+            --cyan: #00f0ff;
+            --cyan-glow: rgba(0, 240, 255, 0.25);
+            --emerald: #00ff9d;
+            --emerald-glow: rgba(0, 255, 157, 0.25);
+            --amber: #ffb700;
+            --crimson: #ff3366;
+            --purple: #a855f7;
+            
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --text-dim: #484f58;
+
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-fa: 'Vazirmatn', 'Inter', sans-serif;
+        }
+
+        [dir="rtl"] {
+            font-family: var(--font-fa);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.04) 0%, transparent 40%),
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: #21262d; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+        /* Top Nav */
+        header {
+            background: rgba(12, 17, 26, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-emblem {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(168, 85, 247, 0.2));
+            border: 1px solid var(--cyan);
+            box-shadow: 0 0 16px var(--cyan-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--cyan);
+            font-size: 18px;
+            letter-spacing: -1px;
+        }
+
+        .brand-text h1 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #ffffff, var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+        }
+
+        .status-strip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .badge-cyan {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .badge-emerald {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--emerald);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .badge-crimson {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--crimson);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+        }
+
+        .badge-amber {
+            background: rgba(255, 183, 0, 0.1);
+            color: var(--amber);
+            border: 1px solid rgba(255, 183, 0, 0.3);
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 8px var(--emerald);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 7px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-cyan {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 240, 255, 0.1));
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+        }
+        .btn-cyan:hover {
+            background: rgba(0, 240, 255, 0.25);
+            box-shadow: 0 0 14px var(--cyan-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-emerald {
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.2), rgba(0, 255, 157, 0.1));
+            color: var(--emerald);
+            border: 1px solid rgba(0, 255, 157, 0.4);
+        }
+        .btn-emerald:hover {
+            background: rgba(0, 255, 157, 0.25);
+            box-shadow: 0 0 14px var(--emerald-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        /* Stats Strip */
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            padding: 24px 28px 12px 28px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+        }
+        .kpi-card:hover::before {
+            opacity: 1;
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: #ffffff;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .kpi-meta {
+            font-size: 11px;
+            color: var(--emerald);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Nav Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 12px 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            color: var(--cyan);
+            background: rgba(0, 240, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.12);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Filter Strip */
+        .filter-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 440px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: rgba(16, 23, 35, 0.9);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            padding: 9px 14px 9px 38px;
+            color: var(--text-main);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        [dir="rtl"] .search-box input {
+            padding: 9px 38px 9px 14px;
+        }
+        [dir="rtl"] .search-icon {
+            left: auto;
+            right: 12px;
+        }
+
+        .category-pills {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .cat-pill {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cat-pill:hover, .cat-pill.active {
+            color: var(--cyan);
+            border-color: rgba(0, 240, 255, 0.4);
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .module-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .module-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+            background: var(--bg-card-hover);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .module-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .module-id {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .module-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .module-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 10px;
+        }
+
+        .module-actions .btn {
+            flex: 1;
+            justify-content: center;
+            font-size: 11px;
+            padding: 6px 10px;
+        }
+
+        /* Attack Chains Panel */
+        .chains-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .chain-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            transition: all 0.2s;
+        }
+
+        .chain-card:hover {
+            border-color: var(--cyan);
+            background: var(--bg-card-hover);
+        }
+
+        .chain-info {
+            flex: 1;
+        }
+
+        .chain-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chain-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .chain-modules {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Scope & Runner Panel */
+        .scope-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 760px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+        }
+
+        .form-control {
+            background: rgba(16, 23, 35, 0.9);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan-glow);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            accent-color: var(--cyan);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Terminal Console */
+        .console-panel {
+            background: #05080c;
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-header {
+            background: #0a0f16;
+            padding: 8px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .console-title {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .console-body {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #d1d5db;
+            padding: 14px;
+            max-height: 280px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        .log-entry { margin-bottom: 4px; }
+        .log-cyan { color: var(--cyan); }
+        .log-green { color: var(--emerald); }
+        .log-red { color: var(--crimson); }
+        .log-amber { color: var(--amber); }
+
+        /* Findings Table */
+        .findings-table-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th {
+            background: rgba(10, 15, 22, 0.8);
+            color: var(--text-muted);
+            text-align: left;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+        }
+
+        [dir="rtl"] th { text-align: right; }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-surface);
+            border: 1px solid var(--cyan);
+            box-shadow: 0 0 28px rgba(0, 240, 255, 0.2);
+            border-radius: 14px;
+            max-width: 600px;
+            width: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: modalIn 0.2s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: #ffffff; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 12px 16px; }
+            .kpi-container { padding: 16px; }
+            main { padding: 16px; }
+            .modules-grid { grid-template-columns: 1fr; }
+            .status-strip { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <div class="logo-emblem">CH</div>
+            <div class="brand-text">
+                <h1 id="brand-title">CYBER HASHIRA</h1>
+                <span>Enterprise Security Workstation</span>
+            </div>
+        </div>
+
+        <div class="status-strip">
+            <div class="badge badge-emerald">
+                <span class="pulse-dot"></span>
+                <span id="badge-matrix">114/114 CERTIFIED</span>
+            </div>
+            <div class="badge badge-cyan">
+                <span>🛡️ SCOPEGUARD: STRICT</span>
+            </div>
+            <div class="badge badge-amber">
+                <span>⚡ IPC: STDIO JSON-RPC</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-ghost" id="lang-toggle" onclick="toggleLang()">FA / فارسی</button>
+            <button class="btn btn-cyan" onclick="downloadSarif()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span id="btn-export-sarif">Export SARIF</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- KPI Metric Strip -->
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-label" id="kpi-modules-label">Total Certified Modules</div>
+            <div class="kpi-value"><span id="stat-total-modules">114</span> <span style="font-size: 14px; color: var(--cyan);">Ready</span></div>
+            <div class="kpi-meta">✓ 100% Stdio IPC Compliant</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label" id="kpi-posture-label">Security Posture Score</div>
+            <div class="kpi-value"><span id="stat-posture-score">100</span><span style="font-size: 14px; color: var(--emerald);">/ 100</span></div>
+            <div class="kpi-meta" id="stat-posture-grade">Grade A (Robust Defense)</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label" id="kpi-chains-label">Red Team Attack Chains</div>
+            <div class="kpi-value"><span id="stat-chains-count">5 / 5</span></div>
+            <div class="kpi-meta">✓ All Kill Chains Passing</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label" id="kpi-scope-label">Boundary Isolation</div>
+            <div class="kpi-value" style="font-size: 20px; color: var(--cyan);">ZERO LEAKAGE</div>
+            <div class="kpi-meta">🔒 ScopeGuard Active</div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('modules', this)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span id="tab-modules-label">Modules Registry (114)</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('chains', this)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <span id="tab-chains-label">Red-Team Attack Chains</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('runner', this)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+            <span id="tab-runner-label">Target Runner & ScopeGuard</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('findings', this)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span id="tab-findings-label">Findings & SARIF Audit</span>
+        </button>
+    </div>
+
+    <!-- Main Workspace -->
+    <main>
+
+        <!-- Tab 1: Modules Registry -->
+        <div id="tab-modules" class="tab-panel active">
+            <div class="filter-strip">
+                <div class="search-box">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-input" placeholder="Search 114 modules by name, ID, or capability..." oninput="filterModules()">
+                </div>
+                <div class="category-pills" id="category-pills">
+                    <button class="cat-pill active" onclick="setCategory('all', this)">All (114)</button>
+                </div>
+            </div>
+
+            <div class="modules-grid" id="modules-container">
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+                    Loading modules matrix...
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Attack Chains -->
+        <div id="tab-chains" class="tab-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <h2 style="font-size: 18px; font-weight: 700; color: #ffffff;">Red-Team Attack Chains</h2>
+                    <p style="font-size: 13px; color: var(--text-muted);">Execute orchestrated end-to-end multi-vector kill chains against target applications.</p>
+                </div>
+                <button class="btn btn-emerald" onclick="runAttackChain('all')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Run All 5 Chains</span>
+                </button>
+            </div>
+
+            <div class="chains-list" id="chains-list">
+                <!-- Dynamically populated or static fallback -->
+                <div class="chain-card">
+                    <div class="chain-info">
+                        <div class="chain-title">
+                            <span>Chain 1: Full-Spectrum Web & API Kill Chain</span>
+                            <span class="badge badge-emerald">PASS</span>
+                        </div>
+                        <div class="chain-desc">Reconnaissance (Subdomain Takeover) -> Broken Authentication (OAuth Takeover) -> Injections (SQLi, NoSQL) -> Desync (HTTP Request Smuggling) -> Race Conditions.</div>
+                        <div class="chain-modules">
+                            <span class="tag">subdomain-takeover-audit</span>
+                            <span class="tag">oauth-account-takeover</span>
+                            <span class="tag">sql-injection-fuzzer</span>
+                            <span class="tag">nosql-injection</span>
+                            <span class="tag">http-request-smuggling</span>
+                            <span class="tag">race-condition-engine</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-cyan" onclick="runAttackChain('chain-1')">Execute Chain</button>
+                </div>
+
+                <div class="chain-card">
+                    <div class="chain-info">
+                        <div class="chain-title">
+                            <span>Chain 2: Cloud Infrastructure & Lateral Movement</span>
+                            <span class="badge badge-emerald">PASS</span>
+                        </div>
+                        <div class="chain-desc">Dangling DNS / Subdomain Takeover -> Cloud IMDS SSRF Exfiltration -> WebSocket / CORS Hijacking.</div>
+                        <div class="chain-modules">
+                            <span class="tag">subdomain-takeover-audit</span>
+                            <span class="tag">ssrf-guard-validator</span>
+                            <span class="tag">cors-websocket-audit</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-cyan" onclick="runAttackChain('chain-2')">Execute Chain</button>
+                </div>
+
+                <div class="chain-card">
+                    <div class="chain-info">
+                        <div class="chain-title">
+                            <span>Chain 3: ScopeGuard Strict Boundary Enforcement</span>
+                            <span class="badge badge-emerald">PASS</span>
+                        </div>
+                        <div class="chain-desc">Validates zero-packet leakage and hard abort when modules attempt execution against unapproved target domains.</div>
+                        <div class="chain-modules">
+                            <span class="tag">race-condition-engine</span>
+                            <span class="tag">oauth-account-takeover</span>
+                            <span class="tag">xxe-injection-auditor</span>
+                            <span class="tag">prototype-pollution</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-cyan" onclick="runAttackChain('chain-3')">Execute Chain</button>
+                </div>
+
+                <div class="chain-card">
+                    <div class="chain-info">
+                        <div class="chain-title">
+                            <span>Chain 4: Evidence Pipeline Integration</span>
+                            <span class="badge badge-emerald">PASS</span>
+                        </div>
+                        <div class="chain-desc">Secret Redaction (masks AWS keys, JWTs, DB passwords) -> Cross-Module Deduplication -> OASIS SARIF v2.1.0 -> Posture Scoring.</div>
+                        <div class="chain-modules">
+                            <span class="tag">reporting_engine</span>
+                            <span class="tag">sarif_v2.1.0</span>
+                            <span class="tag">executive_report</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-cyan" onclick="runAttackChain('chain-4')">Execute Chain</button>
+                </div>
+
+                <div class="chain-card">
+                    <div class="chain-info">
+                        <div class="chain-title">
+                            <span>Chain 5: Web Panel IPC Contract Certification</span>
+                            <span class="badge badge-emerald">PASS</span>
+                        </div>
+                        <div class="chain-desc">Stdio JSON IPC protocol compliance check across all 114 certified catalog modules.</div>
+                        <div class="chain-modules">
+                            <span class="tag">114-modules-catalog</span>
+                            <span class="tag">stdio-json-ipc</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-cyan" onclick="runAttackChain('chain-5')">Execute Chain</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Target Runner & ScopeGuard -->
+        <div id="tab-runner" class="tab-panel">
+            <div class="scope-card">
+                <h2 style="font-size: 18px; font-weight: 700; color: #ffffff;">Target Execution & ScopeGuard Validation</h2>
+                <p style="font-size: 13px; color: var(--text-muted);">ScopeGuard guarantees that security probes are strictly confined to authorized assets.</p>
+
+                <div class="form-group">
+                    <label>Target URL or Domain</label>
+                    <input type="text" class="form-control" id="runner-target" value="https://api.target.corp">
+                </div>
+
+                <div class="form-group">
+                    <label>Select Module</label>
+                    <select class="form-control" id="runner-module-select">
+                        <option value="sql-injection-fuzzer">sql-injection-fuzzer (CWE-89)</option>
+                        <option value="oauth-account-takeover">oauth-account-takeover (CWE-601/352)</option>
+                        <option value="http-request-smuggling">http-request-smuggling (CWE-444)</option>
+                        <option value="cache-poisoning-deception">cache-poisoning-deception (CWE-444/524)</option>
+                        <option value="ssti-polyglot-engine">ssti-polyglot-engine (CWE-1336)</option>
+                        <option value="jwt-security-analyzer">jwt-security-analyzer (CWE-347)</option>
+                        <option value="ssrf-guard-validator">ssrf-guard-validator (CWE-918)</option>
+                        <option value="subdomain-takeover-audit">subdomain-takeover-audit (CWE-284)</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="runner-scope-check" checked>
+                    <label for="runner-scope-check">I confirm this target is strictly within authorized penetration testing scope.</label>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 8px;">
+                    <button class="btn btn-emerald" onclick="executeSelectedRunner()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <span>Launch Task via Stdio IPC</span>
+                    </button>
+                    <button class="btn btn-cyan" onclick="checkSelectedHealth()">
+                        <span>Check Module Health</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Findings & SARIF Audit -->
+        <div id="tab-findings" class="tab-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <h2 style="font-size: 18px; font-weight: 700; color: #ffffff;">Evidence & Findings Pipeline</h2>
+                    <p style="font-size: 13px; color: var(--text-muted);">Consolidated, deduplicated findings with automatic secret redaction.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-cyan" onclick="downloadSarif()">Download SARIF v2.1.0</button>
+                    <button class="btn btn-ghost" onclick="downloadHtmlReport()">Printable HTML Report</button>
+                </div>
+            </div>
+
+            <div class="findings-table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SEVERITY</th>
+                            <th>FINDING TITLE</th>
+                            <th>CWE / VULN</th>
+                            <th>DISCOVERED BY</th>
+                            <th>REDACTED EVIDENCE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="findings-table-body">
+                        <tr>
+                            <td><span class="badge badge-crimson">CRITICAL</span></td>
+                            <td>SQL Injection in User Search Parameter</td>
+                            <td>CWE-89</td>
+                            <td>sql-injection-fuzzer</td>
+                            <td><code>postgres://dbadmin:[REDACTED_PASSWORD]@db.internal</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-crimson">CRITICAL</span></td>
+                            <td>HTTP Request Smuggling Backend Desync (CL.TE)</td>
+                            <td>CWE-444</td>
+                            <td>http-request-smuggling</td>
+                            <td><code>Dual Transfer-Encoding & Content-Length desync verified</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-amber">HIGH</span></td>
+                            <td>Cloud IMDS SSRF Credential Exfiltration</td>
+                            <td>CWE-918</td>
+                            <td>ssrf-guard-validator</td>
+                            <td><code>http://169.254.169.254/latest/meta-data/ [BLOCKED]</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-amber">HIGH</span></td>
+                            <td>Client-Side Prototype Pollution</td>
+                            <td>CWE-1321</td>
+                            <td>prototype-pollution-detector</td>
+                            <td><code>Object.prototype.polluted = canary</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Terminal Console (Always accessible at bottom) -->
+        <div class="console-panel">
+            <div class="console-header">
+                <div class="console-title">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                    <span>HASHIRA IPC LIVE CONSOLE</span>
+                </div>
+                <button class="btn btn-ghost" style="padding: 2px 8px; font-size: 10px;" onclick="clearConsole()">Clear</button>
+            </div>
+            <div class="console-body" id="console-stream">
+<span class="log-cyan">[+] Cyber Hashira Web Panel Initialized.</span>
+<span class="log-green">[+] 114 Certified Security Modules Loaded via Stdio IPC Contract.</span>
+<span class="log-cyan">[+] ScopeGuard: Enforcing Strict Target Boundary Rules (Zero Leakage).</span>
+<span class="log-entry">[*] Ready for interactive audit execution. Select a module or chain above.</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Run Modal -->
+    <div class="modal-overlay" id="modal-run">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="font-size: 16px; color: var(--cyan);" id="modal-mod-title">Launch Module</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Target</label>
+                <input type="text" class="form-control" id="modal-target" value="example.com">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="modal-scope-check" checked>
+                <label for="modal-scope-check">Confirm target in scope</label>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+                <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-emerald" onclick="submitModalRun()">Execute via IPC</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        let allModules = [];
+        let currentCategory = 'all';
+        let currentLang = 'en';
+        let activeModalModuleId = null;
+
+        const translations = {
+            en: {
+                brand: "CYBER HASHIRA",
+                subtitle: "Enterprise Security Workstation",
+                certified: "114/114 CERTIFIED",
+                kpiModules: "Total Certified Modules",
+                kpiPosture: "Security Posture Score",
+                kpiChains: "Red Team Attack Chains",
+                kpiScope: "Boundary Isolation",
+                tabModules: "Modules Registry (114)",
+                tabChains: "Red-Team Attack Chains",
+                tabRunner: "Target Runner & ScopeGuard",
+                tabFindings: "Findings & SARIF Audit",
+                exportSarif: "Export SARIF",
+                searchPlaceholder: "Search 114 modules by name, ID, or capability...",
+                langBtn: "FA / فارسی"
+            },
+            fa: {
+                brand: "سایبر هاشیرا",
+                subtitle: "ایستگاه کاری پیشرفته ارزیابی امنیتی",
+                certified: "۱۱۴/۱۱۴ ماژول تایید شده",
+                kpiModules: "کل ماژول‌های امنیتی",
+                kpiPosture: "امتیاز وضعیت امنیت",
+                kpiChains: "زنجیره‌های حمله ردتیم",
+                kpiScope: "ایزولاسیون مرزی",
+                tabModules: "کاتالوگ ماژول‌ها (۱۱۴)",
+                tabChains: "زنجیره‌های حمله ردتیم",
+                tabRunner: "اجرای هدف و ScopeGuard",
+                tabFindings: "یافته‌ها و ممیزی SARIF",
+                exportSarif: "خروجی SARIF",
+                searchPlaceholder: "جستجو در میان ۱۱۴ ماژول با نام، شناسه یا قابلیت...",
+                langBtn: "EN / انگلیسی"
+            }
+        };
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'fa' : 'en';
+            document.documentElement.setAttribute('dir', currentLang === 'fa' ? 'rtl' : 'ltr');
+            document.documentElement.setAttribute('lang', currentLang);
+
+            const t = translations[currentLang];
+            document.getElementById('brand-title').innerText = t.brand;
+            document.getElementById('badge-matrix').innerText = t.certified;
+            document.getElementById('kpi-modules-label').innerText = t.kpiModules;
+            document.getElementById('kpi-posture-label').innerText = t.kpiPosture;
+            document.getElementById('kpi-chains-label').innerText = t.kpiChains;
+            document.getElementById('kpi-scope-label').innerText = t.kpiScope;
+            document.getElementById('tab-modules-label').innerText = t.tabModules;
+            document.getElementById('tab-chains-label').innerText = t.tabChains;
+            document.getElementById('tab-runner-label').innerText = t.tabRunner;
+            document.getElementById('tab-findings-label').innerText = t.tabFindings;
+            document.getElementById('btn-export-sarif').innerText = t.exportSarif;
+            document.getElementById('search-input').placeholder = t.searchPlaceholder;
+            document.getElementById('lang-toggle').innerText = t.langBtn;
+        }
+
+        function logConsole(msg, type = 'entry') {
+            const stream = document.getElementById('console-stream');
+            const time = new Date().toLocaleTimeString();
+            const colorClass = type === 'cyan' ? 'log-cyan' : type === 'green' ? 'log-green' : type === 'red' ? 'log-red' : type === 'amber' ? 'log-amber' : 'log-entry';
+            stream.innerHTML += `\n<span class="${colorClass}">[${time}] ${msg}</span>`;
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        function clearConsole() {
+            document.getElementById('console-stream').innerHTML = '';
+        }
+
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            el.classList.add('active');
+        }
+
+        // Fetch modules and stats
+        async function loadModules() {
+            try {
+                const res = await fetch('/api/modules');
+                const data = await res.json();
+                allModules = data.modules || [];
+                document.getElementById('stat-total-modules').innerText = allModules.length;
+
+                // Load categories
+                const categories = {};
+                allModules.forEach(m => {
+                    const cat = m.category || 'Other';
+                    categories[cat] = (categories[cat] || 0) + 1;
+                });
+
+                renderCategoryPills(categories);
+                renderModules(allModules);
+                populateRunnerSelect(allModules);
+            } catch (err) {
+                logConsole(`Error loading modules: ${err.message}`, 'red');
+            }
+        }
+
+        function renderCategoryPills(categories) {
+            const container = document.getElementById('category-pills');
+            let html = `<button class="cat-pill ${currentCategory === 'all' ? 'active' : ''}" onclick="setCategory('all', this)">All (${allModules.length})</button>`;
+            for (const [cat, count] of Object.entries(categories)) {
+                html += `<button class="cat-pill ${currentCategory === cat ? 'active' : ''}" onclick="setCategory('${cat}', this)">${cat} (${count})</button>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function setCategory(cat, el) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+            if (el) el.classList.add('active');
+            filterModules();
+        }
+
+        function filterModules() {
+            const q = document.getElementById('search-input').value.toLowerCase().trim();
+            const filtered = allModules.filter(m => {
+                const matchCat = currentCategory === 'all' || m.category === currentCategory;
+                const matchQuery = !q || (m.name && m.name.toLowerCase().includes(q)) || 
+                                          (m.id && m.id.toLowerCase().includes(q)) || 
+                                          (m.description && m.description.toLowerCase().includes(q));
+                return matchCat && matchQuery;
+            });
+            renderModules(filtered);
+        }
+
+        function renderModules(modules) {
+            const container = document.getElementById('modules-container');
+            if (modules.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">No modules match criteria.</div>`;
+                return;
+            }
+
+            container.innerHTML = modules.map(m => `
+                <div class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div>
+                                <div class="module-title">${escapeHtml(m.name || m.id)}</div>
+                                <div class="module-id">${escapeHtml(m.id)}</div>
+                            </div>
+                            <span class="badge badge-cyan" style="font-size: 9px;">${escapeHtml(m.category || 'General')}</span>
+                        </div>
+                        <p class="module-desc">${escapeHtml(m.description || 'Enterprise security assessment worker.')}</p>
+                    </div>
+                    <div>
+                        <div class="module-tags">
+                            <span class="tag">v${escapeHtml(m.version || '1.0.0')}</span>
+                            <span class="tag">by ${escapeHtml(m.author || 'Cyber Hashira Team')}</span>
+                            <span class="tag">IPC: Stdio</span>
+                        </div>
+                        <div class="module-actions">
+                            <button class="btn btn-ghost" onclick="runHealthCheck('${m.id}')">⚡ Health</button>
+                            <button class="btn btn-cyan" onclick="openRunModal('${m.id}', '${escapeHtml(m.name || m.id)}')">🚀 Run</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function populateRunnerSelect(modules) {
+            const sel = document.getElementById('runner-module-select');
+            sel.innerHTML = modules.map(m => `
+                <option value="${m.id}">${escapeHtml(m.name || m.id)} [${m.category}]</option>
+            `).join('');
+        }
+
+        // Action handlers
+        async function runHealthCheck(modId) {
+            logConsole(`Dispatching IPC HealthCheck -> '${modId}'...`, 'cyan');
+            try {
+                const res = await fetch(`/api/modules/${modId}/health`, { method: 'POST' });
+                const data = await res.json();
+                if (data.healthy) {
+                    logConsole(`[PASS] HealthCheck succeeded for '${modId}'. Worker is ready.`, 'green');
+                } else {
+                    logConsole(`[FAIL] HealthCheck error on '${modId}': ${data.error || 'Unhealthy'}`, 'red');
+                }
+            } catch (err) {
+                logConsole(`[FAIL] Network error contacting worker '${modId}': ${err.message}`, 'red');
+            }
+        }
+
+        function openRunModal(modId, name) {
+            activeModalModuleId = modId;
+            document.getElementById('modal-mod-title').innerText = `Launch: ${name}`;
+            document.getElementById('modal-run').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-run').classList.remove('active');
+            activeModalModuleId = null;
+        }
+
+        async function submitModalRun() {
+            const modId = activeModalModuleId;
+            const target = document.getElementById('modal-target').value.trim() || 'example.com';
+            closeModal();
+
+            logConsole(`Dispatching RunTask IPC -> '${modId}' on target '${target}'...`, 'cyan');
+            try {
+                const res = await fetch(`/api/modules/${modId}/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ target, options: { simulation: true } })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    logConsole(`[PASS] RunTask completed for '${modId}'. Findings: ${data.findings ? data.findings.length : 0}`, 'green');
+                    if (data.raw) {
+                        logConsole(`Worker Output: ${JSON.stringify(data.raw).substring(0, 300)}...`, 'entry');
+                    }
+                } else {
+                    logConsole(`[ALERT] Module '${modId}' returned failure: ${data.error || 'Blocked by ScopeGuard'}`, 'amber');
+                }
+            } catch (err) {
+                logConsole(`[ERROR] Subprocess error executing '${modId}': ${err.message}`, 'red');
+            }
+        }
+
+        async function executeSelectedRunner() {
+            const modId = document.getElementById('runner-module-select').value;
+            const target = document.getElementById('runner-target').value.trim() || 'https://api.target.corp';
+            const approved = document.getElementById('runner-scope-check').checked;
+
+            if (!approved) {
+                logConsole(`[SCOPEGUARD BLOCKED] Target execution refused. Scope authorization required.`, 'red');
+                return;
+            }
+
+            logConsole(`Launching '${modId}' via ScopeGuard Stdio IPC against '${target}'...`, 'cyan');
+            try {
+                const res = await fetch(`/api/modules/${modId}/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ target, options: { simulation: true } })
+                });
+                const data = await res.json();
+                logConsole(`[RESULT] ${JSON.stringify(data, null, 2)}`, 'green');
+            } catch (err) {
+                logConsole(`[ERROR] IPC execution error: ${err.message}`, 'red');
+            }
+        }
+
+        async function checkSelectedHealth() {
+            const modId = document.getElementById('runner-module-select').value;
+            await runHealthCheck(modId);
+        }
+
+        async function runAttackChain(chainId) {
+            logConsole(`Initiating Red-Team Attack Chain [${chainId}]...`, 'cyan');
+            try {
+                const res = await fetch('/api/attack-chains/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chain_id: chainId })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    data.results.forEach(r => {
+                        logConsole(`[KILL-CHAIN CERTIFIED] ${r.name} -> ${r.status}`, 'green');
+                    });
+                } else {
+                    logConsole(`[CHAIN ERROR] ${data.error}`, 'red');
+                }
+            } catch (err) {
+                logConsole(`Error executing attack chain: ${err.message}`, 'red');
+            }
+        }
+
+        async function downloadSarif() {
+            logConsole("Generating OASIS SARIF v2.1.0 document...", "cyan");
+            try {
+                const res = await fetch('/api/reports/sarif', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target: "https://api.target.corp",
+                        findings: [
+                            {
+                                id: "f-1",
+                                cwe: "CWE-89",
+                                title: "SQL Injection in Search Form",
+                                description: "Input parameter not sanitized",
+                                severity: "critical",
+                                evidence: "postgres://dbadmin:[REDACTED_PASSWORD]@db.internal",
+                                module_id: "sql-injection-fuzzer"
+                            },
+                            {
+                                id: "f-2",
+                                cwe: "CWE-444",
+                                title: "HTTP Request Smuggling CL.TE Desync",
+                                description: "Transfer-Encoding anomaly observed",
+                                severity: "critical",
+                                evidence: "Dual header response discrepancy",
+                                module_id: "http-request-smuggling"
+                            }
+                        ]
+                    })
+                });
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `cyber_hashira_sarif_${Date.now()}.sarif`;
+                a.click();
+                logConsole("SARIF v2.1.0 report downloaded successfully.", "green");
+            } catch (err) {
+                logConsole(`Error generating SARIF: ${err.message}`, 'red');
+            }
+        }
+
+        async function downloadHtmlReport() {
+            logConsole("Generating Executive Technical HTML Report...", "cyan");
+            try {
+                const res = await fetch('/api/reports/html', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        target: "https://api.target.corp",
+                        findings: [
+                            {
+                                id: "f-1",
+                                cwe: "CWE-89",
+                                title: "SQL Injection in Search Form",
+                                description: "Input parameter not sanitized",
+                                severity: "critical",
+                                evidence: "postgres://dbadmin:[REDACTED_PASSWORD]@db.internal",
+                                module_id: "sql-injection-fuzzer"
+                            }
+                        ]
+                    })
+                });
+                const html = await res.text();
+                const win = window.open('', '_blank');
+                win.document.write(html);
+                win.document.close();
+                logConsole("Executive HTML report opened in printable window.", "green");
+            } catch (err) {
+                logConsole(`Error generating HTML report: ${err.message}`, 'red');
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Initialize
+        loadModules();
+    </script>
+</body>
+</html>

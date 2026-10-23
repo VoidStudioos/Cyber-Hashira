@@ -269,24 +269,135 @@ def test_graphql_batch_dos():
     assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
     assert any("CWE-776" == f.get("cwe") or "CWE-400" == f.get("cwe") for f in res["payload"]["findings"])
 
+def test_http_request_smuggling():
+    """Verify HTTP Request Smuggling & CL.TE / TE.CL desync auditor"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "http-request-smuggling", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "smug-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-444" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_cache_poisoning():
+    """Verify Web Cache Poisoning & Web Cache Deception auditor"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "cache-poisoning-deception", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "cache-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-444" == f.get("cwe") or "CWE-524" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_ssti_polyglot():
+    """Verify Server-Side Template Injection (SSTI) polyglot auditor"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "ssti-polyglot-engine", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "ssti-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"simulation": True}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("type") == "TaskCompleted" and res.get("payload", {}).get("success") is True
+    assert any("CWE-1336" == f.get("cwe") or "CWE-917" == f.get("cwe") for f in res["payload"]["findings"])
+
+def test_jwt_security():
+    """Verify JWT & cryptographic token analyzer"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "jwt-security-analyzer", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "jwt-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"sample_token": "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9."}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("status") == "success" or res.get("type") == "TaskCompleted"
+    findings = res.get("result", {}).get("findings", []) or res.get("payload", {}).get("findings", [])
+    assert any("JWT_ALG_NONE" in f.get("vuln_type", "") or "JWT" in f.get("title", "") for f in findings)
+
+def test_ssrf_guard():
+    """Verify SSRF & Cloud Metadata defense validator"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "ssrf-guard-validator", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "ssrf-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"sample_urls": ["http://169.254.169.254/latest/meta-data/"]}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("status") == "success" or res.get("type") == "TaskCompleted"
+    findings = res.get("result", {}).get("findings", []) or res.get("payload", {}).get("findings", [])
+    assert any("SSRF" in f.get("title", "") or "Metadata" in f.get("title", "") for f in findings)
+
+def test_subdomain_takeover():
+    """Verify Subdomain Takeover & dangling DNS auditor"""
+    worker_script = os.path.join(REPO_ROOT, "modules", "subdomain-takeover-audit", "worker.py")
+    p = subprocess.Popen([sys.executable, worker_script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, _ = p.communicate(input=json.dumps({
+        "type": "RunTask",
+        "payload": {
+            "task_id": "takeover-task-1",
+            "target": "example.com",
+            "scope_approved": True,
+            "options": {"sample_cnames": [{"subdomain": "blog.corp.internal", "cname": "corp-blog.github.io"}]}
+        }
+    }) + "\n", timeout=5)
+    res = json.loads(out.strip().split("\n")[0])
+    assert res.get("status") == "success" or res.get("type") == "TaskCompleted"
+    findings = res.get("result", {}).get("findings", []) or res.get("payload", {}).get("findings", [])
+    assert any("Takeover" in f.get("title", "") for f in findings)
+
 def main():
     print("=" * 70)
-    print("CYBER HASHIRA - BUG BOUNTY ADVANCED VERIFICATION SUITE (12 ENGINES)")
+    print("CYBER HASHIRA - BUG BOUNTY ADVANCED VERIFICATION SUITE (18 ENGINES)")
     print("=" * 70)
 
     tests = [
-        ("Module 2: Race Condition & Concurrency Engine", test_module_2_race_condition),
-        ("Module 3: OAuth 2.0 & SSO Account Takeover Auditor", test_module_3_oauth_account_takeover),
+        ("Module: Race Condition & Concurrency Engine (CWE-367)", test_module_2_race_condition),
+        ("Module: OAuth 2.0 & SSO Account Takeover Auditor (CWE-601/352)", test_module_3_oauth_account_takeover),
         ("Module: JavaScript Endpoint & Secret Miner", test_module_2_batch2_js_endpoint_miner),
         ("Module: Hidden Parameter & Debug Switch Miner", test_module_3_batch2_param_miner),
-        ("Module: Prototype Pollution (CWE-1321)", test_prototype_pollution),
+        ("Module: Prototype Pollution Detector (CWE-1321)", test_prototype_pollution),
         ("Module: NoSQL Injection & MongoDB Operators (CWE-943)", test_nosql_injection),
         ("Module: CRLF Injection & Response Splitting (CWE-113)", test_crlf_injection),
         ("Module: DOM XSS & postMessage Origin Security (CWE-79/345)", test_dom_xss_postmessage),
         ("Module: XML External Entity & DTD Injection (CWE-611)", test_xxe_injection),
         ("Module: gRPC & Protocol Buffers Security (CWE-306)", test_grpc_protobuf),
         ("Module: Open Redirect & OAuth Chaining (CWE-601)", test_open_redirect),
-        ("Module: GraphQL Batching & Query Amplification (CWE-776)", test_graphql_batch_dos)
+        ("Module: GraphQL Batching & Query Amplification (CWE-776)", test_graphql_batch_dos),
+        ("Module: HTTP Request Smuggling & Desync (CWE-444)", test_http_request_smuggling),
+        ("Module: Web Cache Poisoning & Cache Deception (CWE-444/524)", test_cache_poisoning),
+        ("Module: Server-Side Template Injection Polyglot (CWE-1336)", test_ssti_polyglot),
+        ("Module: JWT & Cryptographic Token Analyzer (CWE-347)", test_jwt_security),
+        ("Module: SSRF & Cloud Metadata Defense (CWE-918)", test_ssrf_guard),
+        ("Module: Subdomain Takeover & Dangling DNS (CWE-284)", test_subdomain_takeover),
     ]
 
     passed = 0

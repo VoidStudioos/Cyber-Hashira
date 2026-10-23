@@ -159,8 +159,10 @@ def deduplicate_findings(findings: List[Dict[str, Any]]) -> List[Dict[str, Any]]
 # 3. SARIF v2.1.0 EXPORTER (OASIS Standard)
 # ==============================================================================
 
-def export_sarif(findings: List[Dict[str, Any]], scan_metadata: Dict[str, Any]) -> str:
+def export_sarif(findings: List[Dict[str, Any]], scan_metadata: Optional[Dict[str, Any]] = None) -> str:
     """Generates an OASIS SARIF 2.1.0 JSON document from findings."""
+    if scan_metadata is None:
+        scan_metadata = {}
     rules_dict: Dict[str, Any] = {}
     results_list: List[Dict[str, Any]] = []
 
