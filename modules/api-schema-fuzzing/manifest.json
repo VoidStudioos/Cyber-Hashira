@@ -1,0 +1,79 @@
+{
+  "id": "api-schema-fuzzing",
+  "name": "Api Schema Fuzzing",
+  "description": "Generate random requests from OpenAPI/GraphQL schemas to find errors.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "API Security",
+  "icon": "shield",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {}
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cwe": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "detected_at": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "cwe",
+              "title",
+              "description",
+              "evidence",
+              "detected_at"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "",
+    "sha256": "",
+    "size_bytes": 0
+  }
+}
