@@ -39,7 +39,7 @@ jobs:
       - name: Package All Verified Module Artifacts
         run: python scripts/package_all_modules.py
 
-      - name: Run Modular Verification Test Suites (30 Modules)
+      - name: Run Modular Verification Test Suites (120 Modules)
         run: |
           python tests/test_modular_lifecycle.py
           python tests/test_web_security_module.py

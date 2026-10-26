@@ -26,3 +26,4 @@ jobs:
       - name: Validate Registry and Checksums
         run: |
           python3 tests/test_modular_lifecycle.py
+          python3 tests/test_all_modules_matrix.py
