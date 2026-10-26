@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  cyber-hashira:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cyber-hashira:latest
+    container_name: cyber-hashira-workstation
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./reports:/app/reports
+      - ./evidence:/app/evidence
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # Optional interactive TUI runner via docker-compose run:
+  # docker-compose run --rm tui
+  tui:
+    image: cyber-hashira:latest
+    container_name: cyber-hashira-tui
+    entrypoint: ["python3", "hashira.py"]
+    command: ["tui"]
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./reports:/app/reports
+      - ./evidence:/app/evidence

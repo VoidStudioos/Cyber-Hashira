@@ -1,284 +1,413 @@
 # Cyber Hashira
 
-> **Ultimate Modular Cybersecurity & Penetration Testing Workstation**  
-> *GitHub-First • Windows & Ubuntu • Lightweight Host • On-Demand Modules • AI-Powered*
+> **The Ultimate Modular Cybersecurity & Penetration Testing Workstation**  
+> *120 Certified Modules • 3 Formats (Web, Terminal TUI, Desktop) • Windows & Linux • Docker-Ready • Offline-First • AI-Assisted*
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Passing-emerald.svg)](.github/workflows/ci.yml)
-[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-64%2F64%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
+[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-120%2F120%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
+[![Interfaces](https://img.shields.io/badge/Interfaces-Web%20%7C%20TUI%20%7C%20Desktop-purple.svg)](#-user-interfaces-3-formats)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](#-docker-deployment)
 [![Reporting Engine](https://img.shields.io/badge/SARIF%20v2.1.0-OASIS%20Compliant-blue.svg)](scripts/reporting_engine.py)
-[![Supported OS](https://img.shields.io/badge/OS-Windows%20%7C%20Ubuntu-orange.svg)](#2-supported-platforms)
+[![Platforms](https://img.shields.io/badge/OS-Windows%20%7C%20Linux%20%7C%20macOS-orange.svg)](#-supported-platforms)
+[![Persian Docs](https://img.shields.io/badge/Documentation-فارسی-emerald.svg)](README.fa.md)
 
 ---
 
-## 1. Overview
-
-**Cyber Hashira** is a unified, extensible cybersecurity workstation designed for authorized penetration testing, security posture auditing, digital forensics, supply-chain verification, and defensive engineering.
-
-Unlike monolithic security suites that package gigabytes of unneeded dependencies into one rigid installer, Cyber Hashira adheres to a **Strict Modular Architecture**:
-
-- **Lightweight Host Application (Layer A):** Built with Tauri 2, React, TypeScript, Rust, and local SQLite WAL. Features workspace management, target authorization boundaries (ScopeGuard), unified findings normalization, evidence tracking, workflow automation, and a built-in Module Store.
-- **Independently Installable Modules (Layer B):** 64 specialized cybersecurity disciplines packaged and downloaded strictly on-demand with SHA-256 cryptographic verification.
-- **Enterprise Evidence & Reporting Pipeline:** Built-in secret redaction, cross-module finding deduplication, OASIS SARIF v2.1.0 compliance, and printable Executive/Technical HTML/PDF reporting.
-- **GitHub Distribution Infrastructure (Layer C):** Versioned JSON registry metadata, SHA-256 integrity verification, and releases distributed securely without persistent server dependencies.
+## 📖 Table of Contents
+1. [Overview](#-overview)
+2. [User Interfaces (3 Formats)](#-user-interfaces-3-formats)
+3. [Quick Start & Unified Launcher (`hashira.py`)](#-quick-start--unified-launcher-hashirapy)
+4. [Docker Deployment](#-docker-deployment)
+5. [Certified Modules Catalog (120 Modules)](#-certified-modules-catalog-120-modules)
+6. [Standalone Installers & Distribution](#-standalone-installers--distribution)
+7. [Verification & Test Matrix](#-verification--test-matrix)
+8. [Architecture & Security Principles](#-architecture--security-principles)
+9. [Project Structure](#-project-structure)
+10. [License & Ethics](#-license--ethics)
 
 ---
 
-## 2. Supported Platforms
+## 🌟 Overview
 
-| Platform | Support Tier | Architecture | Package Formats |
+**Cyber Hashira** is a unified, high-performance cybersecurity workstation designed for authorized penetration testing, security posture auditing, digital forensics, red-teaming, and defensive engineering.
+
+Unlike monolithic vulnerability scanners that package gigabytes of fragile dependencies into one rigid installer, Cyber Hashira adheres to a **Strict Modular Architecture**:
+
+- **Presentation Layer (3 Formats):** Run anywhere as a modern **Web Security Dashboard**, an ultra-fast **Terminal TUI**, or a high-performance **Native Desktop Application**.
+- **120 Certified Security Modules:** Independently packageable disciplines spanning Web Application Security, Cloud IAM, Kubernetes, Active Directory, Reverse Engineering, Cryptography, and Supply-Chain.
+- **Strict ScopeGuard Boundary Enforcement:** Non-negotiable target authorization checks preventing active probes against unauthorized assets.
+- **Offline-First & Zero Telemetry:** Operates 100% offline. No telemetry, no cloud leakages, and all evidence stored locally.
+- **OASIS SARIF v2.1.0 & Executive Reporting:** Automatic secret redaction, vulnerability deduplication, and export to SARIF (GitHub Code Scanning compatible) and HTML/PDF reports.
+
+---
+
+## 🖥️ User Interfaces (3 Formats)
+
+Cyber Hashira provides three distinct presentation formats engineered for Windows, Linux, and macOS:
+
+| Interface | Technology | Best For | Launch Command |
 |---|---|---|---|
-| **Windows 10 / 11** | Tier 1 (Official) | x86_64 | MSI Installer, Standalone EXE |
-| **Ubuntu 22.04 / 24.04 LTS** | Tier 1 (Official) | x86_64 | DEB Package, AppImage |
-| **macOS (Apple Silicon & Intel)** | Tier 2 (Preview) | aarch64 / x86_64 | DMG Package |
-| **Linux (ARM64)** | Planned | aarch64 | Tarball |
+| **🌐 Web Dashboard** | Flask + Tailwind CSS + Vanilla JS | Browser-based operations, local networks, remote VPS servers, Docker containers | `python hashira.py web` |
+| **💻 Terminal TUI** | Zero-Dependency ANSI Console Engine | Headless servers, SSH sessions, minimal environments, tmux/screen | `python hashira.py tui` |
+| **🖥️ Native Desktop App** | Tauri 2 (Rust) + React 18 + Vite + Tailwind | Dedicated desktop workstation with rich visual workspaces | `python hashira.py desktop` |
 
 ---
 
-## 3. Core Architecture
+## ⚡ Quick Start & Unified Launcher (`hashira.py`)
 
-```mermaid
-graph TD
-    subgraph Host ["Layer A: Cyber Hashira Host (Tauri 2 + Rust + React)"]
-        UI["Desktop UI / Multilingual Dashboard (EN / FA RTL)"]
-        Scope["ScopeGuard (Target Authorization Engine)"]
-        DB["Local SQLite WAL Findings & Evidence DB"]
-        Store["Module Store & Package Manager"]
-        Runtime["Subprocess Module Runtime & Health Monitor"]
-        ReportEng["Reporting Engine (SARIF / HTML / Redaction / Dedupe)"]
-        Workflow["Visual Automation Engine"]
-    end
+The root launcher `hashira.py` provides a single entry point for all workflows:
 
-    subgraph Registry ["Layer C: GitHub Distribution Infrastructure"]
-        Catalog["Versioned Module Registry (v1/modules.json)"]
-        Artifacts["SHA-256 Verified Tarball Packages (49 Modules)"]
-    end
-
-    subgraph Modules ["Layer B: 49 Certified On-Demand Security Modules"]
-        M1["Web & API Security (14 Modules)"]
-        M2["Cloud, K8s & Containers (5 Modules)"]
-        M3["Host, OS & IAM (4 Modules)"]
-        M4["DevSecOps & Supply Chain (5 Modules)"]
-        M5["Forensics, SIEM & IR (6 Modules)"]
-        M6["Network, Wireless & Hardware (5 Modules)"]
-        M7["Threat Modeling & AI Assistant (2 Modules)"]
-    end
-
-    Catalog -->|Metadata & SHA-256| Store
-    Artifacts -->|Verified Download & Unpack| Runtime
-    Runtime -->|Stdio JSON-RPC IPC| Modules
-    Scope -.->|Validates Authorized Scope| Runtime
-    Modules -->|Normalized Findings & Evidence| ReportEng
-    ReportEng -->|Redacted, Deduplicated Findings| DB
-    DB --> UI
-    Workflow --> Runtime
-```
-
----
-
-## 4. Key Highlights
-
-### 🛡️ Non-Negotiable Target Authorization (ScopeGuard)
-Active security scans and reconnaissance tools are strictly forbidden from launching against unauthorized targets. Every project defines explicit allowlists (Exact Domains, Wildcards `*.example.com`, Single IPs, or CIDR subnets `192.168.1.0/24`). ScopeGuard intercepts and halts any out-of-scope operation before subprocess execution.
-
-### 📦 Safe, Isolated Module Lifecycle
-Modules run in isolated child processes with sandboxed privileges and communicate with the Host exclusively via a standardized stdio JSON-RPC contract (`HealthCheck` / `RunTask` / `TaskCompleted`). No untrusted native dynamic libraries are ever loaded into the privileged Host core process.
-
-### 🔒 Secret & Credential Redaction Engine
-Automatic redaction pattern matching ensures that private keys (RSA, EC, PGP), cloud credentials (AWS Access Keys and Secret Keys), Bearer/JWT tokens, Basic auth credentials, and database connection strings are masked across all logs, findings, screenshots, and exported reports.
-
-### 📊 Cross-Module Finding Deduplication
-Correlates findings across different security scanners targeting the same asset, generates canonical vulnerability signatures (`target|path|cwe|cve`), merges duplicate entries, consolidates evidence, and tracks all contributing modules.
-
-### 📑 OASIS SARIF v2.1.0 & Executive HTML Reports
-Export assessment findings in standardized OASIS SARIF v2.1.0 format (compatible with GitHub Code Scanning, DefectDojo, and Jira) or generate printable executive/technical HTML/PDF reports featuring a 0-100 posture scoring gauge and severity breakdown.
-
-### 🌐 Bilingual Support with Full RTL/LTR Switching
-Seamless real-time switching between English (Left-to-Right) and Persian (Right-to-Left) with tailored typography, directional layouts, and localized report generation.
-
-### 🔒 Offline-First & Zero Telemetry
-Cyber Hashira operates 100% offline. Findings, targets, captured evidence, and audit logs remain on your local disk in a local SQLite database. No scan results or sensitive client data are ever transmitted to third-party telemetry servers.
-
----
-
-## 5. Certified Security Disciplines & Available Modules (64 Modules)
-
-The official Cyber Hashira catalog currently distributes **64 independently packaged, certified modules**:
-
-### Web Application & API Security
-| Module ID | Name | Version | Capabilities |
-|---|---|:---:|---|
-| `web-security` | Web Security Workspace | 1.0.0 | Intercepting proxy, HTTP history, Repeater, Decoder/Encoder, passive scan |
-| `http-request-smuggling` | HTTP Request Smuggling & Desync Engine | 1.0.0 | CL.TE, TE.CL, TE.TE desync detection, safe timing probes, HTTP/2 downgrade audit |
-| `race-condition-engine` | Race Condition & Concurrency Engine | 1.0.0 | Single-packet attack synchronization, limit overrun, double-spend, TOCTOU flaws |
-| `oauth-account-takeover` | OAuth 2.0 & SSO Account Takeover Auditor | 1.0.0 | Pre-ATO identification, redirect_uri traversal, state CSRF, open redirect token leak |
-| `cache-poisoning-deception` | Web Cache Poisoning & Cache Deception Engine | 1.0.0 | Unkeyed header reflection, Web Cache Deception (WCD) delimiters, Fat GET discrepancies |
-| `js-endpoint-miner` | JavaScript Endpoint & Secret Miner | 1.0.0 | Exposed .js.map source maps, hidden REST/GraphQL routes, embedded cloud credentials |
-| `param-miner` | Hidden Parameter & Debug Switch Miner | 1.0.0 | Differential query/body analysis, administrative debug switches, HPP discrepancy |
-| `ssti-polyglot-engine` | Server-Side Template Injection (SSTI) Engine | 1.0.0 | Multi-dialect arithmetic polyglots (Jinja2, Twig, Freemarker, Spring SpEL, ERB) |
-| `prototype-pollution-detector` | Client & Server Prototype Pollution Detector | 1.0.0 | Canary property injection, DOM gadget detection, recursive merge sanitization |
-| `nosql-injection-auditor` | NoSQL Injection & MongoDB Operator Auditor | 1.0.0 | MongoDB operators ($ne, $gt, $regex), authentication bypass, blind data extraction |
-| `crlf-injection-engine` | CRLF Injection & HTTP Response Splitting Engine | 1.0.0 | %0d%0a CRLF encoding vectors, Set-Cookie session fixation, response splitting |
-| `dom-xss-postmessage` | DOM XSS & postMessage Security Auditor | 1.0.0 | DOM source-to-sink data flow tracking, window postMessage origin verification |
-| `xxe-injection-auditor` | XML External Entity & DTD Auditor | 1.0.0 | Inline SYSTEM entity parsing, SVG file upload XXE, external DTD parameter expansion |
-| `grpc-protobuf-security` | gRPC & Protocol Buffers Security | 1.0.0 | Server Reflection API dumping, unauthenticated RPC methods, protobuf schema recovery |
-| `open-redirect-chainer` | Open Redirect & Flow Chaining Engine | 1.0.0 | 20+ URL parser confusion bypasses, OAuth authorization code leakage chaining |
-| `graphql-batch-dos` | GraphQL Query Amplification & Batching | 1.0.0 | JSON array batching bypass, field alias multiplexing, circular query depth limits |
-| `api-security` | API Security & Schema Assessment | 1.0.0 | REST/GraphQL introspection, Swagger/OpenAPI exposure discovery, BOLA/IDOR checks |
-| `auth-multi-role` | Authorization & Multi-Role API Testing | 1.0.0 | BOLA (API1:2023) and BFLA (API5:2023) multi-tenant cross-role testing |
-| `authenticated-crawler` | Authenticated Web Crawler & Session Manager | 1.0.0 | Recursive crawl, session cookie preservation, form extraction, hidden admin detection |
-| `dast-verifier` | DAST Evidence Verifier & Reproduction | 1.0.0 | Active, non-destructive reproduction probes with strict confidence labeling |
-| `api-fuzzing` | Schema-Aware API Fuzzer & Boundary Tester | 1.0.0 | Rate-limited negative testing, type confusion, integer boundaries, 500 error detection |
-| `csp-headers-evaluator` | Content Security Policy & Header Auditor | 1.0.0 | CSP Level 3 directives, script-src unsafe-inline, clickjacking frame-ancestors |
-| `cors-websocket-audit` | CORS & WebSocket Security Auditor | 1.0.0 | Arbitrary reflected origin, null origin trust, CSWSH WebSocket hijacking audit |
-| `cookie-session-hygiene` | Cookie Security & Session Hygiene Inspector | 1.0.0 | HttpOnly, Secure, SameSite, __Host- / __Secure- prefixes, session token entropy |
-| `subdomain-takeover-audit` | Subdomain Takeover & Dangling DNS Auditor | 1.0.0 | Dangling CNAMEs pointing to unclaimed AWS S3, GitHub Pages, Heroku, Azure |
-| `ssrf-guard-validator` | SSRF & Cloud Metadata Defense Validator | 1.0.0 | Cloud metadata 169.254.169.254, RFC 1918 private subnets, IP obfuscation |
-| `graphql-security-audit` | GraphQL Schema & Query Depth Auditor | 1.0.0 | Introspection queries, circular query depth DoS, batching amplification leaks |
-| `jwt-security-analyzer` | JWT & Cryptographic Token Analyzer | 1.0.0 | 'alg: none' bypass, weak HMAC secrets, RSA-to-HMAC confusion, exp expiration |
-| `waf-evasion-defense` | WAF & Normalization Defense Validator | 1.0.0 | Full-width Unicode normalization discrepancies, HPP precedence mismatches |
-
-### Cloud, Infrastructure & Containers
-| Module ID | Name | Version | Capabilities |
-|---|---|:---:|---|
-| `cloud-iac-security` | Infrastructure as Code & Cloud Security | 1.0.0 | CIS AWS & K8s benchmarks, public S3 buckets, open 0.0.0.0/0 SSH/RDP |
-| `cloud-iam` | Cloud IAM & Excessive Privilege Auditor | 1.0.0 | Wildcard admin (*:*), public bucket permissions, cross-account trust policies |
-| `kubernetes-posture` | Kubernetes Security Posture & RBAC Auditor | 1.0.0 | Pod Security Standards (PSS), privileged pods, wildcard RBAC, hostPath mounts |
-| `container-security` | Container & Dockerfile Security Inspector | 1.0.0 | CIS Docker Benchmark, root user execution, sensitive socket mounts |
-| `docker-runtime` | Docker Daemon & Runtime Hardening Inspector | 1.0.0 | Plaintext TCP socket exposure, userns-remap, inter-container communication (icc) |
-| `iac-remediation-advisor` | IaC Automated Remediation Advisor | 1.0.0 | Generates unified Git diff patches for Terraform and Kubernetes security violations |
-
-### Host, Endpoint & Database Security
-| Module ID | Name | Version | Capabilities |
-|---|---|:---:|---|
-| `host-posture` | Host & Endpoint Security Posture Inspector | 1.0.0 | Windows Defender, BitLocker, Firewall profiles; Linux SSH hardening & sysctl |
-| `database-audit` | Database Security & Configuration Auditor | 1.0.0 | PostgreSQL, MySQL, MongoDB mandatory TLS, superuser privileges, wildcard binding |
-| `identity-ad-hygiene` | Active Directory & Identity Hygiene Auditor | 1.0.0 | AS-REP Roasting pre-auth risks, Kerberoasting SPN audit, stale admin accounts |
-| `credentials-vault` | Secrets & Credential Vault Engine | 1.0.0 | AES-256-GCM vault, credential age tracking, automated rotation advisories |
-
-### Source Code, CI/CD & Supply Chain
-| Module ID | Name | Version | Capabilities |
-|---|---|:---:|---|
-| `sast-source-scanner` | Static Application Security Testing (SAST) | 1.0.0 | Source-to-sink detection for SQLi, command injection, insecure deserialization |
-| `secrets-leak-scanner` | Secrets, API Keys & PII Leak Scanner | 1.0.0 | Multi-cloud credential leak detection (AWS, GitHub, Stripe, OpenAI, SSH keys) |
-| `sbom-dependency-audit` | SBOM & Dependency Vulnerability Auditor | 1.0.0 | CycloneDX v1.4 SBOM generation, package.json / requirements.txt CVE matching |
-| `sca-license-compliance` | SCA Open Source License Compliance Auditor | 1.0.0 | Detection of viral copyleft licenses (GPL, AGPL) and commercial license conflicts |
-| `cicd-supply-chain` | CI/CD Supply Chain & Attestation Validator | 1.0.0 | Cosign artifact signatures, SLSA v1.0 provenance levels, ephemeral runner audit |
-| `github-actions-security` | GitHub Actions & CI/CD Security Inspector | 1.0.0 | OWASP CI/CD Top 10, script injection in `run:`, unpinned actions |
-
-### Forensics, SIEM & Incident Response
-| Module ID | Name | Version | Capabilities |
-|---|---|:---:|---|
-| `forensics` | Digital Forensics & Malware Triage | 1.0.0 | MD5/SHA-1/SHA-256 hashes, Shannon entropy (>7.0 packed binary detection) |
-| `network-forensics-pcap` | Network Forensics & PCAP Credentials | 1.0.0 | Deep packet inspection, cleartext password harvesting, NetNTLMv2 hash recovery |
-| `incident-response` | Incident Response & Evidence Chain-of-Custody | 1.0.0 | ISO/IEC 27037 custody preservation, timeline correlation, evidence hashing |
-| `siem-connectors` | Enterprise SIEM & SOC Telemetry Ingestion | 1.0.0 | Read-only alert ingestion from Elastic, Splunk, and Wazuh; sensor health checks |
-| `sigma-threat-hunting` | Sigma Threat Hunting Rule Engine | 1.0.0 | Sigma YAML detection evaluation, Splunk SPL & Elasticsearch KQL translation |
-| `yara-offline-scanner` | YARA Offline Malware Signature Scanner | 1.0.0 | Safe offline pattern scanning for webshells, beacons, and ransomware strings |
-
-### Reconnaissance, Threat Intel & Architecture
-| Module ID | Name | Version | Capabilities |
-|---|---|:---:|---|
-| `sample-dns` | DNS Reconnaissance Engine | 1.0.0 | A, AAAA, MX, NS, TXT record lookups & DNS misconfiguration detection |
-| `network-security` | Network Discovery & Port Scanner | 1.0.0 | Nmap adapter + async socket fallback, banner grabbing, service identification |
-| `threat-intelligence` | Threat Intelligence & MITRE Engine | 1.0.0 | IOC enrichment (IP, domain, hashes), LockBit/Cobalt Strike triage, MITRE ATT&CK |
-| `sensor-coverage-attack` | MITRE Sensor Mappings & Detection Coverage | 1.0.0 | Telemetry coverage against Sysmon, Auditd, Zeek, Suricata; blindspot analysis |
-| `email-security` | Email Security & Anti-Spoofing Auditor | 1.0.0 | SPF (+all/~all/-all), DMARC (p=reject vs none), DKIM alignment, BIMI, MTA-STS |
-| `vulnerability` | Vulnerability Assessment & Correlation Engine | 1.0.0 | Nuclei template parser, CVE/CWE mapping, CVSS v3.1 scoring, SARIF v2.1.0 export |
-| `threat-modeling` | Automated Threat Modeling Engine (STRIDE) | 1.0.0 | DFD diagram analysis, trust boundaries, STRIDE/DREAD threat classification |
-| `hashira-ai` | Hashira AI Defensive Assistant | 1.0.0 | Secret redaction, CVSS triage, bilingual Persian/English reasoning |
-
-### Mobile, Hardware & Automotive Security
-| Module ID | Name | Version | Capabilities |
-|---|---|:---:|---|
-| `mobile-static-audit` | Mobile Application Static Security Auditor | 1.0.0 | APK/IPA permissions, usesCleartextTraffic, allowBackup, embedded secrets |
-| `wireless-security` | Wireless & 802.11 WiFi Security Inspector | 1.0.0 | WEP deprecation, WPA-TKIP auditing, WPS Pixie-Dust risk analysis |
-| `canbus-automotive-security` | CAN Bus & Automotive Vehicle Security | 1.0.0 | Passive CAN log inspection, arbitration DoS flooding (ID 0x000), UDS 0x27 bypass |
-| `automotive-uds-analyzer` | Automotive UDS Diagnostics Security Analyzer | 1.0.0 | Passive UDS (ISO 14229) analysis, static seed generation, ECU reflash checks |
-
----
-
-## 6. Enterprise Evidence & Reporting Engine
-
-Cyber Hashira includes a dedicated reporting and evidence engine (`scripts/reporting_engine.py`) designed for both interactive desktop and headless CLI CI/CD workflows:
-
-### CLI Commands:
+### 1. Launch the Web Security Dashboard
 ```bash
-# 1. Run a module and export directly to OASIS SARIF v2.1.0
-python scripts/cyber_hashira_cli.py run --module api-security --target https://api.target.com --format sarif --output scan.sarif
+python hashira.py web
+# With custom host/port:
+python hashira.py web --host 0.0.0.0 --port 8080
+```
+Open [http://localhost:8080](http://localhost:8080) to access the interactive dashboard.
 
-# 2. Run a module and generate a printable executive HTML report
-python scripts/cyber_hashira_cli.py run --module kubernetes-posture --target k8s-cluster --format html --output k8s-report.html
+### 2. Launch the Interactive Terminal TUI
+```bash
+python hashira.py tui
+```
+Navigate modules, run instant health checks, and execute scans directly in your terminal.
 
-# 3. Convert an existing findings JSON into an executive HTML report
-python scripts/cyber_hashira_cli.py report --input findings.json --format html --output executive-report.html
+### 3. Launch the Native Desktop App
+```bash
+python hashira.py desktop
+```
 
-# 4. Convert findings into SARIF for GitHub Code Scanning
-python scripts/cyber_hashira_cli.py report --input findings.json --format sarif --output results.sarif
+### 4. Execute a Headless Scan (CLI / CI/CD)
+```bash
+# Direct scan against authorized target:
+python hashira.py scan --module api-security --target https://api.example.com --simulate
+
+# Run port & network discovery:
+python hashira.py scan --module network-security --target 192.168.1.10
+```
+
+### 5. List Certified Modules
+```bash
+# List all 120 certified modules:
+python hashira.py list
+
+# Filter by category:
+python hashira.py list --category "Cloud"
+python hashira.py list --category "Web"
+```
+
+### 6. Run the Full 120-Module Verification Matrix
+```bash
+python hashira.py matrix
 ```
 
 ---
 
-## 7. Quickstart & Verification
+## 🐳 Docker Deployment
 
-### Prerequisites
-- **Node.js:** v20+ with `pnpm`
-- **Python:** 3.10+
-- **Rust:** 1.78+ (`rustc`, `cargo` for native Host compilation)
+Run Cyber Hashira in an isolated, portable container without installing local dependencies:
 
-### Automated Test Matrix (49 Modules Certified)
+### Using Docker Compose (Recommended)
 ```bash
 # 1. Clone the repository
 git clone https://github.com/VoidStudioos/Cyber-Hashira.git
 cd Cyber-Hashira
 
-# 2. Synchronize and package all 49 modules into registry
-python scripts/package_all_modules.py
+# 2. Start the Web Dashboard in the background
+docker-compose up -d
 
-# 3. Run the master 5-gate verification test harness across all 49 modules
-python tests/test_all_modules_matrix.py
+# 3. View logs
+docker-compose logs -f
+```
+Access the dashboard at `http://localhost:8080`. Evidence and reports are automatically mounted to `./evidence` and `./reports`.
 
-# 4. Verify the secret redaction and reporting pipeline
-python tests/test_reporting_engine.py
+### Run Interactive Terminal TUI in Docker
+```bash
+docker-compose run --rm tui
+```
 
-# 5. Build Desktop Frontend Application
-pnpm install
-pnpm build
+### Build & Run Manually
+```bash
+docker build -t cyber-hashira .
+docker run -d -p 8080:8080 --name cyber-hashira-app cyber-hashira
 ```
 
 ---
 
-## 8. Project Structure
+## 📦 Standalone Installers & Distribution
+
+Generate portable, standalone bundles for Windows and Linux in seconds:
+
+```bash
+# Generate both Windows (.zip) and Linux (.tar.gz) standalone distributions:
+python scripts/build_installers.py
+```
+
+### Output Packages:
+- **Windows Portable Standalone:** `dist/packages/cyber-hashira-windows-x64-v1.0.0.zip`
+  - Includes one-click `Launch-Web-Panel.bat`, `Launch-Terminal-TUI.bat`, and `Verify-All-120-Modules.bat`.
+- **Linux Portable Standalone:** `dist/packages/cyber-hashira-linux-x64-v1.0.0.tar.gz`
+  - Includes `launch-web.sh`, `launch-tui.sh`, and `cyber-hashira.desktop` application menu entry.
+
+---
+
+## 🛡️ Certified Modules Catalog (120 Modules)
+
+Cyber Hashira includes **120 independently certified security modules**, categorized across specialized cybersecurity domains:
+
+<details>
+<summary><b>🌐 1. Web Application & API Security (35+ Modules) — Click to expand</b></summary>
+
+- `web-security`: Intercepting proxy, history, repeater, decoder, passive analysis
+- `api-security`: REST & GraphQL introspection, OpenAPI spec exposure, BOLA detection
+- `api-fuzzing`: Schema-aware API fuzzer & boundary tester
+- `api-gateway-rate-limit-audit`: Rate-limit and throttling rule auditor for API Gateways
+- `api-schema-fuzzing`: Dynamic parameter and type-confusion generator from schemas
+- `auth-multi-role`: Multi-tenant authorization & BOLA/BFLA cross-role validator
+- `authenticated-crawler`: Authenticated session crawler with form extraction
+- `cache-poisoning-deception`: Web cache poisoning & unkeyed header reflection engine
+- `clickjacking-protector`: X-Frame-Options & CSP frame-ancestors validator
+- `cookie-session-hygiene`: HttpOnly, Secure, SameSite, and cookie prefix hygiene inspector
+- `cors-misconfiguration-auditor`: Arbitrary origin reflection and null-origin auditor
+- `cors-websocket-audit`: WebSocket origin validation and hijacking auditor
+- `crlf-injection-engine`: CRLF encoding vectors and HTTP response splitting engine
+- `csrf-token-checker`: Forms and API CSRF defense auditor
+- `csp-header-linter`: Content Security Policy linter for unsafe-inline / unsafe-eval
+- `csp-headers-evaluator`: Comprehensive CSP Level 3 policy evaluator
+- `csp-report-collector`: CSP report-uri aggregator and violation analyzer
+- `dast-verifier`: DAST evidence verification and safe reproduction engine
+- `dom-xss-postmessage`: DOM source-to-sink tracking & postMessage security
+- `graphql-batch-dos`: GraphQL query batching and amplification DoS auditor
+- `graphql-depth-limit-auditor`: Deeply nested recursive query DoS tester
+- `graphql-security-audit`: GraphQL introspection and schema exposure analyzer
+- `grpc-protobuf-security`: gRPC server reflection and unauthenticated RPC dumper
+- `hsts-preload-auditor`: Strict-Transport-Security preload readiness validator
+- `http-request-smuggling`: CL.TE, TE.CL, and TE.TE HTTP request smuggling engine
+- `http-request-smuggling-detector`: Chunked transfer desync discrepancy tester
+- `http-security-headers-checker`: Security headers posture (HSTS, CSP, Referrer, Permissions)
+- `http-smuggling-detector`: Request smuggling timing & desync analyzer
+- `js-endpoint-miner`: JavaScript source map analyzer, hidden route & API key miner
+- `jwt-expiration-checker`: Token expiration lifetime and missing `exp` claim detector
+- `jwt-kid-exposure`: Static or predictable `kid` header traversal analyzer
+- `jwt-security-analyzer`: Insecure HMAC/RSA confusion and `alg: none` bypass analyzer
+- `jwt-weak-signatures`: Weak HMAC signature and insecure signature detector
+- `nosql-injection-auditor`: MongoDB operator injection and authentication bypass tester
+- `oauth-account-takeover`: OAuth 2.0 / OIDC pre-ATO and redirect_uri traversal auditor
+- `oauth-redirect-uri-validator`: Permissive wildcard and regex redirect_uri auditor
+- `oauth-token-replay-detector`: OAuth token reuse and replay vulnerability auditor
+- `open-redirect-chainer`: URL parser confusion and OAuth token leak chainer
+- `open-redirect-finder`: Open redirect parameter discovery engine
+- `param-miner`: Hidden parameter and debug switch discovery engine
+- `path-traversal-fuzzer`: Directory traversal and LFI fuzzing engine
+- `prototype-pollution-detector`: Client and server prototype pollution detector
+- `race-condition-engine`: Single-packet concurrency attack and limit overrun engine
+- `rce-parameter-tester`: Remote command execution payload analyzer
+- `sql-injection-fuzzer`: SQL injection fuzzing and error-pattern analyzer
+- `sri-hash-verifier`: Subresource Integrity (SRI) hash presence auditor
+- `subresource-integrity-auditor`: External asset hash mismatch and tampering auditor
+- `ssrf-guard-validator`: Cloud metadata (169.254.169.254) and SSRF guard validator
+- `ssti-polyglot-engine`: Multi-dialect template injection (Jinja2, Twig, SpEL) engine
+- `waf-evasion-defense`: WAF Unicode normalization and HPP evasion validator
+- `webhook-url-validator`: Webhook SSRF and private network destination auditor
+- `websocket-origin-check`: Cross-Site WebSocket Hijacking origin checker
+- `xml-external-entity-scanner`: XML external entity (XXE) and external DTD scanner
+- `xxe-injection-auditor`: XXE file disclosure and inline entity parsing auditor
+</details>
+
+<details>
+<summary><b>☁️ 2. Cloud, Infrastructure, Kubernetes & Containers (20+ Modules) — Click to expand</b></summary>
+
+- `aws-secret-leak-scanner`: Source code scanner for exposed AWS access & secret keys
+- `cloud-iac-security`: CIS AWS & Terraform security posture auditor
+- `cloud-iam`: Cloud IAM excessive privilege and wildcard (`*:*`) policy auditor
+- `cloud-iam-policy-drift`: IAM policy drift and unauthorized permission change detector
+- `cloudflare-bypass-tester`: Direct origin IP exposure and WAF bypass tester
+- `cloudformation-iam-privilege-check`: CloudFormation template IAM privilege escalation analyzer
+- `container-runtime-capabilities`: Docker / Podman dangerous Linux capabilities (`CAP_SYS_ADMIN`)
+- `container-security`: CIS Docker Benchmark & insecure Dockerfile auditor
+- `docker-runtime`: Unprotected Docker TCP daemon and socket security inspector
+- `iac-remediation-advisor`: Automated Git diff patch generator for IaC violations
+- `k8s-image-scan-integrator`: Kubernetes container image vulnerability integrator
+- `k8s-pod-security-policy-check`: Pod Security Standards (PSS) & privileged container auditor
+- `k8s-rbac-audit`: Overly permissive ClusterRole and RoleBinding auditor
+- `k8s-service-account-token-check`: Default high-privilege ServiceAccount token auditor
+- `kubernetes-posture`: K8s cluster security posture and hostPath mount inspector
+- `s3-bucket-encryption-check`: S3 server-side encryption (SSE-S3, KMS) enforcement auditor
+- `s3-bucket-enumerator`: S3 bucket enumeration and ACL permission auditor
+- `s3-public-bucket-detector`: Public read/write S3 bucket exposure detector
+- `iis-configuration-audit`: Microsoft IIS request filtering, security headers and .NET posture
+</details>
+
+<details>
+<summary><b>🔍 3. Network, Discovery & Cryptography (15+ Modules) — Click to expand</b></summary>
+
+- `dns-caa-record-auditor`: DNS Certification Authority Authorization (CAA) auditor
+- `dns-dnssec-validator`: DNSSEC record existence and signature validation engine
+- `dns-wildcard-detector`: Wildcard DNS entry discovery and takeover risk detector
+- `dns-zone-transfer-tester`: AXFR DNS zone transfer vulnerability tester
+- `network-security`: Network discovery, port scanner (Nmap adapter + async socket fallback)
+- `sample-dns`: DNS reconnaissance and misconfiguration analyzer
+- `ssh-known-hosts-audit`: SSH known_hosts weak RSA key (<2048-bit) and DSA auditor
+- `ssh-weak-ciphers-audit`: Insecure SSH ciphers (`3des`, `blowfish-cbc`) detector
+- `subdomain-takeover-audit`: Dangling DNS CNAME takeover auditor (AWS, GitHub, Azure)
+- `tls-certificate-issuer-audit`: Untrusted and self-signed certificate issuer auditor
+- `tls-cryptography`: TLS certificate inspector and deprecated protocol auditor
+- `tls-misconfiguration-scanner`: SSLv3, TLS 1.0/1.1 deprecation and cipher auditor
+- `wireless-security`: 802.11 WiFi security inspector (WEP, WPA-TKIP, WPS Pixie-Dust)
+- `automotive-uds-analyzer`: Automotive UDS diagnostics (ISO 14229) security analyzer
+- `canbus-automotive-security`: CAN Bus vehicle security and arbitration DoS inspector
+</details>
+
+<details>
+<summary><b>🕵️ 4. Identity, Credential Hygiene & Host Posture (15+ Modules) — Click to expand</b></summary>
+
+- `credentials-vault`: AES-256-GCM encrypted credential vault and rotation advisor
+- `database-audit`: PostgreSQL, MySQL, MongoDB TLS and superuser configuration auditor
+- `host-posture`: Windows Defender, BitLocker, Firewall, and Linux sysctl posture
+- `identity-ad-hygiene`: Active Directory AS-REP / Kerberoasting risk auditor
+- `ldap-anonymous-bind-tester`: LDAP anonymous bind and directory enumeration auditor
+- `ldap-ssl-tls-enforcement`: LDAP StartTLS / LDAPS transport security auditor
+- `password-policy-checker`: Active Directory and LDAP password complexity policy auditor
+- `password-reuse-detector`: Cross-file, database and repository password reuse detector
+- `saml-metadata-validator`: SAML 2.0 metadata, signature and expiration validator
+</details>
+
+<details>
+<summary><b>🔬 5. Forensics, SIEM, CI/CD & AI Defense (15+ Modules) — Click to expand</b></summary>
+
+- `cicd-supply-chain`: SLSA provenance, Cosign attestation, and supply-chain validator
+- `code-injection-evaluator`: Source code analyzer for dangerous functions (`eval`, `exec`, `system`)
+- `cve-dependency-checker`: Dependency CVE vulnerability matcher
+- `email-security`: SPF, DMARC, DKIM, and BIMI anti-spoofing auditor
+- `forensics` / `digital-forensics`: Malware triage, cryptographic hashes, Shannon entropy (>7.0)
+- `github-actions-security`: OWASP CI/CD Top 10, unpinned actions and script injection auditor
+- `hashira-ai`: Bilingual (English/Persian) defensive AI reasoning assistant
+- `incident-response`: ISO/IEC 27037 chain-of-custody preservation and timeline correlation
+- `mobile-manifest-permissions`: AndroidManifest.xml and Info.plist excessive permission auditor
+- `mobile-static-audit`: Mobile APK/IPA static security and cleartext traffic auditor
+- `network-forensics-pcap`: Deep packet inspection and cleartext credential harvesting
+- `sast-source-scanner`: Static Application Security Testing (SAST) source-to-sink engine
+- `sbom-dependency-audit`: CycloneDX v1.4 SBOM generation and CVE correlation
+- `sca-license-compliance`: Viral copyleft (GPL, AGPL) license compliance auditor
+- `secrets-leak-scanner`: Multi-cloud secret, token and private key leak scanner
+- `sensor-coverage-attack`: MITRE ATT&CK telemetry coverage against Sysmon, Zeek, Suricata
+- `siem-connectors`: Telemetry ingestion from Elastic, Splunk, and Wazuh
+- `sigma-threat-hunting`: Sigma YAML detection rule engine with SPL/KQL translation
+- `threat-intelligence`: IOC enrichment and MITRE ATT&CK Enterprise Matrix correlation
+- `threat-modeling`: Automated STRIDE / DREAD threat modeling engine
+- `vulnerability` / `vulnerability-assessment`: Nuclei template evaluator and CVSS v3.1 scoring
+- `yara-offline-scanner`: Safe offline YARA pattern scanner for webshells and beacons
+</details>
+
+---
+
+## 🧪 Verification & Test Matrix
+
+Cyber Hashira enforces a strict 5-gate certification pipeline across all 120 modules:
+
+```text
+================================================================================
+CYBER HASHIRA - COMPLETE REGISTRY TEST MATRIX (120 MODULES)
+================================================================================
+[*] Discovered 120 module directories. Executing test matrix...
+
+#   | Module ID                    | Manifest | Artifact | Health | Scope  | RunTask
+------------------------------------------------------------------------------------
+1   | api-fuzzing                  | OK       | OK       | OK     | OK     | OK      [PASS]
+...
+120 | yara-offline-scanner         | OK       | OK       | OK     | OK     | OK      [PASS]
+------------------------------------------------------------------------------------
+Matrix Summary: 120/120 modules fully certified across all 5 verification gates.
+================================================================================
+```
+
+### Run Verification Harness:
+```bash
+python hashira.py matrix
+# Or run pytest test suites:
+python -m pytest tests/test_attack_chain_integration.py tests/test_bug_bounty_suite.py
+```
+
+---
+
+## 🏛️ Architecture & Security Principles
+
+```mermaid
+graph TD
+    subgraph Presentation ["Presentation Layer (Windows / Linux / macOS)"]
+        WEB["🌐 Web Dashboard (Flask + Tailwind CSS)"]
+        TUI["💻 Terminal TUI (ANSI Console Engine)"]
+        DESK["🖥️ Desktop App (Tauri 2 + React + Rust)"]
+        CLI["⚡ Headless CLI (hashira.py scan)"]
+    end
+
+    subgraph Core ["Cyber Hashira Core"]
+        LAUNCHER["hashira.py Unified Launcher"]
+        SCOPE["ScopeGuard (Target Authorization Barrier)"]
+        IPC["Stdio JSON-RPC IPC Protocol"]
+        REPORT["Evidence Engine (SARIF v2.1.0 / Redaction / Dedupe)"]
+    end
+
+    subgraph Registry ["Distribution & Module Ecosystem"]
+        CATALOG["registry/v1/modules.json (120 Modules)"]
+        ARTIFACTS["registry/artifacts/ (SHA-256 Tarballs)"]
+        MODULES["modules/ (120 Independent Workers)"]
+    end
+
+    WEB --> LAUNCHER
+    TUI --> LAUNCHER
+    DESK --> LAUNCHER
+    CLI --> LAUNCHER
+
+    LAUNCHER --> SCOPE
+    SCOPE --> IPC
+    IPC --> MODULES
+    MODULES --> REPORT
+    CATALOG --> ARTIFACTS
+```
+
+### Core Tenets:
+1. **Mandatory ScopeGuard:** Active scans are blocked unless the target is in the project's authorized target list.
+2. **Standardized Stdio IPC:** Modules communicate with the host strictly via JSON lines on `stdin`/`stdout` (`HealthCheck`, `RunTask`).
+3. **Zero Telemetry:** 100% offline-first. No third-party network pings or external tracking.
+
+---
+
+## 📂 Project Structure
 
 ```text
 Cyber-Hashira/
+├── hashira.py                   # Master unified cross-platform launcher
+├── Dockerfile                   # Official production container configuration
+├── docker-compose.yml           # Multi-service container orchestration
+├── .dockerignore                # Optimized Docker ignore patterns
+├── ui/
+│   ├── web/                     # Web Security Dashboard (Flask + HTML/Tailwind)
+│   └── tui/                     # Interactive Terminal Console Dashboard
 ├── apps/
-│   ├── desktop/          # Tauri 2 Desktop Shell + React 18 + Vite + Tailwind CSS
-│   └── server/           # Optional multi-user team synchronization server
-├── crates/
-│   ├── core/             # SQLite DB WAL, project & target manager, findings manager
-│   ├── scope-guard/      # Mandatory target authorization & parsed URL boundary validation
-│   ├── module-runtime/   # Secure module installer, unpacker & JSON-RPC executor
-│   ├── plugin-sdk/       # Standard Plugin Manifest & IPC contract definitions
-│   └── proxy/            # Intercepting HTTP/S proxy core
-├── modules/              # 49 Independently maintainable security modules
+│   └── desktop/                 # Tauri 2 Desktop Shell (Rust + React + Vite)
+├── modules/                     # 120 Certified Cybersecurity Modules
 ├── registry/
-│   ├── v1/modules.json   # Machine-readable registry catalog (49 certified entries)
-│   └── artifacts/        # SHA-256 verified module tarball archives (*.tar.gz)
+│   ├── v1/modules.json          # Catalog metadata for 120 certified modules
+│   └── artifacts/               # SHA-256 verified module archive packages (.tar.gz)
 ├── scripts/
-│   ├── cyber_hashira_cli.py     # Headless CLI runner and report generator
-│   ├── reporting_engine.py      # Secret redaction, deduplication, SARIF & HTML reports
-│   └── package_all_modules.py   # Module packager and SHA-256 registry synchronizer
+│   ├── build_installers.py      # Standalone installer packager (Windows & Linux)
+│   ├── build_windows.bat        # Windows one-click packager
+│   ├── build_linux.sh           # Linux one-click packager
+│   ├── package_all_modules.py   # Synchronizes tarballs and registry metadata
+│   ├── cyber_hashira_cli.py     # Headless CI/CD runner
+│   └── reporting_engine.py      # SARIF v2.1.0, redaction, and deduplication engine
 ├── tests/
-│   ├── test_all_modules_matrix.py  # Master 5-gate test harness for all 49 modules
-│   └── test_reporting_engine.py    # Test suite for secret redaction, dedupe, SARIF & HTML
-└── .github/workflows/    # Multi-platform CI/CD pipelines (Host CI, Windows, Ubuntu)
+│   ├── test_all_modules_matrix.py # 5-gate test harness for all 120 modules
+│   ├── test_attack_chain_integration.py # Multi-stage attack chain integration test
+│   └── test_bug_bounty_suite.py # Bug bounty engines regression test suite
+└── dist/
+    └── packages/                # Generated standalone distribution installers
 ```
 
 ---
 
-## 9. License & Ethics
+## ⚖️ License & Ethics
 
 Distributed under the **Apache License 2.0**. See [`LICENSE`](LICENSE) for details.
 
-> **Ethical Use Notice:** Cyber Hashira is engineered exclusively for authorized security research, educational purposes, and certified penetration testing with explicit written consent. Unauthorized scanning of third-party networks or systems is strictly illegal and prohibited.
+> **Ethical & Legal Notice:** Cyber Hashira is engineered exclusively for authorized security assessments, academic research, and certified penetration testing with explicit written consent. Unauthorized scanning, testing, or attacking of networks, systems, or assets without prior permission is strictly illegal.

@@ -1,0 +1,16 @@
+.git
+.github
+node_modules
+apps/desktop/node_modules
+apps/desktop/src-tauri/target
+target
+dist
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+.DS_Store
+Thumbs.db
