@@ -32,6 +32,7 @@ data/
 storage/
 evidence_vault/
 installed_modules/
+reports/
 
 # OS and Editor
 .DS_Store

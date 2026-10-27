@@ -11,6 +11,13 @@
 [![Platforms](https://img.shields.io/badge/OS-Windows%20%7C%20Linux%20%7C%20macOS-orange.svg)](#-supported-platforms)
 [![Persian Docs](https://img.shields.io/badge/Documentation-فارسی-emerald.svg)](README.fa.md)
 
+<p align="center">
+  <img src="assets/web_dashboard_preview.svg" alt="Cyber Hashira Web Security Dashboard" width="100%">
+</p>
+<p align="center">
+  <img src="assets/terminal_tui_preview.svg" alt="Cyber Hashira Terminal TUI Console" width="85%">
+</p>
+
 ---
 
 ## 📖 Table of Contents

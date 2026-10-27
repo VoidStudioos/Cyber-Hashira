@@ -9,6 +9,13 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](#-استقرار-با-داکر-docker)
 [![Documentation](https://img.shields.io/badge/English-Documentation-blue.svg)](README.md)
 
+<p align="center">
+  <img src="assets/web_dashboard_preview.svg" alt="پیش‌نمایش وب‌پنل امنیتی سایبر هاشیرا" width="100%">
+</p>
+<p align="center">
+  <img src="assets/terminal_tui_preview.svg" alt="پیش‌نمایش کنسول متنی ترمینال سایبر هاشیرا" width="85%">
+</p>
+
 ---
 
 ## 📖 فهرست مطالب

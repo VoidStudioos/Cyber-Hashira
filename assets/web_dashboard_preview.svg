@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06090e" />
+      <stop offset="50%" stop-color="#0c111a" />
+      <stop offset="100%" stop-color="#080c14" />
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#00ff9d" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#121a29" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#0b101a" stop-opacity="0.85" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bgGrad)" />
+  <circle cx="200" cy="150" r="280" fill="#00f0ff" opacity="0.04" filter="url(#glow)" />
+  <circle cx="1050" cy="500" r="320" fill="#00ff9d" opacity="0.03" filter="url(#glow)" />
+
+  <!-- Top App Bar -->
+  <rect x="0" y="0" width="1200" height="60" fill="#0a0e16" stroke="#1f2937" stroke-width="1" />
+  <circle cx="30" cy="30" r="6" fill="#ff5f56" />
+  <circle cx="50" cy="30" r="6" fill="#ffbd2e" />
+  <circle cx="70" cy="30" r="6" fill="#27c93f" />
+
+  <text x="110" y="37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="bold" fill="#00f0ff">⚔️ CYBER HASHIRA</text>
+  <rect x="270" y="18" width="130" height="24" rx="12" fill="#00ff9d" fill-opacity="0.12" stroke="#00ff9d" stroke-opacity="0.4" />
+  <text x="285" y="35" font-family="monospace" font-size="11" font-weight="bold" fill="#00ff9d">120/120 PASS</text>
+
+  <rect x="420" y="18" width="115" height="24" rx="12" fill="#00f0ff" fill-opacity="0.12" stroke="#00f0ff" stroke-opacity="0.4" />
+  <text x="435" y="35" font-family="monospace" font-size="11" font-weight="bold" fill="#00f0ff">ScopeGuard: ON</text>
+
+  <text x="1000" y="36" font-family="-apple-system, sans-serif" font-size="13" fill="#9ca3af">Localhost:8080 • v1.0.0</text>
+  <circle cx="1165" cy="30" r="5" fill="#00ff9d" filter="url(#glow)" />
+
+  <!-- Sidebar -->
+  <rect x="0" y="60" width="240" height="615" fill="#080c14" stroke="#1f2937" stroke-width="1" />
+  <text x="24" y="95" font-family="sans-serif" font-size="12" font-weight="bold" fill="#6b7280" letter-spacing="1">CATEGORIES</text>
+
+  <g transform="translate(16, 115)">
+    <rect width="208" height="34" rx="6" fill="#00f0ff" fill-opacity="0.15" stroke="#00f0ff" stroke-opacity="0.4" />
+    <text x="16" y="22" font-family="sans-serif" font-size="13" font-weight="600" fill="#ffffff">All Modules (120)</text>
+  </g>
+  <g transform="translate(16, 160)">
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🌐 Web &amp; API (45)</text>
+  </g>
+  <g transform="translate(16, 200)">
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">☁️ Cloud &amp; K8s (22)</text>
+  </g>
+  <g transform="translate(16, 240)">
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🔍 Network &amp; Crypto (18)</text>
+  </g>
+  <g transform="translate(16, 280)">
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🕵️ Identity &amp; Host (18)</text>
+  </g>
+  <g transform="translate(16, 320)">
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🔬 Forensics &amp; AI (17)</text>
+  </g>
+
+  <!-- Metric Stat Cards -->
+  <g transform="translate(265, 85)">
+    <rect width="215" height="85" rx="8" fill="url(#cardGrad)" stroke="#1f2937" />
+    <text x="18" y="32" font-family="sans-serif" font-size="12" fill="#9ca3af">Total Certified Modules</text>
+    <text x="18" y="65" font-family="sans-serif" font-size="28" font-weight="bold" fill="#00f0ff">120</text>
+    <text x="140" y="62" font-family="monospace" font-size="12" fill="#00ff9d">100% OK</text>
+  </g>
+
+  <g transform="translate(495, 85)">
+    <rect width="215" height="85" rx="8" fill="url(#cardGrad)" stroke="#1f2937" />
+    <text x="18" y="32" font-family="sans-serif" font-size="12" fill="#9ca3af">ScopeGuard Enforcements</text>
+    <text x="18" y="65" font-family="sans-serif" font-size="28" font-weight="bold" fill="#00ff9d">Active</text>
+    <text x="110" y="62" font-family="monospace" font-size="12" fill="#9ca3af">0 Leaks</text>
+  </g>
+
+  <g transform="translate(725, 85)">
+    <rect width="215" height="85" rx="8" fill="url(#cardGrad)" stroke="#1f2937" />
+    <text x="18" y="32" font-family="sans-serif" font-size="12" fill="#9ca3af">Attack Chains Tested</text>
+    <text x="18" y="65" font-family="sans-serif" font-size="28" font-weight="bold" fill="#a855f7">18 / 18</text>
+    <text x="135" y="62" font-family="monospace" font-size="12" fill="#00ff9d">PASS</text>
+  </g>
+
+  <g transform="translate(955, 85)">
+    <rect width="215" height="85" rx="8" fill="url(#cardGrad)" stroke="#1f2937" />
+    <text x="18" y="32" font-family="sans-serif" font-size="12" fill="#9ca3af">Reporting Compliance</text>
+    <text x="18" y="65" font-family="sans-serif" font-size="24" font-weight="bold" fill="#ffb700">SARIF v2.1</text>
+    <text x="150" y="62" font-family="monospace" font-size="12" fill="#00ff9d">OASIS</text>
+  </g>
+
+  <!-- Module Cards Grid -->
+  <!-- Card 1: api-security -->
+  <g transform="translate(265, 195)">
+    <rect width="295" height="210" rx="10" fill="url(#cardGrad)" stroke="#00f0ff" stroke-opacity="0.3" stroke-width="1.5" />
+    <circle cx="28" cy="30" r="14" fill="#00f0ff" fill-opacity="0.15" />
+    <text x="21" y="36" font-family="sans-serif" font-size="16">🛡️</text>
+    <text x="52" y="35" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">api-security</text>
+    <rect x="225" y="20" width="55" height="20" rx="4" fill="#00ff9d" fill-opacity="0.15" />
+    <text x="233" y="34" font-family="monospace" font-size="10" font-weight="bold" fill="#00ff9d">v1.0.0</text>
+    <text x="20" y="75" font-family="sans-serif" font-size="12" fill="#9ca3af">REST &amp; GraphQL introspection, BOLA/IDOR</text>
+    <text x="20" y="93" font-family="sans-serif" font-size="12" fill="#9ca3af">detection, and OpenAPI spec exposure.</text>
+    <line x1="20" y1="140" x2="275" y2="140" stroke="#1f2937" />
+    <rect x="20" y="155" width="120" height="34" rx="6" fill="#00f0ff" fill-opacity="0.15" stroke="#00f0ff" stroke-opacity="0.5" />
+    <text x="35" y="177" font-family="sans-serif" font-size="12" font-weight="bold" fill="#00f0ff">Run Module</text>
+    <rect x="150" y="155" width="125" height="34" rx="6" fill="#1f2937" />
+    <text x="165" y="177" font-family="sans-serif" font-size="12" fill="#9ca3af">Health: OK</text>
+  </g>
+
+  <!-- Card 2: network-security -->
+  <g transform="translate(575, 195)">
+    <rect width="295" height="210" rx="10" fill="url(#cardGrad)" stroke="#1f2937" stroke-width="1.5" />
+    <circle cx="28" cy="30" r="14" fill="#00ff9d" fill-opacity="0.15" />
+    <text x="21" y="36" font-family="sans-serif" font-size="16">⚡</text>
+    <text x="52" y="35" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">network-security</text>
+    <rect x="225" y="20" width="55" height="20" rx="4" fill="#00ff9d" fill-opacity="0.15" />
+    <text x="233" y="34" font-family="monospace" font-size="10" font-weight="bold" fill="#00ff9d">v1.0.0</text>
+    <text x="20" y="75" font-family="sans-serif" font-size="12" fill="#9ca3af">Authorized Port Scanner &amp; Service Discovery</text>
+    <text x="20" y="93" font-family="sans-serif" font-size="12" fill="#9ca3af">with Nmap adapter and async fallback.</text>
+    <line x1="20" y1="140" x2="275" y2="140" stroke="#1f2937" />
+    <rect x="20" y="155" width="120" height="34" rx="6" fill="#00ff9d" fill-opacity="0.15" stroke="#00ff9d" stroke-opacity="0.5" />
+    <text x="35" y="177" font-family="sans-serif" font-size="12" font-weight="bold" fill="#00ff9d">Run Module</text>
+    <rect x="150" y="155" width="125" height="34" rx="6" fill="#1f2937" />
+    <text x="165" y="177" font-family="sans-serif" font-size="12" fill="#9ca3af">Health: OK</text>
+  </g>
+
+  <!-- Card 3: cloud-iac-security -->
+  <g transform="translate(885, 195)">
+    <rect width="285" height="210" rx="10" fill="url(#cardGrad)" stroke="#1f2937" stroke-width="1.5" />
+    <circle cx="28" cy="30" r="14" fill="#a855f7" fill-opacity="0.15" />
+    <text x="21" y="36" font-family="sans-serif" font-size="16">☁️</text>
+    <text x="52" y="35" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">cloud-iac-security</text>
+    <rect x="215" y="20" width="55" height="20" rx="4" fill="#00ff9d" fill-opacity="0.15" />
+    <text x="223" y="34" font-family="monospace" font-size="10" font-weight="bold" fill="#00ff9d">v1.0.0</text>
+    <text x="20" y="75" font-family="sans-serif" font-size="12" fill="#9ca3af">CIS AWS &amp; Kubernetes benchmarks, S3</text>
+    <text x="20" y="93" font-family="sans-serif" font-size="12" fill="#9ca3af">exposure and open ingress auditing.</text>
+    <line x1="20" y1="140" x2="265" y2="140" stroke="#1f2937" />
+    <rect x="20" y="155" width="120" height="34" rx="6" fill="#a855f7" fill-opacity="0.15" stroke="#a855f7" stroke-opacity="0.5" />
+    <text x="35" y="177" font-family="sans-serif" font-size="12" font-weight="bold" fill="#c084fc">Run Module</text>
+    <rect x="150" y="155" width="115" height="34" rx="6" fill="#1f2937" />
+    <text x="162" y="177" font-family="sans-serif" font-size="12" fill="#9ca3af">Health: OK</text>
+  </g>
+
+  <!-- Live Output Console (Bottom Panel) -->
+  <g transform="translate(265, 425)">
+    <rect width="905" height="225" rx="8" fill="#070a0f" stroke="#1f2937" stroke-width="1.5" />
+    <rect x="0" y="0" width="905" height="32" rx="8" fill="#0e141f" />
+    <circle cx="20" cy="16" r="4.5" fill="#ef4444" />
+    <circle cx="36" cy="16" r="4.5" fill="#f59e0b" />
+    <circle cx="52" cy="16" r="4.5" fill="#10b981" />
+    <text x="80" y="21" font-family="monospace" font-size="12" fill="#9ca3af">Console Output • Target: http://127.0.0.1:8888 • Scope: APPROVED</text>
+
+    <text x="20" y="65" font-family="monospace" font-size="12" fill="#00ff9d">[*] ScopeGuard authorized execution against 'http://127.0.0.1:8888'</text>
+    <text x="20" y="88" font-family="monospace" font-size="12" fill="#9ca3af">[+] api-security: [HIGH] Broken Object Level Authorization (BOLA / IDOR) (CWE-639)</text>
+    <text x="20" y="111" font-family="monospace" font-size="12" fill="#ff3366">[!] cors-websocket-audit: [CRITICAL] Arbitrary Origin Reflection with Credentials (CWE-346)</text>
+    <text x="20" y="134" font-family="monospace" font-size="12" fill="#ff3366">[!] jwt-security-analyzer: [CRITICAL] 'alg: none' Signature Bypass Detected (CWE-327)</text>
+    <text x="20" y="157" font-family="monospace" font-size="12" fill="#ffb700">[+] secrets-leak-scanner: [CRITICAL] Exposed AWS Access Key ID (AKIA...) Redacted &amp; Logged</text>
+    <text x="20" y="180" font-family="monospace" font-size="12" fill="#00f0ff">[SUCCESS] Assessment finished. Reports written to reports/lab_report.sarif &amp; lab_report.html</text>
+  </g>
+</svg>

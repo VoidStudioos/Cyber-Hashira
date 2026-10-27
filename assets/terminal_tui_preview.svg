@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="100%" height="100%">
+  <defs>
+    <linearGradient id="termGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="100%" stop-color="#05070d" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="560" rx="12" fill="url(#termGrad)" stroke="#1f2937" stroke-width="2" />
+  
+  <!-- Window title bar -->
+  <rect width="1000" height="38" rx="12" fill="#111827" />
+  <circle cx="25" cy="19" r="6" fill="#ef4444" />
+  <circle cx="45" cy="19" r="6" fill="#f59e0b" />
+  <circle cx="65" cy="19" r="6" fill="#10b981" />
+  <text x="500" y="24" font-family="monospace" font-size="13" font-weight="bold" fill="#9ca3af" text-anchor="middle">cyber-hashira-tui — 120 Modules Certified</text>
+
+  <!-- Banner ASCII Art -->
+  <text x="35" y="70" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" font-weight="bold" fill="#00f0ff">
+  ██████╗██╗   ██╗██████╗ ███████╗██████╗     ██╗  ██╗ █████╗ ███████╗██╗  ██╗██╗██████╗  █████╗ 
+  </text>
+  <text x="35" y="85" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" font-weight="bold" fill="#00f0ff">
+  ██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗    ██║  ██║██╔══██╗██╔════╝██║  ██║██║██╔══██╗██╔══██╗
+  </text>
+  <text x="35" y="100" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" font-weight="bold" fill="#00ff9d">
+  ██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝    ███████║███████║███████╗███████║██║██████╔╝███████║
+  </text>
+  <text x="35" y="115" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" font-weight="bold" fill="#00ff9d">
+  ██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗    ██╔══██║██╔══██║╚════██║██╔══██║██║██╔══██╗██╔══██║
+  </text>
+  <text x="35" y="130" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" font-weight="bold" fill="#00f0ff">
+  ╚██████╗   ██║   ██████╔╝███████╗██║  ██║    ██║  ██║██║  ██║███████║██║  ██║██║██║  ██║██║  ██║
+  </text>
+
+  <!-- Status Bar -->
+  <line x1="30" y1="150" x2="970" y2="150" stroke="#1f2937" stroke-width="1.5" />
+  <text x="35" y="175" font-family="monospace" font-size="13" fill="#00ff9d">[STATUS: READY]</text>
+  <text x="210" y="175" font-family="monospace" font-size="13" fill="#ffffff">Modules: 120/120 Certified (100% PASS)</text>
+  <text x="620" y="175" font-family="monospace" font-size="13" fill="#00f0ff">ScopeGuard: STRICT</text>
+  <text x="820" y="175" font-family="monospace" font-size="13" fill="#a855f7">SARIF: OASIS v2.1</text>
+  <line x1="30" y1="190" x2="970" y2="190" stroke="#1f2937" stroke-width="1.5" />
+
+  <!-- Menu / Interactive Options -->
+  <text x="35" y="225" font-family="monospace" font-size="14" font-weight="bold" fill="#00f0ff">[1] Explore Registered Modules (120 Total)</text>
+  <text x="55" y="248" font-family="monospace" font-size="12" fill="#9ca3af">Browse modules across Web, Cloud, K8s, Active Directory, Network and Forensics</text>
+
+  <text x="35" y="280" font-family="monospace" font-size="14" font-weight="bold" fill="#00ff9d">[2] Run Verification Matrix (5 Gates Test Harness)</text>
+  <text x="55" y="303" font-family="monospace" font-size="12" fill="#9ca3af">Verify Manifest, Artifact SHA-256, Health, ScopeGuard rejection &amp; RunTask execution</text>
+
+  <text x="35" y="335" font-family="monospace" font-size="14" font-weight="bold" fill="#ffb700">[3] Execute Target Scan with ScopeGuard Approval</text>
+  <text x="55" y="358" font-family="monospace" font-size="12" fill="#9ca3af">Prompt for target host/URL, authorize in ScopeGuard, execute worker, display findings</text>
+
+  <text x="35" y="390" font-family="monospace" font-size="14" font-weight="bold" fill="#a855f7">[4] Launch Multi-Stage Attack Chains (18 Certified Chains)</text>
+  <text x="55" y="413" font-family="monospace" font-size="12" fill="#9ca3af">Trigger correlated attack chains: Token Hijack, BOLA Exfil, Cloud Escalation</text>
+
+  <text x="35" y="445" font-family="monospace" font-size="14" font-weight="bold" fill="#00f0ff">[5] Export Assessment Reports (SARIF v2.1.0 / Executive HTML)</text>
+  <text x="55" y="468" font-family="monospace" font-size="12" fill="#9ca3af">Automatic secret redaction (AWS, JWT, Private Keys) and finding deduplication</text>
+
+  <!-- Bottom Keybindings -->
+  <rect x="20" y="500" width="960" height="40" rx="6" fill="#111827" />
+  <text x="35" y="525" font-family="monospace" font-size="12" fill="#9ca3af">Commands: <tspan fill="#00ff9d">1-6</tspan> Select Option | <tspan fill="#00f0ff">h</tspan> Health Check | <tspan fill="#ff3366">q</tspan> Quit | <tspan fill="#ffb700">python hashira.py web</tspan> Switch to Web UI</text>
+</svg>
