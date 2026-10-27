@@ -1,10 +1,10 @@
 # Cyber Hashira
 
 > **The Ultimate Modular Cybersecurity & Penetration Testing Workstation**  
-> *120 Certified Modules • 3 Formats (Web, Terminal TUI, Desktop) • Windows & Linux • Docker-Ready • Offline-First • AI-Assisted*
+> *141 Certified Modules • 3 Formats (Web, Terminal TUI, Desktop) • Windows & Linux • Docker-Ready • Offline-First • AI-Assisted*
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-120%2F120%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
+[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-141%2F141%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
 [![Interfaces](https://img.shields.io/badge/Interfaces-Web%20%7C%20TUI%20%7C%20Desktop-purple.svg)](#-user-interfaces-3-formats)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](#-docker-deployment)
 [![Reporting Engine](https://img.shields.io/badge/SARIF%20v2.1.0-OASIS%20Compliant-blue.svg)](scripts/reporting_engine.py)
@@ -25,7 +25,7 @@
 2. [User Interfaces (3 Formats)](#-user-interfaces-3-formats)
 3. [Quick Start & Unified Launcher (`hashira.py`)](#-quick-start--unified-launcher-hashirapy)
 4. [Docker Deployment](#-docker-deployment)
-5. [Certified Modules Catalog (120 Modules)](#-certified-modules-catalog-120-modules)
+5. [Certified Modules Catalog (141 Modules)](#-certified-modules-catalog-141-modules)
 6. [Standalone Installers & Distribution](#-standalone-installers--distribution)
 7. [Verification & Test Matrix](#-verification--test-matrix)
 8. [Architecture & Security Principles](#-architecture--security-principles)
@@ -41,7 +41,7 @@
 Unlike monolithic vulnerability scanners that package gigabytes of fragile dependencies into one rigid installer, Cyber Hashira adheres to a **Strict Modular Architecture**:
 
 - **Presentation Layer (3 Formats):** Run anywhere as a modern **Web Security Dashboard**, an ultra-fast **Terminal TUI**, or a high-performance **Native Desktop Application**.
-- **120 Certified Security Modules:** Independently packageable disciplines spanning Web Application Security, Cloud IAM, Kubernetes, Active Directory, Reverse Engineering, Cryptography, and Supply-Chain.
+- **141 Certified Security Modules:** Independently packageable disciplines spanning Web Application Security, Cloud IAM, Kubernetes, Active Directory, Reverse Engineering, Cryptography, and Supply-Chain.
 - **Strict ScopeGuard Boundary Enforcement:** Non-negotiable target authorization checks preventing active probes against unauthorized assets.
 - **Offline-First & Zero Telemetry:** Operates 100% offline. No telemetry, no cloud leakages, and all evidence stored locally.
 - **OASIS SARIF v2.1.0 & Executive Reporting:** Automatic secret redaction, vulnerability deduplication, and export to SARIF (GitHub Code Scanning compatible) and HTML/PDF reports.
@@ -151,18 +151,18 @@ python scripts/build_installers.py
 
 ### Output Packages:
 - **Windows Portable Standalone:** `dist/packages/cyber-hashira-windows-x64-v1.0.0.zip`
-  - Includes one-click `Launch-Web-Panel.bat`, `Launch-Terminal-TUI.bat`, and `Verify-All-120-Modules.bat`.
+  - Includes one-click `Launch-Web-Panel.bat`, `Launch-Terminal-TUI.bat`, and `Verify-All-Modules.bat`.
 - **Linux Portable Standalone:** `dist/packages/cyber-hashira-linux-x64-v1.0.0.tar.gz`
   - Includes `launch-web.sh`, `launch-tui.sh`, and `cyber-hashira.desktop` application menu entry.
 
 ---
 
-## 🛡️ Certified Modules Catalog (120 Modules)
+## 🛡️ Certified Modules Catalog (141 Modules)
 
-Cyber Hashira includes **120 independently certified security modules**, categorized across specialized cybersecurity domains:
+Cyber Hashira includes **141 independently certified security modules**, categorized across specialized cybersecurity domains:
 
 <details>
-<summary><b>🌐 1. Web Application & API Security (35+ Modules) — Click to expand</b></summary>
+<summary><b>🌐 1. Web Application & API Security (50+ Modules) — Click to expand</b></summary>
 
 - `web-security`: Intercepting proxy, history, repeater, decoder, passive analysis
 - `api-security`: REST & GraphQL introspection, OpenAPI spec exposure, BOLA detection
@@ -172,7 +172,10 @@ Cyber Hashira includes **120 independently certified security modules**, categor
 - `auth-multi-role`: Multi-tenant authorization & BOLA/BFLA cross-role validator
 - `authenticated-crawler`: Authenticated session crawler with form extraction
 - `cache-poisoning-deception`: Web cache poisoning & unkeyed header reflection engine
+- `client-js-beautifier-analyzer`: Client JavaScript deobfuscator and secret extractor
 - `clickjacking-protector`: X-Frame-Options & CSP frame-ancestors validator
+- `command-injection-auditor`: OS command injection and metacharacter fuzzer (Commix)
+- `content-discovery-fuzzer`: Fast recursive path, directory, and asset discovery fuzzer (ffuf/feroxbuster)
 - `cookie-session-hygiene`: HttpOnly, Secure, SameSite, and cookie prefix hygiene inspector
 - `cors-misconfiguration-auditor`: Arbitrary origin reflection and null-origin auditor
 - `cors-websocket-audit`: WebSocket origin validation and hijacking auditor
@@ -183,6 +186,7 @@ Cyber Hashira includes **120 independently certified security modules**, categor
 - `csp-report-collector`: CSP report-uri aggregator and violation analyzer
 - `dast-verifier`: DAST evidence verification and safe reproduction engine
 - `dom-xss-postmessage`: DOM source-to-sink tracking & postMessage security
+- `exposed-git-dumper`: Exposed /.git/ repository detector and object dumper (GitTools)
 - `graphql-batch-dos`: GraphQL query batching and amplification DoS auditor
 - `graphql-depth-limit-auditor`: Deeply nested recursive query DoS tester
 - `graphql-security-audit`: GraphQL introspection and schema exposure analyzer
@@ -208,25 +212,30 @@ Cyber Hashira includes **120 independently certified security modules**, categor
 - `prototype-pollution-detector`: Client and server prototype pollution detector
 - `race-condition-engine`: Single-packet concurrency attack and limit overrun engine
 - `rce-parameter-tester`: Remote command execution payload analyzer
+- `sourcemap-source-extractor`: JavaScript .js.map source map unbundler and code reconstructor
 - `sql-injection-fuzzer`: SQL injection fuzzing and error-pattern analyzer
 - `sri-hash-verifier`: Subresource Integrity (SRI) hash presence auditor
 - `subresource-integrity-auditor`: External asset hash mismatch and tampering auditor
 - `ssrf-guard-validator`: Cloud metadata (169.254.169.254) and SSRF guard validator
 - `ssti-polyglot-engine`: Multi-dialect template injection (Jinja2, Twig, SpEL) engine
+- `url-parameter-replacer`: URL query parameter normalizer and replacer for fuzzing (qsreplace/gf)
 - `waf-evasion-defense`: WAF Unicode normalization and HPP evasion validator
+- `web-technology-fingerprinter`: Wappalyzer & WhatWeb signature technology fingerprinter
 - `webhook-url-validator`: Webhook SSRF and private network destination auditor
 - `websocket-origin-check`: Cross-Site WebSocket Hijacking origin checker
 - `xml-external-entity-scanner`: XML external entity (XXE) and external DTD scanner
+- `xss-polyglot-auditor`: Context-aware Cross-Site Scripting (XSS) reflection auditor (Dalfox/XSStrike)
 - `xxe-injection-auditor`: XXE file disclosure and inline entity parsing auditor
 </details>
 
 <details>
-<summary><b>☁️ 2. Cloud, Infrastructure, Kubernetes & Containers (20+ Modules) — Click to expand</b></summary>
+<summary><b>☁️ 2. Cloud, Infrastructure, Kubernetes & Containers (22+ Modules) — Click to expand</b></summary>
 
 - `aws-secret-leak-scanner`: Source code scanner for exposed AWS access & secret keys
 - `cloud-iac-security`: CIS AWS & Terraform security posture auditor
 - `cloud-iam`: Cloud IAM excessive privilege and wildcard (`*:*`) policy auditor
 - `cloud-iam-policy-drift`: IAM policy drift and unauthorized permission change detector
+- `cloud-prowler-compliance`: Multi-cloud CIS benchmark and posture auditor (Prowler)
 - `cloudflare-bypass-tester`: Direct origin IP exposure and WAF bypass tester
 - `cloudformation-iam-privilege-check`: CloudFormation template IAM privilege escalation analyzer
 - `container-runtime-capabilities`: Docker / Podman dangerous Linux capabilities (`CAP_SYS_ADMIN`)
@@ -245,23 +254,39 @@ Cyber Hashira includes **120 independently certified security modules**, categor
 </details>
 
 <details>
-<summary><b>🔍 3. Network, Discovery & Cryptography (15+ Modules) — Click to expand</b></summary>
+<summary><b>🔍 3. Network, Discovery & Cryptography (20+ Modules) — Click to expand</b></summary>
 
+- `asn-ip-range-mapper`: Autonomous system number (ASN) and corporate BGP prefix mapper
+- `cdn-waf-detector`: Cloudflare, Akamai, CloudFront reverse proxy and direct origin IP detector
 - `dns-caa-record-auditor`: DNS Certification Authority Authorization (CAA) auditor
 - `dns-dnssec-validator`: DNSSEC record existence and signature validation engine
+- `dns-rebinding-tester`: Same-Origin Policy DNS rebinding defense auditor (Singularity)
 - `dns-wildcard-detector`: Wildcard DNS entry discovery and takeover risk detector
 - `dns-zone-transfer-tester`: AXFR DNS zone transfer vulnerability tester
 - `network-security`: Network discovery, port scanner (Nmap adapter + async socket fallback)
 - `sample-dns`: DNS reconnaissance and misconfiguration analyzer
 - `ssh-known-hosts-audit`: SSH known_hosts weak RSA key (<2048-bit) and DSA auditor
 - `ssh-weak-ciphers-audit`: Insecure SSH ciphers (`3des`, `blowfish-cbc`) detector
+- `subdomain-passive-miner`: Passive subdomain enumeration via Certificate Transparency (crt.sh, Censys)
 - `subdomain-takeover-audit`: Dangling DNS CNAME takeover auditor (AWS, GitHub, Azure)
 - `tls-certificate-issuer-audit`: Untrusted and self-signed certificate issuer auditor
 - `tls-cryptography`: TLS certificate inspector and deprecated protocol auditor
 - `tls-misconfiguration-scanner`: SSLv3, TLS 1.0/1.1 deprecation and cipher auditor
+- `typosquatting-brand-monitor`: Domain permutation, bitsquatting and typosquatting risk monitor
 - `wireless-security`: 802.11 WiFi security inspector (WEP, WPA-TKIP, WPS Pixie-Dust)
 - `automotive-uds-analyzer`: Automotive UDS diagnostics (ISO 14229) security analyzer
 - `canbus-automotive-security`: CAN Bus vehicle security and arbitration DoS inspector
+</details>
+
+<details>
+<summary><b>🔎 4. Reconnaissance, OSINT & CMS Security (10+ Modules) — Click to expand</b></summary>
+
+- `osint-search-exposure`: Shodan, Censys, FOFA, and search dork exposure analyzer
+- `historical-url-miner`: Wayback Machine, AlienVault OTX, and archive URL miner (gau/waybackurls)
+- `screenshot-asset-visualizer`: Headless visual snapshot and page title visualizer (GoWitness)
+- `wordlist-generator-cewl`: Targeted keyword extraction and custom wordlist builder (CeWL)
+- `wordpress-security-auditor`: WordPress CMS, user enumeration, and plugin auditor (WPScan)
+- `drupal-joomla-security-auditor`: Drupal and Joomla configuration and CVE inspector (Droopescan/JoomScan)
 </details>
 
 <details>
@@ -292,6 +317,7 @@ Cyber Hashira includes **120 independently certified security modules**, categor
 - `mobile-manifest-permissions`: AndroidManifest.xml and Info.plist excessive permission auditor
 - `mobile-static-audit`: Mobile APK/IPA static security and cleartext traffic auditor
 - `network-forensics-pcap`: Deep packet inspection and cleartext credential harvesting
+- `retire-js-vulnerable-libraries`: Outdated and vulnerable client-side library auditor (Retire.js)
 - `sast-source-scanner`: Static Application Security Testing (SAST) source-to-sink engine
 - `sbom-dependency-audit`: CycloneDX v1.4 SBOM generation and CVE correlation
 - `sca-license-compliance`: Viral copyleft (GPL, AGPL) license compliance auditor

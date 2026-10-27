@@ -13,7 +13,7 @@
   <circle cx="25" cy="19" r="6" fill="#ef4444" />
   <circle cx="45" cy="19" r="6" fill="#f59e0b" />
   <circle cx="65" cy="19" r="6" fill="#10b981" />
-  <text x="500" y="24" font-family="monospace" font-size="13" font-weight="bold" fill="#9ca3af" text-anchor="middle">cyber-hashira-tui — 120 Modules Certified</text>
+  <text x="500" y="24" font-family="monospace" font-size="13" font-weight="bold" fill="#9ca3af" text-anchor="middle">cyber-hashira-tui — 141 Modules Certified</text>
 
   <!-- Banner ASCII Art -->
   <text x="35" y="70" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" font-weight="bold" fill="#00f0ff">
@@ -35,13 +35,13 @@
   <!-- Status Bar -->
   <line x1="30" y1="150" x2="970" y2="150" stroke="#1f2937" stroke-width="1.5" />
   <text x="35" y="175" font-family="monospace" font-size="13" fill="#00ff9d">[STATUS: READY]</text>
-  <text x="210" y="175" font-family="monospace" font-size="13" fill="#ffffff">Modules: 120/120 Certified (100% PASS)</text>
+  <text x="210" y="175" font-family="monospace" font-size="13" fill="#ffffff">Modules: 141/141 Certified (100% PASS)</text>
   <text x="620" y="175" font-family="monospace" font-size="13" fill="#00f0ff">ScopeGuard: STRICT</text>
   <text x="820" y="175" font-family="monospace" font-size="13" fill="#a855f7">SARIF: OASIS v2.1</text>
   <line x1="30" y1="190" x2="970" y2="190" stroke="#1f2937" stroke-width="1.5" />
 
   <!-- Menu / Interactive Options -->
-  <text x="35" y="225" font-family="monospace" font-size="14" font-weight="bold" fill="#00f0ff">[1] Explore Registered Modules (120 Total)</text>
+  <text x="35" y="225" font-family="monospace" font-size="14" font-weight="bold" fill="#00f0ff">[1] Explore Registered Modules (141 Total)</text>
   <text x="55" y="248" font-family="monospace" font-size="12" fill="#9ca3af">Browse modules across Web, Cloud, K8s, Active Directory, Network and Forensics</text>
 
   <text x="35" y="280" font-family="monospace" font-size="14" font-weight="bold" fill="#00ff9d">[2] Run Verification Matrix (5 Gates Test Harness)</text>
