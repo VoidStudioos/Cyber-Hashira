@@ -31,8 +31,8 @@
 
   <text x="110" y="37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="bold" fill="#00f0ff">⚔️ CYBER HASHIRA</text>
   <rect x="270" y="18" width="130" height="24" rx="12" fill="#00ff9d" fill-opacity="0.12" stroke="#00ff9d" stroke-opacity="0.4" />
-  <text x="285" y="35" font-family="monospace" font-size="11" font-weight="bold" fill="#00ff9d">141/141 PASS</text>
-
+  <text x="285" y="35" font-family="monospace" font-size="11" font-weight="bold" fill="#00ff9d">174/174 PASS</text>
+  
   <rect x="420" y="18" width="115" height="24" rx="12" fill="#00f0ff" fill-opacity="0.12" stroke="#00f0ff" stroke-opacity="0.4" />
   <text x="435" y="35" font-family="monospace" font-size="11" font-weight="bold" fill="#00f0ff">ScopeGuard: ON</text>
 
@@ -45,29 +45,29 @@
 
   <g transform="translate(16, 115)">
     <rect width="208" height="34" rx="6" fill="#00f0ff" fill-opacity="0.15" stroke="#00f0ff" stroke-opacity="0.4" />
-    <text x="16" y="22" font-family="sans-serif" font-size="13" font-weight="600" fill="#ffffff">All Modules (141)</text>
+    <text x="16" y="22" font-family="sans-serif" font-size="13" font-weight="600" fill="#ffffff">All Modules (174)</text>
   </g>
   <g transform="translate(16, 160)">
-    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🌐 Web &amp; API (60)</text>
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🌐 Web &amp; API (72)</text>
   </g>
   <g transform="translate(16, 200)">
-    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">☁️ Cloud &amp; K8s (23)</text>
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">☁️ Cloud &amp; K8s (34)</text>
   </g>
   <g transform="translate(16, 240)">
-    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🔍 Network &amp; Crypto (21)</text>
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🔍 Network &amp; Crypto (24)</text>
   </g>
   <g transform="translate(16, 280)">
-    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🕵️ Identity &amp; Host (18)</text>
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🕵️ Identity &amp; SAST (25)</text>
   </g>
   <g transform="translate(16, 320)">
-    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🔬 Forensics &amp; AI (19)</text>
+    <text x="16" y="22" font-family="sans-serif" font-size="13" fill="#9ca3af">🔬 Forensics &amp; Supply (19)</text>
   </g>
 
   <!-- Metric Stat Cards -->
   <g transform="translate(265, 85)">
     <rect width="215" height="85" rx="8" fill="url(#cardGrad)" stroke="#1f2937" />
     <text x="18" y="32" font-family="sans-serif" font-size="12" fill="#9ca3af">Total Certified Modules</text>
-    <text x="18" y="65" font-family="sans-serif" font-size="28" font-weight="bold" fill="#00f0ff">141</text>
+    <text x="18" y="65" font-family="sans-serif" font-size="28" font-weight="bold" fill="#00f0ff">174</text>
     <text x="140" y="62" font-family="monospace" font-size="12" fill="#00ff9d">100% OK</text>
   </g>
 
