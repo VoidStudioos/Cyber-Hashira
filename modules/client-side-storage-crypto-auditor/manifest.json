@@ -1,0 +1,78 @@
+{
+  "id": "client-side-storage-crypto-auditor",
+  "name": "Client-Side Storage & Web Cryptography Hygiene Auditor",
+  "description": "Inspects browser LocalStorage, SessionStorage, IndexedDB, and Web Crypto API usages for plaintext JWTs, unencrypted session seeds, and predictable IVs.",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Client & Desktop",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {}
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cwe": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "detected_at": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "cwe",
+              "title",
+              "description",
+              "evidence",
+              "detected_at"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "artifact": {
+    "url": "",
+    "sha256": "",
+    "size_bytes": 0
+  }
+}

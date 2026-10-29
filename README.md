@@ -1,10 +1,10 @@
 # Cyber Hashira
 
 > **The Ultimate Modular Cybersecurity & Penetration Testing Workstation**  
-> *174 Certified Modules • 3 Formats (Web, Terminal TUI, Desktop) • Windows & Linux • Docker-Ready • Offline-First • AI-Assisted*
+> *200 Certified Modules • 3 Formats (Web, Terminal TUI, Desktop) • Windows & Linux • Docker-Ready • Offline-First • AI-Assisted*
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-174%2F174%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
+[![Certification Matrix](https://img.shields.io/badge/Certified%20Modules-200%2F200%20PASS-brightgreen.svg)](tests/test_all_modules_matrix.py)
 [![Interfaces](https://img.shields.io/badge/Interfaces-Web%20%7C%20TUI%20%7C%20Desktop-purple.svg)](#-user-interfaces-3-formats)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](#-docker-deployment)
 [![Reporting Engine](https://img.shields.io/badge/SARIF%20v2.1.0-OASIS%20Compliant-blue.svg)](scripts/reporting_engine.py)
@@ -25,7 +25,7 @@
 2. [User Interfaces (3 Formats)](#-user-interfaces-3-formats)
 3. [Quick Start & Unified Launcher (`hashira.py`)](#-quick-start--unified-launcher-hashirapy)
 4. [Docker Deployment](#-docker-deployment)
-5. [Certified Modules Catalog (174 Modules)](#-certified-modules-catalog-174-modules)
+5. [Certified Modules Catalog (200 Modules)](#-certified-modules-catalog-200-modules)
 6. [Standalone Installers & Distribution](#-standalone-installers--distribution)
 7. [Verification & Test Matrix](#-verification--test-matrix)
 8. [Architecture & Security Principles](#-architecture--security-principles)
@@ -41,7 +41,7 @@
 Unlike monolithic vulnerability scanners that package gigabytes of fragile dependencies into one rigid installer, Cyber Hashira adheres to a **Strict Modular Architecture**:
 
 - **Presentation Layer (3 Formats):** Run anywhere as a modern **Web Security Dashboard**, an ultra-fast **Terminal TUI**, or a high-performance **Native Desktop Application**.
-- **174 Certified Security Modules:** Independently packageable disciplines spanning Web Application Security, Cloud IAM, Kubernetes, Active Directory, Reverse Engineering, Cryptography, and Supply-Chain.
+- **200 Certified Security Modules:** Independently packageable disciplines spanning Web Application Security, Cloud IAM, Kubernetes, Active Directory, AI & LLM Security, Web3 Smart Contracts, Reverse Engineering, Cryptography, and Supply-Chain.
 - **Strict ScopeGuard Boundary Enforcement:** Non-negotiable target authorization checks preventing active probes against unauthorized assets.
 - **Offline-First & Zero Telemetry:** Operates 100% offline. No telemetry, no cloud leakages, and all evidence stored locally.
 - **OASIS SARIF v2.1.0 & Executive Reporting:** Automatic secret redaction, vulnerability deduplication, and export to SARIF (GitHub Code Scanning compatible) and HTML/PDF reports.
@@ -94,7 +94,7 @@ python hashira.py scan --module network-security --target 192.168.1.10
 
 ### 5. List Certified Modules
 ```bash
-# List all 174 certified modules:
+# List all 200 certified modules:
 python hashira.py list
 
 # Filter by category:
@@ -102,7 +102,7 @@ python hashira.py list --category "Cloud"
 python hashira.py list --category "Web"
 ```
 
-### 6. Run the Full 174-Module Verification Matrix
+### 6. Run the Full 200-Module Verification Matrix
 ```bash
 python hashira.py matrix
 ```
@@ -157,12 +157,12 @@ python scripts/build_installers.py
 
 ---
 
-## 🛡️ Certified Modules Catalog (174 Modules)
+## 🛡️ Certified Modules Catalog (200 Modules)
 
-Cyber Hashira includes **174 independently certified security modules**, categorized across specialized cybersecurity domains:
+Cyber Hashira includes **200 independently certified security modules**, categorized across specialized cybersecurity domains:
 
 <details>
-<summary><b>🌐 1. Web Application & API Security (70+ Modules) — Click to expand</b></summary>
+<summary><b>🌐 1. Web Application & API Security (75+ Modules) — Click to expand</b></summary>
 
 - `web-security`: Intercepting proxy, history, repeater, decoder, passive analysis
 - `api-security`: REST & GraphQL introspection, OpenAPI spec exposure, BOLA detection
@@ -195,6 +195,7 @@ Cyber Hashira includes **174 independently certified security modules**, categor
 - `graphql-batch-dos`: GraphQL query batching and amplification DoS auditor
 - `graphql-depth-limit-auditor`: Deeply nested recursive query DoS tester
 - `graphql-engine-fingerprinter`: GraphQL backend engine fingerprinter (Apollo, Hasura, Yoga - graphw00f)
+- `graphql-persisted-query-auditor`: GraphQL Automatic Persisted Query (APQ) and cache poisoning auditor
 - `graphql-security-audit`: GraphQL introspection and schema exposure analyzer
 - `grpc-protobuf-security`: gRPC server reflection and unauthenticated RPC dumper
 - `hsts-preload-auditor`: Strict-Transport-Security preload readiness validator
@@ -202,9 +203,11 @@ Cyber Hashira includes **174 independently certified security modules**, categor
 - `http-request-smuggling-detector`: Chunked transfer desync discrepancy tester
 - `http-security-headers-checker`: Security headers posture (HSTS, CSP, Referrer, Permissions)
 - `http-smuggling-detector`: Request smuggling timing & desync analyzer
+- `http2-smuggling-hpack-auditor`: HTTP/2 protocol desync and HPACK compression bomb auditor
 - `j2ee-deserialization-auditor`: Java J2EE & enterprise middleware deserialization auditor (J2EEScan)
 - `js-endpoint-miner`: JavaScript source map analyzer, hidden route & API key miner
 - `jwt-expiration-checker`: Token expiration lifetime and missing `exp` claim detector
+- `jwt-jku-x5u-injection-auditor`: JSON Web Token (JWT) header jku/x5u public key injection auditor
 - `jwt-kid-exposure`: Static or predictable `kid` header traversal analyzer
 - `jwt-security-analyzer`: Insecure HMAC/RSA confusion and `alg: none` bypass analyzer
 - `jwt-weak-signatures`: Weak HMAC signature and insecure signature detector
@@ -233,14 +236,16 @@ Cyber Hashira includes **174 independently certified security modules**, categor
 - `web-technology-fingerprinter`: Wappalyzer & WhatWeb signature technology fingerprinter
 - `webhook-url-validator`: Webhook SSRF and private network destination auditor
 - `websocket-origin-check`: Cross-Site WebSocket Hijacking origin checker
+- `websocket-realtime-fuzzer`: WebSocket real-time binary and fragmented subprotocol fuzzer
 - `xml-external-entity-scanner`: XML external entity (XXE) and external DTD scanner
 - `xss-polyglot-auditor`: Context-aware Cross-Site Scripting (XSS) reflection auditor (Dalfox/XSStrike)
 - `xxe-injection-auditor`: XXE file disclosure and inline entity parsing auditor
 </details>
 
 <details>
-<summary><b>☁️ 2. Cloud, Infrastructure, Kubernetes & Containers (35+ Modules) — Click to expand</b></summary>
+<summary><b>☁️ 2. Cloud, Infrastructure, Kubernetes & Mesh (35+ Modules) — Click to expand</b></summary>
 
+- `aws-lambda-injection-auditor`: Serverless function (AWS Lambda / Cloud Functions) event data injection auditor
 - `aws-pacu-attack-surface-auditor`: AWS penetration testing & privilege escalation auditor (Pacu)
 - `aws-secret-leak-scanner`: Source code scanner for exposed AWS access & secret keys
 - `aws-security-group-analyzer`: AWS security group & open ingress rule analyzer (CloudMapper)
@@ -267,6 +272,7 @@ Cyber Hashira includes **174 independently certified security modules**, categor
 - `kubernetes-yaml-linter`: Kubernetes manifest & Helm chart security linter (KubeLinter / kube-score)
 - `multi-cloud-resource-enumerator`: Multi-cloud public asset & storage bucket enumerator (cloud_enum)
 - `rego-policy-enforcement-checker`: Open Policy Agent (OPA) Rego configuration guard (Conftest)
+- `service-mesh-mtls-auditor`: Kubernetes service mesh (Istio / Linkerd) strict mTLS enforcement auditor
 - `s3-bucket-encryption-check`: S3 server-side encryption (SSE-S3, KMS) enforcement auditor
 - `s3-bucket-enumerator`: S3 bucket enumeration and ACL permission auditor
 - `s3-public-bucket-detector`: Public read/write S3 bucket exposure detector
@@ -283,8 +289,10 @@ Cyber Hashira includes **174 independently certified security modules**, categor
 - `dns-rebinding-tester`: Same-Origin Policy DNS rebinding defense auditor (Singularity)
 - `dns-wildcard-detector`: Wildcard DNS entry discovery and takeover risk detector
 - `dns-zone-transfer-tester`: AXFR DNS zone transfer vulnerability tester
+- `http3-quic-downgrade-tester`: HTTP/3 & QUIC 0-RTT replay and protocol downgrade tester
 - `live-http-service-prober`: Fast concurrent alive HTTP/HTTPS service prober (httprobe)
 - `network-security`: Network discovery, port scanner (Nmap adapter + async socket fallback)
+- `pqc-post-quantum-readiness-scanner`: Post-Quantum Cryptography (PQC) readiness & legacy cipher migration auditor
 - `reverse-dns-ptr-scanner`: Bulk asynchronous reverse DNS & PTR scanner (hakrevdns)
 - `sample-dns`: DNS reconnaissance and misconfiguration analyzer
 - `ssh-known-hosts-audit`: SSH known_hosts weak RSA key (<2048-bit) and DSA auditor
@@ -313,21 +321,26 @@ Cyber Hashira includes **174 independently certified security modules**, categor
 </details>
 
 <details>
-<summary><b>🕵️ 4. Identity, Credential Hygiene & Host Posture (15+ Modules) — Click to expand</b></summary>
+<summary><b>🕵️ 5. Identity, Enterprise Active Directory & Host Posture (20+ Modules) — Click to expand</b></summary>
 
+- `ad-bloodhound-path-analyzer`: Active Directory attack path graph and Domain Admin shortest-path analyzer (BloodHound)
+- `adcs-esc-template-auditor`: Active Directory Certificate Services (AD CS) template privilege escalation (ESC1-ESC8)
 - `credentials-vault`: AES-256-GCM encrypted credential vault and rotation advisor
 - `database-audit`: PostgreSQL, MySQL, MongoDB TLS and superuser configuration auditor
+- `gpo-security-drift-auditor`: Group Policy Object (GPO) SYSVOL cpassword and permission drift auditor
 - `host-posture`: Windows Defender, BitLocker, Firewall, and Linux sysctl posture
 - `identity-ad-hygiene`: Active Directory AS-REP / Kerberoasting risk auditor
+- `kerberos-silver-ticket-auditor`: Kerberos Service Ticket & SPN weak RC4 encryption hygiene auditor
 - `ldap-anonymous-bind-tester`: LDAP anonymous bind and directory enumeration auditor
 - `ldap-ssl-tls-enforcement`: LDAP StartTLS / LDAPS transport security auditor
+- `ntlm-relay-coercion-scanner`: NTLM authentication coercion (PetitPotam / SpoolSample) and relay scanner
 - `password-policy-checker`: Active Directory and LDAP password complexity policy auditor
 - `password-reuse-detector`: Cross-file, database and repository password reuse detector
 - `saml-metadata-validator`: SAML 2.0 metadata, signature and expiration validator
 </details>
 
 <details>
-<summary><b>🔬 5. SAST Source Code, Software Supply Chain & Forensics (30+ Modules) — Click to expand</b></summary>
+<summary><b>🔬 6. SAST Source Code, Software Supply Chain & Forensics (30+ Modules) — Click to expand</b></summary>
 
 - `cicd-supply-chain`: SLSA provenance, Cosign attestation, and supply-chain validator
 - `code-injection-evaluator`: Source code analyzer for dangerous functions (`eval`, `exec`, `system`)
@@ -364,25 +377,53 @@ Cyber Hashira includes **174 independently certified security modules**, categor
 - `yara-offline-scanner`: Safe offline YARA pattern scanner for webshells and beacons
 </details>
 
+<details>
+<summary><b>🤖 7. AI & Large Language Model (LLM) Security (5 Modules) — Click to expand</b></summary>
+
+- `llm-excessive-agency-auditor`: Autonomous AI agent excessive privilege and unconfirmed tool execution auditor
+- `llm-insecure-output-handling`: LLM unescaped model output downstream XSS/RCE injection auditor
+- `llm-prompt-injection-auditor`: Large Language Model direct, indirect prompt injection and jailbreak auditor
+- `llm-system-prompt-extractor`: LLM system prompt extraction, secret leak, and instruction inversion auditor
+- `rag-vector-poisoning-scanner`: Retrieval-Augmented Generation (RAG) vector store poisoning and context hijacking scanner
+</details>
+
+<details>
+<summary><b>⛓️ 8. Web3, Blockchain & Smart Contract Security (4 Modules) — Click to expand</b></summary>
+
+- `erc20-permit-signature-auditor`: ERC-20 / ERC-721 permit EIP-712 cross-chain signature replay auditor
+- `evm-smart-contract-auditor`: EVM Solidity smart contract bytecode reentrancy & logic flaw auditor (Slither/Mythril)
+- `flash-loan-arbitrage-risk-scanner`: DeFi flash loan price oracle manipulation & AMM spot reserve auditor
+- `smart-contract-access-control-guard`: Smart contract uninitialized proxy and unprotected selfdestruct guard
+</details>
+
+<details>
+<summary><b>💻 9. Client-Side, Desktop & Hybrid Application Security (4 Modules) — Click to expand</b></summary>
+
+- `client-side-storage-crypto-auditor`: Browser LocalStorage, SessionStorage & WebCrypto token leak auditor
+- `deep-link-uri-scheme-auditor`: Custom URL protocol scheme and deep link IPC command injection auditor
+- `electron-desktop-security-auditor`: Electron desktop app webPreferences nodeIntegration & contextIsolation auditor
+- `wasm-security-bytecode-analyzer`: WebAssembly (.wasm) binary memory bounds and bytecode flaw analyzer
+</details>
+
 ---
 
 ## 🧪 Verification & Test Matrix
 
-Cyber Hashira enforces a strict 5-gate certification pipeline across all 174 modules:
+Cyber Hashira enforces a strict 5-gate certification pipeline across all 200 modules:
 
 ```text
 ================================================================================
-CYBER HASHIRA - COMPLETE REGISTRY TEST MATRIX (174 MODULES)
+CYBER HASHIRA - COMPLETE REGISTRY TEST MATRIX (200 MODULES)
 ================================================================================
-[*] Discovered 174 module directories. Executing test matrix...
+[*] Discovered 200 module directories. Executing test matrix...
 
 #   | Module ID                    | Manifest | Artifact | Health | Scope  | RunTask
 ------------------------------------------------------------------------------------
-1   | api-contract-drift-auditor   | OK       | OK       | OK     | OK     | OK      [PASS]
+1   | ad-bloodhound-path-analyzer  | OK       | OK       | OK     | OK     | OK      [PASS]
 ...
-174 | yara-offline-scanner         | OK       | OK       | OK     | OK     | OK      [PASS]
+200 | yara-offline-scanner         | OK       | OK       | OK     | OK     | OK      [PASS]
 ------------------------------------------------------------------------------------
-Matrix Summary: 174/174 modules fully certified across all 5 verification gates.
+Matrix Summary: 200/200 modules fully certified across all 5 verification gates.
 ================================================================================
 ```
 
@@ -414,9 +455,9 @@ graph TD
     end
 
     subgraph Registry ["Distribution & Module Ecosystem"]
-        CATALOG["registry/v1/modules.json (120 Modules)"]
+        CATALOG["registry/v1/modules.json (200 Modules)"]
         ARTIFACTS["registry/artifacts/ (SHA-256 Tarballs)"]
-        MODULES["modules/ (120 Independent Workers)"]
+        MODULES["modules/ (200 Independent Workers)"]
     end
 
     WEB --> LAUNCHER

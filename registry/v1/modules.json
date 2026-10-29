@@ -3,6 +3,170 @@
   "generated_at": "2026-10-17T12:00:00Z",
   "modules": [
     {
+      "id": "ad-bloodhound-path-analyzer",
+      "name": "Active Directory Graph Attack Path Analyzer",
+      "description": "Evaluates Active Directory domain trust structures, ACL relationships (GenericAll, WriteDacl), and session graphs (BloodHound methodology) to detect shortest paths to Domain Admin.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Identity & AD",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ad-bloodhound-path-analyzer-1.0.0.tar.gz",
+        "sha256": "d566a606c29ed0595dda0d7a20350183526224907d97b9c1bc3b37df01ee84e8",
+        "size_bytes": 2062
+      }
+    },
+    {
+      "id": "adcs-esc-template-auditor",
+      "name": "Active Directory Certificate Services (AD CS) Auditor",
+      "description": "Audits Active Directory Certificate Services (AD CS) certificate templates for known privilege escalation vectors (ESC1 through ESC8) via Certipy and PKINIT.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Identity & AD",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/adcs-esc-template-auditor-1.0.0.tar.gz",
+        "sha256": "e888d72183c1504cee277c8b9fc5cedd83e04a127aaf16338223e449bb02e6be",
+        "size_bytes": 2041
+      }
+    },
+    {
       "id": "api-contract-drift-auditor",
       "name": "API Contract & OpenAPI Drift Auditor",
       "description": "Compares live HTTP API behavior against published OpenAPI/Swagger contracts (Dredd methodology) to detect unadvertised shadow endpoints, missing validation, and schema drift.",
@@ -80,7 +244,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/api-contract-drift-auditor-1.0.0.tar.gz",
-        "sha256": "e4fcb5875c5e9ec80c1745df3c7bd71903374cd809b435f0b8230553f1d1cc0b",
+        "sha256": "e81f292c7ccb4288e5c12bb67589e0020c72df4ed9be2c5b584ee014602c407d",
         "size_bytes": 2025
       }
     },
@@ -172,7 +336,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/api-fuzzing-1.0.0.tar.gz",
-        "sha256": "a016b2b41b1075761cb3fd13a5ba7a6a14cfe011d0e88028ed39597515df5c3d",
+        "sha256": "b75b6051067e0d9794cfe59162f7a39129957fd8d368a7414736638a54110dc1",
         "size_bytes": 3712
       }
     },
@@ -254,7 +418,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/api-gateway-rate-limit-audit-1.0.0.tar.gz",
-        "sha256": "6de673b399c670ddd28b70ed8b60f191dbdc692d23c9254bce2d99fc23410607",
+        "sha256": "6ef649386ea6450a898924374b451a86265d3e465bcb720ee0983a75d513c372",
         "size_bytes": 1828
       }
     },
@@ -336,7 +500,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/api-schema-fuzzing-1.0.0.tar.gz",
-        "sha256": "350ea1c2115af89c6bd53d461057060cf59c53598e2bc66651af47d7d2c2f922",
+        "sha256": "d9efe5e75e02379fa387228dcac4d3698d434cf99d9f8efeaa308837b435bbaf",
         "size_bytes": 1814
       }
     },
@@ -423,7 +587,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/api-security-1.0.0.tar.gz",
-        "sha256": "43b45ab5ca025cbf672aaa38a058e7a005b3c0287fef3955999f20f70fecc966",
+        "sha256": "712881dd4597d0fdee243efa62fd59e27183f7e516d59e26768d14dcd5774008",
         "size_bytes": 4266
       }
     },
@@ -505,7 +669,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/asn-ip-range-mapper-1.0.0.tar.gz",
-        "sha256": "19c6da0aee8ca16c816121a2bfd8cb6bdc08da4bd2e1768c522b1971341af4f0",
+        "sha256": "4b81546359ac65cf39426c6c74256c443119545ca442902a09ef3e1623b35b32",
         "size_bytes": 1995
       }
     },
@@ -600,7 +764,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/auth-multi-role-1.0.0.tar.gz",
-        "sha256": "9a4450e982f0fd1f3c84dcf000ee17b5d104702cf288b2a98e1f64bd19530255",
+        "sha256": "9f3739620893159296c22c5d3bd59bf8f3b799466de2de97644943f01ca14982",
         "size_bytes": 3700
       }
     },
@@ -692,7 +856,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/authenticated-crawler-1.0.0.tar.gz",
-        "sha256": "8691c9804919d29efe071ff20c0e6172a210cda5ef5c316284e55d47854ba653",
+        "sha256": "c806e8fad36093152a1a01cdb4e8dc283d37d772753de573077d5103441ffccc",
         "size_bytes": 3992
       }
     },
@@ -779,8 +943,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/automotive-uds-analyzer-1.0.0.tar.gz",
-        "sha256": "fdfa3a854e0e2a62c793aef8c7600a1f72baac270351289cbac3f1ede6492314",
+        "sha256": "b4d64ddcec3aa0f1f187e4972712ec7ea0c02935537ef92fa71e99b5c43433bb",
         "size_bytes": 3392
+      }
+    },
+    {
+      "id": "aws-lambda-injection-auditor",
+      "name": "Serverless Function (AWS Lambda / Cloud Functions) Auditor",
+      "description": "Audits serverless functions (AWS Lambda, Google Cloud Functions, Azure Functions) for event-data injection, execution environment reuse, and temporary /tmp leakage.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Cloud Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/aws-lambda-injection-auditor-1.0.0.tar.gz",
+        "sha256": "cdece2602195a3d785b50671753de825c91e936fdcd57863c6a4c105389a1775",
+        "size_bytes": 2020
       }
     },
     {
@@ -861,7 +1107,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/aws-pacu-attack-surface-auditor-1.0.0.tar.gz",
-        "sha256": "e1495e34cdb514c512c81e5ef4f05110e36916b5daab0ca4389ae7167039489b",
+        "sha256": "c8a249c21f84cb705677081f8d45619dd532d11358ef191176d32a8cfae50770",
         "size_bytes": 2040
       }
     },
@@ -943,7 +1189,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/aws-secret-leak-scanner-1.0.0.tar.gz",
-        "sha256": "128be2240737bb4021075fb26ce66e13c43f78608ec232f32daa16451e6bf282",
+        "sha256": "e9e06f2bea738c01978c691477c162aee1e6950af9e834599487ddb3048cf12a",
         "size_bytes": 1834
       }
     },
@@ -1025,7 +1271,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/aws-security-group-analyzer-1.0.0.tar.gz",
-        "sha256": "30ee01da39380187eea362b10dcc6bc400d3ca3628819bfc20517e14ffba01c4",
+        "sha256": "1738b701d6547282a9691a8243d609b04d0dd4fdc80fccaadb3a0f58914c8be4",
         "size_bytes": 1987
       }
     },
@@ -1107,7 +1353,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/blind-oast-collaborator-1.0.0.tar.gz",
-        "sha256": "ceb706475b496e7745fc06b5199a402e8d525f7981c3c942192b8683f82e6565",
+        "sha256": "0cfaaa66d35debaaa2aedd4c4aace4258f68a27f5fb14f9d6a39e8cca86e3dd6",
         "size_bytes": 1830
       }
     },
@@ -1193,7 +1439,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cache-poisoning-deception-1.0.0.tar.gz",
-        "sha256": "1740e459d193bb99cee49aa15c39ce83c071a699276b30f99e7dfae2be6ec46c",
+        "sha256": "6b68b5e00af76be8cbac6d912cc6f4a921520f673dd4b7d9891263cae4b12336",
         "size_bytes": 4019
       }
     },
@@ -1272,7 +1518,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/canbus-automotive-security-1.0.0.tar.gz",
-        "sha256": "e7aa4c8397ab7366037f2af3571443076d60dcc0bd916f25c3efedeadb0350e0",
+        "sha256": "8415691d8c82a1d66aee2bc2aa9ee2c16f8cd5376ae68e86e8e224a15d845b31",
         "size_bytes": 3642
       }
     },
@@ -1354,7 +1600,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cdn-waf-detector-1.0.0.tar.gz",
-        "sha256": "8dd31b18b6c48ca66df50fc0a9c9d82fc5c583a0322ffaedebaf28175ce97700",
+        "sha256": "4e6c60d2f74fb70af43383f2eb917f5ec880d3279dd77ec1d5dca1354a1bb144",
         "size_bytes": 1992
       }
     },
@@ -1439,7 +1685,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cicd-supply-chain-1.0.0.tar.gz",
-        "sha256": "f3d3993e1dfd54503f17b1ba643b7f2a59b831d751e8073103d772d14ff7dcbb",
+        "sha256": "c9d5eae48a799a6b17a37f2778159d730327759de398fd77190f945be89230d9",
         "size_bytes": 3285
       }
     },
@@ -1521,7 +1767,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/clickjacking-protector-1.0.0.tar.gz",
-        "sha256": "3cdebc51ad268231d056028b1e6bf3d47be7078da4c41872d38224b1b59fe3db",
+        "sha256": "46904e17f3203642b8d0b8a51c3e4e128dd89429275ec829bee90ccbe8d4d4d0",
         "size_bytes": 1812
       }
     },
@@ -1603,8 +1849,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/client-js-beautifier-analyzer-1.0.0.tar.gz",
-        "sha256": "ce85eceb8332309a74674051ef41e4e4c1f7af4d9b95c9ce66234515cc215e7b",
+        "sha256": "384ec4d6ba966e6237a499d9f938c6d2562a7b191e4a7db8ea8ca4cfcba22903",
         "size_bytes": 2005
+      }
+    },
+    {
+      "id": "client-side-storage-crypto-auditor",
+      "name": "Client-Side Storage & Web Cryptography Hygiene Auditor",
+      "description": "Inspects browser LocalStorage, SessionStorage, IndexedDB, and Web Crypto API usages for plaintext JWTs, unencrypted session seeds, and predictable IVs.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Client & Desktop",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/client-side-storage-crypto-auditor-1.0.0.tar.gz",
+        "sha256": "6dd2f7d3ebcfbe09c59dc986cb06cff305ec1ae6be79a656b0d48c3d90b58cac",
+        "size_bytes": 2070
       }
     },
     {
@@ -1687,7 +2015,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloud-iac-security-1.0.0.tar.gz",
-        "sha256": "0d9116073a5b3c47a2d31a06fd58eb220dfc9c9575adc318fe71939cb28a1b71",
+        "sha256": "f532ca8c5ed70fc1b151ed0adcc7ff83729103ee1880234fc52c367d855c8040",
         "size_bytes": 3808
       }
     },
@@ -1776,7 +2104,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloud-iam-1.0.0.tar.gz",
-        "sha256": "1e94db9f53a19378bfd69bb3b3fe3661828378aef96775e8d1cab8e8ae82fccb",
+        "sha256": "01160e470dd5c724ca0da5c7af599803df225dff3490fc9eb2ec1e96a4fbbc4d",
         "size_bytes": 3830
       }
     },
@@ -1858,7 +2186,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloud-iam-policy-drift-1.0.0.tar.gz",
-        "sha256": "dc4f1a1df605dd85088387f864512c724783d0d83edb9a4b7de779276fa5381d",
+        "sha256": "bbab5d3b2adca38de688eba3a4172731d96a5b93741d5a78fde1bff9f3139ddd",
         "size_bytes": 1823
       }
     },
@@ -1940,7 +2268,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloud-prowler-compliance-1.0.0.tar.gz",
-        "sha256": "635d4d74a47e8fb68462ed53f74d9c20222886c14c86d2224524e693426705b2",
+        "sha256": "b67bcf482f76feff6571a821e6fce5dee5ee2207bafb2ede345ec1006a773fa5",
         "size_bytes": 2007
       }
     },
@@ -2022,7 +2350,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloudflare-bypass-tester-1.0.0.tar.gz",
-        "sha256": "a3e4d1e764d5cee972da7e5edd143f20862833d37fbf74278638f4c93a0bea75",
+        "sha256": "a8f90684ffb418e8e214cec3c3fa78e5f383781e6248a0930dac502d7653a9c8",
         "size_bytes": 1818
       }
     },
@@ -2104,7 +2432,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloudformation-iam-privilege-check-1.0.0.tar.gz",
-        "sha256": "6da21c538cb09fbd79f04a376aea4de90de9786b74d81816f244d1c89d47647b",
+        "sha256": "740990e04791989fd417a03f84f71ace8b6c2f25bf308a176c5a46b1fdd55fe6",
         "size_bytes": 1832
       }
     },
@@ -2186,7 +2514,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cloudfox-privilege-analyzer-1.0.0.tar.gz",
-        "sha256": "ba5d696a6b54fd31a03177d3854b2a8c7b20b5307ae4f85c2d9fce19e54a1533",
+        "sha256": "b0babe90dee06d76874b0e0890d9cbc1a166e201ee4993e9be7f010d9366e687",
         "size_bytes": 2017
       }
     },
@@ -2268,7 +2596,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/code-injection-evaluator-1.0.0.tar.gz",
-        "sha256": "da275b0df2e44fb3ade933f3be803c6d09d3824d1acf217efedd357c16f3d01d",
+        "sha256": "50622ec30cc80f474e217e11782e5016e3cf68cfa01207fc7c5034e44d4b79ce",
         "size_bytes": 1826
       }
     },
@@ -2350,7 +2678,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/code-property-graph-analyzer-1.0.0.tar.gz",
-        "sha256": "0734267a73e1697539ef4baca737802531a310d7939e42a673f4ab8019a8f6c4",
+        "sha256": "09349a0dbd4340d36920a11f93a9fdcc0ae02b21069c31d76596718cec801786",
         "size_bytes": 2028
       }
     },
@@ -2432,7 +2760,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/command-injection-auditor-1.0.0.tar.gz",
-        "sha256": "eab15bb615aedff6d63f244366027fe0d53b0a9f97cf789b36763d8337e0ffc1",
+        "sha256": "92721644c2e157e979de549fae876b9e5281089eeb07cf1470c063262662cd88",
         "size_bytes": 2004
       }
     },
@@ -2514,7 +2842,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/container-image-compliance-dockle-1.0.0.tar.gz",
-        "sha256": "a531fe299fc525d14d6b2cd86646d159533d79e2a72995ea97f6ce3731f914dd",
+        "sha256": "7f7f0c081578652b5897a34467890ff6dd5d293afa6b99d864172fd37c7a08d6",
         "size_bytes": 2024
       }
     },
@@ -2596,7 +2924,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/container-runtime-capabilities-1.0.0.tar.gz",
-        "sha256": "c7866d0c5b636d152349f87e86e17e9a5dffc23156218c8adeb60cd952c5d9b0",
+        "sha256": "90fed7f38441cd2a23bc2b99d0fee8691618388d4d9de036dcbae4945bc5a9ac",
         "size_bytes": 1819
       }
     },
@@ -2675,7 +3003,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/container-security-1.0.0.tar.gz",
-        "sha256": "da35c4ff4308772fb49d1ac59a8de1cba5536e5f00cfdd2d5cebb576265ba5a5",
+        "sha256": "8949346e2842c095bddf45ec888aa25d83dbeb4d5070447b6a325c0021f754ce",
         "size_bytes": 4471
       }
     },
@@ -2757,7 +3085,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/content-discovery-fuzzer-1.0.0.tar.gz",
-        "sha256": "165c3730a6d2e9e1709c82edc1d645cd403e8bb13165e9c9b2bab7e4e6284fcd",
+        "sha256": "a167b86a1ce601d01b59da7b8e0244c141332a6c492f343d001caf960e614759",
         "size_bytes": 1985
       }
     },
@@ -2839,7 +3167,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/content-type-tamper-tester-1.0.0.tar.gz",
-        "sha256": "bd810e113b261641e61f3808daa425dcb5d2672f2a16471979e9cc562a9e18cf",
+        "sha256": "56b4e6f603cd7b087417244887390d47c5b570430f9300b7f1f2c5995faada30",
         "size_bytes": 2022
       }
     },
@@ -2921,7 +3249,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cookie-session-hygiene-1.0.0.tar.gz",
-        "sha256": "2743da2a4215fb554f616deb497404d698ad00639aacd3549917758afc2afc69",
+        "sha256": "f2fc140654ba099d35aaef70d0764a03d8d7b29ce93577802c9ad811bdac77a6",
         "size_bytes": 3892
       }
     },
@@ -2996,7 +3324,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cors-misconfiguration-auditor-1.0.0.tar.gz",
-        "sha256": "3a3a0e79008f1fe55989d65251ad4108d9328d13332b5852bcf980c78a74545d",
+        "sha256": "12d91eaeedf405eaece80aa4244ddc8eae97b221f7b7c402e61572cb73306fe9",
         "size_bytes": 2158
       }
     },
@@ -3075,7 +3403,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cors-websocket-audit-1.0.0.tar.gz",
-        "sha256": "6c912a4975e195ebb11558496b1677f2c8ce181f08fc35098273d5fefd495db5",
+        "sha256": "263d13b211e26fa5725b7cb808055aca2b200474b903c8adc6a9c2721411e8c8",
         "size_bytes": 3470
       }
     },
@@ -3159,7 +3487,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/credentials-vault-1.0.0.tar.gz",
-        "sha256": "972dd5b23fbed45ff54ced781e69847e6b030ff67abe2fb64e22621c485b2489",
+        "sha256": "74aefadf7250b5e1d8476f067d224a6882b4e9f8e17198228d742f5a547c410c",
         "size_bytes": 2785
       }
     },
@@ -3245,7 +3573,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/crlf-injection-engine-1.0.0.tar.gz",
-        "sha256": "56c5b3f13acbf2bdbf4751abcdd73565c4bfa0e9b0539c50499e35d283247bf5",
+        "sha256": "f0a5990c35bb35b5fd5db7bfdbf334bbd328ec80140b3745d0c79f652fc7cb17",
         "size_bytes": 3389
       }
     },
@@ -3327,7 +3655,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/csp-header-linter-1.0.0.tar.gz",
-        "sha256": "abdf1cafae0d31eb521799bb8148bb0c1ac949fb7fa7b1d98a02d43d8d7ec9b9",
+        "sha256": "77c8aed6a690cfe1c4bacade79800381aa0755470b6b82a142caa2a184faf888",
         "size_bytes": 1800
       }
     },
@@ -3409,7 +3737,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/csp-headers-evaluator-1.0.0.tar.gz",
-        "sha256": "ac10058e0c9f2181909e1728c73ba35c660020b9d717b6ae3ff74de2796a37c5",
+        "sha256": "4120e837fc0672a3c8e2804b3b5ca78ae7f2f13b0a9e986d2c5211630833e915",
         "size_bytes": 4266
       }
     },
@@ -3491,7 +3819,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/csp-report-collector-1.0.0.tar.gz",
-        "sha256": "2c172ebf6f423b7d9df6780e6945fa5f7b5b1ed201ab5ffa389cd50ef78bf7e1",
+        "sha256": "9d4f88fd047f6c346b48ef353f827c663d39c1036dddaa4f4600a2b96c450ab9",
         "size_bytes": 1804
       }
     },
@@ -3573,7 +3901,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/csrf-token-checker-1.0.0.tar.gz",
-        "sha256": "9accdfa9ce30be36b66442c1e6e2f5140edd37729987d236b2dd600a4a158bb9",
+        "sha256": "9092eb3a75877b360e1788cb8469be615b8aa1f5e7cbe99ff4164633cacec674",
         "size_bytes": 1799
       }
     },
@@ -3655,7 +3983,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/cve-dependency-checker-1.0.0.tar.gz",
-        "sha256": "4399321cdf6eb926c8c730a7bf7579edd63e0b6b9cab8c091e3e6d6920426351",
+        "sha256": "c648ba74f19875860796c03d0c4446a8d23dc9bb38d374dea00e81f957e32dcc",
         "size_bytes": 1800
       }
     },
@@ -3736,7 +4064,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dast-verifier-1.0.0.tar.gz",
-        "sha256": "920772ef16a2f6fa736ad3cbdb0428a9f7f1b868b6043091cef7d5b29cfdbf6e",
+        "sha256": "eb124bee5553acfcb83b8c9846ce5c62968fff0f078ea3fa3c65722ed6836483",
         "size_bytes": 3346
       }
     },
@@ -3825,7 +4153,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/database-audit-1.0.0.tar.gz",
-        "sha256": "425e8066e1ec38858980f55c110fd61054a875d7f46c51fba5b93873b7038ef9",
+        "sha256": "17de866abcb728a6a62ff3aa073a379008dad77c8b6b42c243d46c7c663bb609",
         "size_bytes": 3864
       }
     },
@@ -3907,8 +4235,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/debug-error-leak-detector-1.0.0.tar.gz",
-        "sha256": "901c46872b29fc3f2e21d35988d9189362c974298ebc37dd5adf77ba515ce8ed",
+        "sha256": "40a97f7bc6bea262de237982ef26d5b0639cca64e83f5d38396b77540465811f",
         "size_bytes": 2045
+      }
+    },
+    {
+      "id": "deep-link-uri-scheme-auditor",
+      "name": "Custom URL Scheme & Deep Link IPC Security Auditor",
+      "description": "Audits custom URL protocols (e.g. `slack://`, `app://`) and deep links in desktop/mobile apps for argument injection, directory traversal, and unauthenticated actions.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Client & Desktop",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/deep-link-uri-scheme-auditor-1.0.0.tar.gz",
+        "sha256": "b6d7195a548fd048daf87f241d57da0eff260446a59ec4c4a51cf73b358bbf15",
+        "size_bytes": 2027
       }
     },
     {
@@ -4000,7 +4410,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/digital-forensics-1.0.0.tar.gz",
-        "sha256": "00c564f4fa3c086d5555cf547cfd40cbcb53fa7ef5aca3d49602f5761d605ea6",
+        "sha256": "0626365158dfc25216b8e32942c710eed23baea6c9cdf44c83cd10db5cc8a446",
         "size_bytes": 4639
       }
     },
@@ -4075,7 +4485,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dns-caa-record-auditor-1.0.0.tar.gz",
-        "sha256": "9e7b91c80fe50efaa276fc2ec35db1d11e0a27dee5382e6b9096954bb1426795",
+        "sha256": "567877159f95e7032b4121098aa1acac52ed26324fbdc43bcbf76269d40f9a69",
         "size_bytes": 2189
       }
     },
@@ -4157,7 +4567,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dns-dnssec-validator-1.0.0.tar.gz",
-        "sha256": "96a050b63f21c9cf0b50c01e00e4b2f6b8920ac24072f0d7d39ca0cb23c24d0a",
+        "sha256": "a489a8461a3f02e10c0cfb27a71f38374ddf240af914d654ef47d741dce050c9",
         "size_bytes": 1819
       }
     },
@@ -4239,7 +4649,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dns-rebinding-tester-1.0.0.tar.gz",
-        "sha256": "3a3c54329562181a87033090a3adafc8acb28738b2935b70c00a5e08aa4ed5f5",
+        "sha256": "ea0f36f4377371e7cc75581d10c24ab95df9b0b31b74836dd2bff3942bc07942",
         "size_bytes": 1974
       }
     },
@@ -4321,7 +4731,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dns-wildcard-detector-1.0.0.tar.gz",
-        "sha256": "0e0054ba048506eff57e938e8778dc413a1acb241130881d927df0f88e32a46c",
+        "sha256": "02c9e39c84b28969bcb8760379fdc0c399b5b7f033e0cec37ef373fa944eab27",
         "size_bytes": 1805
       }
     },
@@ -4403,7 +4813,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dns-zone-transfer-tester-1.0.0.tar.gz",
-        "sha256": "410577a8d4edd63084ce7748aae040cb24926705b62a82676d4fe8b9c39652bb",
+        "sha256": "bd7c1f6cfee300690d42f6776c6755c7784d0bbcf40fa89a4af580d127ea2ddb",
         "size_bytes": 1834
       }
     },
@@ -4496,7 +4906,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/docker-runtime-1.0.0.tar.gz",
-        "sha256": "1685db2db97e47c71792af2c95acb31b754372a61dd3806ace3df621bdc5c4a6",
+        "sha256": "3ffd07c87e3c59562b3318cf6d4dcf0e0b51539c72beff9d7232ef3760af0c4b",
         "size_bytes": 4026
       }
     },
@@ -4578,7 +4988,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dockerfile-security-linter-1.0.0.tar.gz",
-        "sha256": "3565f948ed770b5e32ca7a5a1d49d310a8d5e038c1fc62cbb119bc424fb9e595",
+        "sha256": "2d858ca509b023eab16885fd85ff63bbb31b085f0c0eda6415adcf6c10533f50",
         "size_bytes": 2015
       }
     },
@@ -4664,7 +5074,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dom-xss-postmessage-1.0.0.tar.gz",
-        "sha256": "91b69b52a20470b93a78d9556d34e320d5f5983aff70b09c6071609621a27e49",
+        "sha256": "3dbf0114b83ff4c0eb862978b0c33e2f04255e4a6078d309077cbe96d0f41b6c",
         "size_bytes": 3535
       }
     },
@@ -4746,7 +5156,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/dotnet-security-code-analyzer-1.0.0.tar.gz",
-        "sha256": "948233f23455af363cb264fbecb6f7aed675102b88331adfb77692a3b0c05632",
+        "sha256": "9b8ca20cd26cade319d26c1beb1412a3f6c497ba0f4d286246aa13e71863a853",
         "size_bytes": 1998
       }
     },
@@ -4828,8 +5238,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/drupal-joomla-security-auditor-1.0.0.tar.gz",
-        "sha256": "f24c9563f642b4ec9ad2d2d759508893c1d712468bb07cb29d2477430c5ba8b1",
+        "sha256": "8f7700411b0d9fa2934f73b3dba8f13991859c06d668a10132071248659bbaac",
         "size_bytes": 1991
+      }
+    },
+    {
+      "id": "electron-desktop-security-auditor",
+      "name": "Electron Desktop App Security & Context Isolation Auditor",
+      "description": "Audits Electron desktop applications for insecure webPreferences (nodeIntegration: true, contextIsolation: false, sandbox: false), enabling XSS-to-RCE pivots.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Client & Desktop",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/electron-desktop-security-auditor-1.0.0.tar.gz",
+        "sha256": "bd9ca6ba1a14d6f357b2a13ca596378c4d6692ea02efcc5b15666747213f2766",
+        "size_bytes": 2062
       }
     },
     {
@@ -4914,8 +5406,172 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/email-security-1.0.0.tar.gz",
-        "sha256": "9d48cf14c981ddcdbace07cea2928aca3885bcde8996ed5d2060dffa125be402",
+        "sha256": "5a72f27351d6315663d2d5e1ae82f2cd97d54a9ad878dd4a78e9d79d71184790",
         "size_bytes": 4442
+      }
+    },
+    {
+      "id": "erc20-permit-signature-auditor",
+      "name": "ERC-20 / ERC-721 Permit & EIP-712 Signature Auditor",
+      "description": "Audits smart contract implementations of EIP-2612 (permit) and EIP-712 typed signatures for signature malleability, replay attacks across chain IDs, and missing deadlines.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web3 & Blockchain",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/erc20-permit-signature-auditor-1.0.0.tar.gz",
+        "sha256": "0ff442cdbfa566e99803d7311fb80fd288a7cacffce41a4a610592d1426a84dd",
+        "size_bytes": 2048
+      }
+    },
+    {
+      "id": "evm-smart-contract-auditor",
+      "name": "EVM Smart Contract Bytecode & Logic Flaw Auditor",
+      "description": "Statically analyzes Solidity/Vyper smart contracts and EVM bytecode (Slither/Mythril methodology) for reentrancy, unhandled return values, and integer overflows.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web3 & Blockchain",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/evm-smart-contract-auditor-1.0.0.tar.gz",
+        "sha256": "45cab0d1e8c1d3120f2a0eb4c26dc5a97707f71f29877260ac97354a155a4ced",
+        "size_bytes": 2058
       }
     },
     {
@@ -4996,7 +5652,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/exposed-git-dumper-1.0.0.tar.gz",
-        "sha256": "bb3ec17b9827f30972c0610b0e094ff175b2ad848cd2a0d4e9c55c10567c7c8a",
+        "sha256": "dc66710cd6fddd963a87b145a98b07dfb5dc3111f80ebae942a064c0a81172af",
         "size_bytes": 1985
       }
     },
@@ -5078,8 +5734,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/file-upload-vulnerability-scanner-1.0.0.tar.gz",
-        "sha256": "b2be4b5ba3d965e709734b76e4e472d914b27a1af1bd3a369c689bd623757e3e",
+        "sha256": "a86fcc9e7e425628836a7c987aed5826cce355fe29a418ed0dc29d5f250b3ff4",
         "size_bytes": 2037
+      }
+    },
+    {
+      "id": "flash-loan-arbitrage-risk-scanner",
+      "name": "DeFi Flash Loan & Oracle Manipulation Risk Scanner",
+      "description": "Simulates flash loan market borrow vectors and spot AMM pricing manipulations to identify decentralized finance contracts vulnerable to price oracle attacks.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web3 & Blockchain",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/flash-loan-arbitrage-risk-scanner-1.0.0.tar.gz",
+        "sha256": "b4b24eb4bab99938d3aa57e71dfec57d9d33814c80dc48a23006404bdf86e67f",
+        "size_bytes": 2057
       }
     },
     {
@@ -5160,7 +5898,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/forbidden-bypass-auditor-1.0.0.tar.gz",
-        "sha256": "7a2a5307df52e4e0428d3a06f387c4b7244a27a7a81ee4204d7ac3ba499b2b42",
+        "sha256": "06e183fdec5a8f6e422162d0275bd100f0d3afce8726d00aa3c0b065ec58a77d",
         "size_bytes": 2027
       }
     },
@@ -5239,8 +5977,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/github-actions-security-1.0.0.tar.gz",
-        "sha256": "6d3c2074d4b981e9ae11c84dda56dacf70c6f08c06a6c395c5c2c31842285a1b",
+        "sha256": "1651d113536cfa5c86373ae0d316f343b16b2a948d2ae85fd0cf2e4eb4ab42d6",
         "size_bytes": 5392
+      }
+    },
+    {
+      "id": "gpo-security-drift-auditor",
+      "name": "Group Policy Object (GPO) Misconfiguration & Drift Auditor",
+      "description": "Audits Group Policy Objects across domain SYSVOL shares for weak ACLs, cpassword encryption keys, unhardened startup scripts, and permission drift.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Identity & AD",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/gpo-security-drift-auditor-1.0.0.tar.gz",
+        "sha256": "de51d7f489b996a7827fb87c858e8663aef1c162fe4c54776888b7ba364230f0",
+        "size_bytes": 2038
       }
     },
     {
@@ -5325,7 +6145,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-batch-dos-1.0.0.tar.gz",
-        "sha256": "0e4425a40ecc59c5acac69d153ca93a3c080c14a885b80eceb042c86ce98be4c",
+        "sha256": "7f8ad0c40b89e891f83eb5cfa710ce06e81841da6ed51df73e2e6a66052569a4",
         "size_bytes": 3295
       }
     },
@@ -5400,7 +6220,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-depth-limit-auditor-1.0.0.tar.gz",
-        "sha256": "6e1d4eb94a5150f70cd4b7c914c660617cbb59f470c77094e0e441ab922c79a3",
+        "sha256": "e81bc065b3c4733ba1d724ee1e70917dba60466eef25f1336bcfb47829920e5b",
         "size_bytes": 1956
       }
     },
@@ -5482,8 +6302,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-engine-fingerprinter-1.0.0.tar.gz",
-        "sha256": "c83a0b55d93c39833d0f284cfbfd687a12797d5fef81f4d4a0b9e5cfcaee7ad1",
+        "sha256": "3b07453585ed9f6b51f3f799934b6ea4bc1ae5a1c09b4437f8fb10e0807473c9",
         "size_bytes": 2019
+      }
+    },
+    {
+      "id": "graphql-persisted-query-auditor",
+      "name": "GraphQL Automatic Persisted Query (APQ) & Cache Auditor",
+      "description": "Audits GraphQL Automatic Persisted Queries (APQ) for cache poisoning, unauthorized hash registration, and arbitrary query execution through hash collisions.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "API Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-persisted-query-auditor-1.0.0.tar.gz",
+        "sha256": "29887147bbfae6c07d14198c0138516ae9cf27b48e0d5ae99ac534ab41be70b6",
+        "size_bytes": 1989
       }
     },
     {
@@ -5561,7 +6463,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/graphql-security-audit-1.0.0.tar.gz",
-        "sha256": "f96c76532b79979e48a3ab48183bbb30179dbaad351fdb7262003ce610b569fd",
+        "sha256": "3ce0cd72d349865ed23dced4f743cc2d40e0f6f63182d707db63480b150cd616",
         "size_bytes": 3200
       }
     },
@@ -5650,7 +6552,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/grpc-protobuf-security-1.0.0.tar.gz",
-        "sha256": "9e8b32a15a9d8fd1a001d13fb2b5981fd773847b317ae761b639f724b68b3882",
+        "sha256": "502f6dcd05e2146ae6416e072ac64f6e953b751196a8e7d27152a49097d55af1",
         "size_bytes": 3274
       }
     },
@@ -5748,7 +6650,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/hashira-ai-1.0.0.tar.gz",
-        "sha256": "83f496b7fc97ee078c0b4b20eb64d6607fb8b5063addffdd5c07dfa0cb081f12",
+        "sha256": "1ffad268fad884938dd0af412a00662501ecd08eb9759771cc69fbcff0101c00",
         "size_bytes": 8208
       }
     },
@@ -5830,7 +6732,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/historical-url-miner-1.0.0.tar.gz",
-        "sha256": "cb2ae7b9a9648c122d039195702fc9a70b7e9ab47e74e588ff4c4835d665f47b",
+        "sha256": "0ed2c208175e687999046b267ef08fae9fd86ce815178d882694a2f9d2f9b9e8",
         "size_bytes": 2007
       }
     },
@@ -5922,7 +6824,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/host-posture-1.0.0.tar.gz",
-        "sha256": "6d9a0e0e031969c924c5ea4e59ebadec5ef3a31fd8d56059651a8472b60edb3b",
+        "sha256": "57b44f2c7e139f60a9621a59097ce00731280948e4f5360982980771c54815fc",
         "size_bytes": 3421
       }
     },
@@ -5997,7 +6899,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/hsts-preload-auditor-1.0.0.tar.gz",
-        "sha256": "e4676ff00851e018716f05a48624cfbecebf4500d3a7964ca66b8dc541170fb6",
+        "sha256": "27d1b0bef5d76d03e80e34854bcf105242e5a022a640664b7be898072b0df591",
         "size_bytes": 2260
       }
     },
@@ -6083,7 +6985,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/http-request-smuggling-1.0.0.tar.gz",
-        "sha256": "d5680396916de27fc21174e779f915016bddd2190b684fe645bcd5e4aee99927",
+        "sha256": "2baceecdd36e307a19b1bc4e2ebc4e7e77e50996e999d4b8c90cdc68add0b352",
         "size_bytes": 3631
       }
     },
@@ -6165,7 +7067,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/http-request-smuggling-detector-1.0.0.tar.gz",
-        "sha256": "34229ebd0071559b701c8edce5d40ad9e3c1f2e6308e11e21f05f8d982263ac5",
+        "sha256": "bbd9ea23b8ab0b6cfcdfa38526005a5bd1f2e52cc14e7cb08a891e12bf996dda",
         "size_bytes": 1825
       }
     },
@@ -6247,7 +7149,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/http-security-headers-checker-1.0.0.tar.gz",
-        "sha256": "2f0f9f03b8c6c061751194c7a407ea0a0f9c6d86410fdd0afab6a1716bdb6650",
+        "sha256": "b768d2f317fa6cf66eb0827e7b8c9de165d18f6cf20d85a54c15c4e4e8ea5de8",
         "size_bytes": 1838
       }
     },
@@ -6329,8 +7231,172 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/http-smuggling-detector-1.0.0.tar.gz",
-        "sha256": "4b5d34d2ce63e0e6d83b9af75d5a6cd6e5facf9b3617a939b9670af3c0c35543",
+        "sha256": "67caa171ef3f06078e11844366a743f27f6882e27d623c9db90ab856a15a518e",
         "size_bytes": 1817
+      }
+    },
+    {
+      "id": "http2-smuggling-hpack-auditor",
+      "name": "HTTP/2 Protocol Desync & HPACK Compression Auditor",
+      "description": "Audits HTTP/2 request desynchronization, H2.CL / H2.TE desync, header pseudo-header injection (:method, :path), and HPACK Huffman decompression bombs.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/http2-smuggling-hpack-auditor-1.0.0.tar.gz",
+        "sha256": "5a4eca0351fd5fbb78479fde939ccebb5f4c8ed94d92cccf0dafdddc9328756b",
+        "size_bytes": 2044
+      }
+    },
+    {
+      "id": "http3-quic-downgrade-tester",
+      "name": "HTTP/3 & QUIC Protocol Security & Downgrade Tester",
+      "description": "Tests HTTP/3 (QUIC/UDP) endpoints for 0-RTT replay attacks, amplification vectors, connection migration hijacking, and forced protocol downgrades.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Network & Discovery",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/http3-quic-downgrade-tester-1.0.0.tar.gz",
+        "sha256": "46e90b12091efaacd29b74491de14786fce62ac1533530e928da3f48318d7484",
+        "size_bytes": 2037
       }
     },
     {
@@ -6413,7 +7479,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/iac-remediation-advisor-1.0.0.tar.gz",
-        "sha256": "6c4a34b8451b5ecda36f52e0c572709550a3729c47f90acea3a6e52f623c8eb8",
+        "sha256": "7ce248941f243ef0c65bb8e050586d06ad0d8d3225bd9baa30dbbb41378648bb",
         "size_bytes": 3591
       }
     },
@@ -6492,7 +7558,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/identity-ad-hygiene-1.0.0.tar.gz",
-        "sha256": "00b59ebf9cd2afcba6532387340ac4f11cd1dda1a3695cfe526223f93c2641c7",
+        "sha256": "4e571a7a5da923ec18e37d682611b0487a3e0cf47bf5eaee9890522b7b63563d",
         "size_bytes": 3810
       }
     },
@@ -6574,7 +7640,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/iis-configuration-audit-1.0.0.tar.gz",
-        "sha256": "a10b4307a31233be9e2d516de19681d8073803bf7e63ddfe5f23ef6e0020a5b7",
+        "sha256": "c88716d61b21624f1029995126760a2cd2a7b5fd14ec412efe0b8438e8f03b86",
         "size_bytes": 1824
       }
     },
@@ -6662,7 +7728,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/incident-response-1.0.0.tar.gz",
-        "sha256": "78a8b29a3d3412e49ab04e0f0aa45854db32115933f43302a85e7fd9b8bc3f12",
+        "sha256": "1ba840aa74f3aec53b342c6063cb3e6faa840be2483e17180233e97a1685ef6f",
         "size_bytes": 3242
       }
     },
@@ -6744,7 +7810,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/j2ee-deserialization-auditor-1.0.0.tar.gz",
-        "sha256": "e2d472fae6396f868541502c0b17e17497b82547deb7676cac0280235e9193be",
+        "sha256": "2d89920bec05e999b289db1bc0594865cabd6c7db4a52cf7ead75d97d8e3df99",
         "size_bytes": 2035
       }
     },
@@ -6826,7 +7892,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/java-source-sast-auditor-1.0.0.tar.gz",
-        "sha256": "59cebb32c07116617134a113ecf29c027a25c0d759f38dbf9ffe691393da162c",
+        "sha256": "4a96acca7c769dca5021bc67528d59342ce265c1d6622bc5491c2cc36ff5c958",
         "size_bytes": 2028
       }
     },
@@ -6915,7 +7981,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/js-endpoint-miner-1.0.0.tar.gz",
-        "sha256": "82aa1128d4ab41a5fcfd3e133bb56782c4884523b049d08537450fa4af2c60d9",
+        "sha256": "3627719e67bf1edd02dec44bdd1ddbd1ad4ed145cb4d48ee04bc6e1eed286342",
         "size_bytes": 3712
       }
     },
@@ -6997,8 +8063,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/jwt-expiration-checker-1.0.0.tar.gz",
-        "sha256": "06d6527fac37e0b460db0d6b4c761216818d3b0d3552d79a8fa8f9af01eaefa5",
+        "sha256": "7d7613167103912861014b561cd6e233a50257fb37cc25b25b7f31884575dbf8",
         "size_bytes": 1827
+      }
+    },
+    {
+      "id": "jwt-jku-x5u-injection-auditor",
+      "name": "JSON Web Token (JWT) Header JKU / X5U Injection Auditor",
+      "description": "Tests JWT authentication endpoints for token header injection vulnerabilities, including rogue JWK sets (`jku`), self-signed X.509 cert chains (`x5u`), and critical header parameter bypasses.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/jwt-jku-x5u-injection-auditor-1.0.0.tar.gz",
+        "sha256": "12012d49ad07c63cfedb753b1054b0964eb05c31a4510e3bca0f31c29634c53a",
+        "size_bytes": 2074
       }
     },
     {
@@ -7079,7 +8227,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/jwt-kid-exposure-1.0.0.tar.gz",
-        "sha256": "52db04867bb06b1a743db726684de376b749564234408b8eeaf04d252933c418",
+        "sha256": "f12641041780d0d952e2b9d5a498c004983a124175402d9e108180b2ff5aa542",
         "size_bytes": 1818
       }
     },
@@ -7157,7 +8305,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/jwt-security-analyzer-1.0.0.tar.gz",
-        "sha256": "9c2089c1c2e6e4629fbac5e7ba5701276f79cbbcb816fc1be31fa010f4559057",
+        "sha256": "dcc2e9d2116e42f82babfcdc2f69140859be2713ffb3641da798cce50ec5bc08",
         "size_bytes": 3990
       }
     },
@@ -7254,7 +8402,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/jwt-weak-signatures-1.0.0.tar.gz",
-        "sha256": "e2723916ba43c3d6059fd4e8004fd7ffed4c059d6e50bf89d8a37f036505fb7f",
+        "sha256": "113e52a54dc41b102968f18a2738d624bc3fbd4871b63e8f97761e3e26207e6a",
         "size_bytes": 2326
       }
     },
@@ -7336,7 +8484,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/k8s-image-scan-integrator-1.0.0.tar.gz",
-        "sha256": "d777043aeed651b0147ac596e79f9b8341b202edb36db7bbe11069590cdd48db",
+        "sha256": "d5649286321ff88139cf8616d28587d3efbe8f15cbec68be0fff6e4a01d1804c",
         "size_bytes": 1822
       }
     },
@@ -7418,7 +8566,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/k8s-pod-security-policy-check-1.0.0.tar.gz",
-        "sha256": "2c94d99a88f71a160058334409fa9caf58bf3dfe2bf160056d034e2e3fa7d37a",
+        "sha256": "dd29b741b4532211d6c8887c71a847d1468b4a28c6995f60f84f7daea81d2684",
         "size_bytes": 1827
       }
     },
@@ -7500,7 +8648,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/k8s-rbac-audit-1.0.0.tar.gz",
-        "sha256": "b56c87e879de6ad254362515292f57bb4deee43f99ccea8e7685974193485c9b",
+        "sha256": "76e6956c02760d2253db5fb95c99ea3cefb1cd24cf7fe1a07a6e3fe13b3fe179",
         "size_bytes": 1804
       }
     },
@@ -7582,8 +8730,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/k8s-service-account-token-check-1.0.0.tar.gz",
-        "sha256": "65f9ceec171af61e88ceb6c952deadb41192cc9fd43c7ede45982c846cbe1fb5",
+        "sha256": "351720452d4de7267b9c2f7b380342c512dcaf8060a59508fa51ebe05a44297e",
         "size_bytes": 1836
+      }
+    },
+    {
+      "id": "kerberos-silver-ticket-auditor",
+      "name": "Kerberos Service Ticket & SPN Hygiene Auditor",
+      "description": "Audits Service Principal Names (SPNs) and service accounts for weak RC4-HMAC encryption, predictable computer passwords, and Silver Ticket forging exposures.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Identity & AD",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/kerberos-silver-ticket-auditor-1.0.0.tar.gz",
+        "sha256": "dbc9e7c028974bb84602c98f3cea8a57db787131f02494cf3b09b92f872a0277",
+        "size_bytes": 2064
       }
     },
     {
@@ -7664,7 +8894,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/kics-iac-security-scanner-1.0.0.tar.gz",
-        "sha256": "74bf21bb9f343ef33ac2c94c8923ea2f095f5b5b883150d053c93b94e9d1b828",
+        "sha256": "0ac609c888a03ca787875fab206c0f599a19b1518e67824e31a433907be37b97",
         "size_bytes": 2033
       }
     },
@@ -7746,7 +8976,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/kubernetes-cis-bench-auditor-1.0.0.tar.gz",
-        "sha256": "ef3cc7a4317595826a4e1c5652a28649a10953a6e3777a32ffb5c462511b682a",
+        "sha256": "21b3cf33c8b8cb4c7faeaf74825b0131e821b066c52ed49fe8a92c9b108a901e",
         "size_bytes": 2011
       }
     },
@@ -7839,7 +9069,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/kubernetes-posture-1.0.0.tar.gz",
-        "sha256": "7ce70349191a3ccd62553dec3e373c15763cf89e9046f9e7b421ecf16ad1acc9",
+        "sha256": "22ac218d8f5a5797738412cc8495c8dbad7a5f076710825ce92867de0a54f132",
         "size_bytes": 4045
       }
     },
@@ -7921,7 +9151,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/kubernetes-yaml-linter-1.0.0.tar.gz",
-        "sha256": "8b7a5faa8e19f13cbf41dee8be1d767a0ba07b5929e731710a5b1768e48763e0",
+        "sha256": "afd00c28d662eb284147e2aab2e20a7573c74ba0dc3cfc7da3dd576f4af58f87",
         "size_bytes": 2021
       }
     },
@@ -8003,7 +9233,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ldap-anonymous-bind-tester-1.0.0.tar.gz",
-        "sha256": "5de4f27970ea1b7abc30467cc5330404186521e5257f34bcbb1ab681133415be",
+        "sha256": "203db4d7bcfbabe2b79b945939c035cde5b101db7467d369468c5860a5de3a85",
         "size_bytes": 1826
       }
     },
@@ -8085,7 +9315,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ldap-ssl-tls-enforcement-1.0.0.tar.gz",
-        "sha256": "a91300ff93615f9c7a5b1a58e42f5b083577124c78fd604aa7de3f5271b71310",
+        "sha256": "5138a47a7a3dd4f9399c5d2aaf30cea3ba92d305500bb0d87a84a8d91d6994b0",
         "size_bytes": 1825
       }
     },
@@ -8167,7 +9397,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/lfi-path-traversal-engine-1.0.0.tar.gz",
-        "sha256": "184d991a4946146c7faca7c247282987e22fc70642bd7461d438ad5551e42cd4",
+        "sha256": "5fd9b71dbffdc0d101f30e4a9394ad57ef94d82bbfaacc38f0903138f02f8517",
         "size_bytes": 2022
       }
     },
@@ -8249,8 +9479,336 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/live-http-service-prober-1.0.0.tar.gz",
-        "sha256": "8991668437919003f1fe7382129989f1512deaeeb081e3aac084f9331dcc9dc8",
+        "sha256": "8a6209d08ec046b4046b75689af2cb13fe7d580eb2e10653375237c00d7ee0ab",
         "size_bytes": 1967
+      }
+    },
+    {
+      "id": "llm-excessive-agency-auditor",
+      "name": "LLM Autonomous Agent & Excessive Agency Auditor",
+      "description": "Evaluates autonomous AI agents for excessive privileges, missing human-in-the-loop approvals, and unconstrained tool execution capabilities.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "AI & LLM Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/llm-excessive-agency-auditor-1.0.0.tar.gz",
+        "sha256": "ea609680cea6c41f5c246a1249e60ba2eb04ae81437073be587c07819bf6c964",
+        "size_bytes": 2021
+      }
+    },
+    {
+      "id": "llm-insecure-output-handling",
+      "name": "LLM Insecure Output Handling & Indirect XSS Auditor",
+      "description": "Audits applications consuming raw LLM outputs for downstream vulnerabilities including Stored XSS, Server-Side Request Forgery, and unescaped SQL generation.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "AI & LLM Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/llm-insecure-output-handling-1.0.0.tar.gz",
+        "sha256": "1646cea3a22917a47a8342d379abc7fab7687e30d008663d2cecfdcafb3a4b23",
+        "size_bytes": 2027
+      }
+    },
+    {
+      "id": "llm-prompt-injection-auditor",
+      "name": "LLM Direct & Indirect Prompt Injection Auditor",
+      "description": "Tests large language model applications against direct prompt injection, jailbreaks, delimiter bypasses, and indirect prompt injection through untrusted external context.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "AI & LLM Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/llm-prompt-injection-auditor-1.0.0.tar.gz",
+        "sha256": "c0b58cfc863df8e38617da59e780fd60b10c1aa04d7e0e1b9b3a1e25699798b2",
+        "size_bytes": 2018
+      }
+    },
+    {
+      "id": "llm-system-prompt-extractor",
+      "name": "LLM System Prompt & Intellectual Property Extractor",
+      "description": "Evaluates LLM conversational endpoints against system prompt disclosure, secret key extraction, proprietary rule leaks, and instruction inversion attacks.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "AI & LLM Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/llm-system-prompt-extractor-1.0.0.tar.gz",
+        "sha256": "cd288862919cac247e48cccdddb1fc771bb3ff3844db508841f1b55ddaef8150",
+        "size_bytes": 2046
       }
     },
     {
@@ -8331,7 +9889,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/malicious-dependency-behavior-analyzer-1.0.0.tar.gz",
-        "sha256": "5c71dd0817f8b63e46f51b886979eaa144acf9e458647e36031b443071e39823",
+        "sha256": "9686c55d67b97503205aa3f2a09ade23f82af1c1cb2abf47f6c332425fe7b12a",
         "size_bytes": 2044
       }
     },
@@ -8413,7 +9971,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/mobile-manifest-permissions-1.0.0.tar.gz",
-        "sha256": "ca575176c2c80e8cb1b980e01622acbc16c72c46c1dc968558542b04845b5811",
+        "sha256": "9b3df57529ad8a2927d472cdacefca3bf14d34fee38c020b22d888bea648b2a4",
         "size_bytes": 1812
       }
     },
@@ -8500,7 +10058,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/mobile-static-audit-1.0.0.tar.gz",
-        "sha256": "45b7aec1b69fb8c51af99af54bb58e028f44ebaff5ca828411619aa5f6f87ccc",
+        "sha256": "5c7668388986cd05f6f5cf5d94015bc457270ec9514a3ef8b336e024082b10ff",
         "size_bytes": 3362
       }
     },
@@ -8582,7 +10140,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/multi-cloud-resource-enumerator-1.0.0.tar.gz",
-        "sha256": "d0e065f57573d50ae284f631f619bec1f24398656c37f10574b0647fc5528133",
+        "sha256": "17e2362d4644765f1f61cdaf63229e2ff23bdf0bc6a07c71a96eb1719a4b5c21",
         "size_bytes": 2038
       }
     },
@@ -8662,7 +10220,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/network-forensics-pcap-1.0.0.tar.gz",
-        "sha256": "6e6fe2a0d8a60304e36614a4e0c26aee9c0dbc1db65c7f45b765902edfcceb97",
+        "sha256": "12cb34687ed513928acbedcc733eea8566cd2f4e5a9211b496850aa7bd358cf7",
         "size_bytes": 3532
       }
     },
@@ -8752,7 +10310,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/network-security-1.0.0.tar.gz",
-        "sha256": "fc62dda2c70c7ecedfebe5b8080ae0ea39434dab152bfea8a99ceeaefdc25853",
+        "sha256": "312482bafe9de226247073bcdcd9b77ab18776af6191be12824e767cfa5b357f",
         "size_bytes": 4852
       }
     },
@@ -8838,8 +10396,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/nosql-injection-auditor-1.0.0.tar.gz",
-        "sha256": "fd33016bcc3e46a835bed8061bdcc2b64c3ecca6c1559df4a597f0103b9548a4",
+        "sha256": "c4793fd7ceb6ab8acbc74ce5ccb6cacddff81bf1c363a2c5aecb48dda0731c54",
         "size_bytes": 3498
+      }
+    },
+    {
+      "id": "ntlm-relay-coercion-scanner",
+      "name": "NTLM Relay & Authentication Coercion Scanner",
+      "description": "Identifies domain servers vulnerable to forced authentication and NTLM relay attacks via MS-EFSR (PetitPotam), MS-RPRN (PrintNightmare/SpoolSample), and SMB signing gaps.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Identity & AD",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ntlm-relay-coercion-scanner-1.0.0.tar.gz",
+        "sha256": "c43784fd3b6b0933089cbb7e3442930f0abd325a2a70bb553a331fa0aa5003a1",
+        "size_bytes": 2035
       }
     },
     {
@@ -8927,7 +10567,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/oauth-account-takeover-1.0.0.tar.gz",
-        "sha256": "b5a07b49ec2ed25a6d4d322fc4035fd84684155b3b8a5b50dbeaaa28314ca586",
+        "sha256": "88150bee8d7b1bfaeed9527ab3b736b02856ee27498ad2d995a8754e359ca1ab",
         "size_bytes": 3609
       }
     },
@@ -9002,7 +10642,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/oauth-redirect-uri-validator-1.0.0.tar.gz",
-        "sha256": "69995d4f5087317f05b2726be0665d8ec89fc2caa7067109f8dc38a815c0d2dd",
+        "sha256": "d640ad45c0d5813c83329b37ae4e69db136acd67c705d092183c333aadb63138",
         "size_bytes": 2105
       }
     },
@@ -9084,7 +10724,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/oauth-token-replay-detector-1.0.0.tar.gz",
-        "sha256": "47ea0a0c4855a726afe3c1182ca1e5a4b7a19a314c8ce8a390ce9555fc6d2092",
+        "sha256": "d0e54111a40c56187ce18fbe63e5e196614efc8ff3b58d774e810c82ee6c04c8",
         "size_bytes": 1825
       }
     },
@@ -9170,7 +10810,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/open-redirect-chainer-1.0.0.tar.gz",
-        "sha256": "7369d3b632da6b2e43a71ac9960341513d510a6eed9afefc2d399b90c6abde01",
+        "sha256": "dbac6d0d58c5a7f585a2e74e2015b4c8b3e5516bf9592bcb97019d2f8c4b4b10",
         "size_bytes": 3427
       }
     },
@@ -9252,7 +10892,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/open-redirect-finder-1.0.0.tar.gz",
-        "sha256": "b202521425d45ecd7976ce31cf6735b160a954faa8bd05cc673628140bd2ba86",
+        "sha256": "a97b514d117ef7bd6fd04e8d45deb58d60978bff4902ee1fb6b3df43a3bea830",
         "size_bytes": 1806
       }
     },
@@ -9334,7 +10974,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/openapi-spec-linter-1.0.0.tar.gz",
-        "sha256": "439ba076b0fc35cbeeb1b0c2b921616eae9b5afaedec7116388932a24da5b8a2",
+        "sha256": "ca5152b5fe37666639d2e09d72523b1d59df8a1442aa7d014a85c83f31e51464",
         "size_bytes": 1993
       }
     },
@@ -9416,7 +11056,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/openssf-supply-chain-scorecard-1.0.0.tar.gz",
-        "sha256": "8372fc572a8c1caae006f7513cee2030b4853c061fe59a9d82bc62e44cb8a178",
+        "sha256": "0477216e1fe812884a511d3f7fc2c86cf9ef1f95d0d73882c76ed7bf96d8722a",
         "size_bytes": 2026
       }
     },
@@ -9498,7 +11138,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/osint-search-exposure-1.0.0.tar.gz",
-        "sha256": "03517552d2c3d1487f00f1a9a61ee8df55278e1d086be348921aca9c0f2c997b",
+        "sha256": "fa7de48d38e96b110a36127f375c707532d842737cb982f76ed1c59b2dbf8764",
         "size_bytes": 1992
       }
     },
@@ -9587,7 +11227,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/param-miner-1.0.0.tar.gz",
-        "sha256": "7f086637a3b21a2a8b6b23936dfd98098d714ffcd9b7663ed0f93b99ea77a487",
+        "sha256": "0121931c1595f983b7ab57c3740fde9a57a0ffb43c5e2b6ddea087edf242f35b",
         "size_bytes": 3556
       }
     },
@@ -9669,7 +11309,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/password-policy-checker-1.0.0.tar.gz",
-        "sha256": "e8fbe02a6b955c4561fb2cab392f6fc7cf122a0340ca08fff23799abc9eaa2a8",
+        "sha256": "e0b5ccb7559edd1311683c76d19a2df30679ea9e2e88d1d985c0ea99e34b7f51",
         "size_bytes": 1826
       }
     },
@@ -9772,7 +11412,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/password-reuse-detector-1.0.0.tar.gz",
-        "sha256": "e104dcaae5fa8ee0789711049e5ba8b9f8524eb845a046b42d9393a9d04974b4",
+        "sha256": "d1f59b1f3dcdb816dc75d07392cce4b4f36f827e23ab354e1c2fdded69de19f4",
         "size_bytes": 2059
       }
     },
@@ -9854,7 +11494,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/path-traversal-fuzzer-1.0.0.tar.gz",
-        "sha256": "3f4cf8d185748f5ff508633dba09f0b208bf59fa1713b90668a94e0fdafc717a",
+        "sha256": "fdce8ae9078f03a29f24a2e253f8142c8116150f9ffb14e4b51317706a82ba82",
         "size_bytes": 1816
       }
     },
@@ -9936,7 +11576,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/php-composer-security-auditor-1.0.0.tar.gz",
-        "sha256": "ea2baebd58e5451b67ebdecbab2622fb71a8972f2ef15bd95f4bf7787c121d3c",
+        "sha256": "107f48bc9999d75ad701c1d5f8aa5a2eb2c30e598241dc6c717aebf200716c33",
         "size_bytes": 2026
       }
     },
@@ -10018,8 +11658,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/php-taint-source-analyzer-1.0.0.tar.gz",
-        "sha256": "cd5be3bb435ff070b659db1a47468fb832347cce65e9a206b5e0c75513029375",
+        "sha256": "8b9373e870b3a21c98899e800af935ba9ae3d98090c01b8ab80642d60e481fd0",
         "size_bytes": 2038
+      }
+    },
+    {
+      "id": "pqc-post-quantum-readiness-scanner",
+      "name": "Post-Quantum Cryptography (PQC) & Legacy Cipher Scanner",
+      "description": "Analyzes TLS certificates, key exchanges, and corporate SSH/VPN endpoints against NIST Post-Quantum standards, identifying ciphers vulnerable to Harvest-Now-Decrypt-Later.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Cryptography",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/pqc-post-quantum-readiness-scanner-1.0.0.tar.gz",
+        "sha256": "1f3362dc82d94e7d9b645517107564afff2fc3c826325e1e384966e184a6c723",
+        "size_bytes": 2098
       }
     },
     {
@@ -10104,7 +11826,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/prototype-pollution-detector-1.0.0.tar.gz",
-        "sha256": "a1017bd80126f924d09c07968e9754ec9133de97d886d8e1571eca1ef5c928e4",
+        "sha256": "55a507c3c8f6be337edc9bf52814354a75207ae409cb93f8d6c92831abe7e74f",
         "size_bytes": 3320
       }
     },
@@ -10196,8 +11918,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/race-condition-engine-1.0.0.tar.gz",
-        "sha256": "4e4340f346779e4669f822d2ec4b7a7f712ce391de77271e5f548d391b6f7796",
+        "sha256": "7c1d5b0c5efeaa9764f55545c8f7f1c025adedbd1bce460a79a49e651fc18db6",
         "size_bytes": 3419
+      }
+    },
+    {
+      "id": "rag-vector-poisoning-scanner",
+      "name": "RAG Vector Store & Context Poisoning Scanner",
+      "description": "Analyzes Retrieval-Augmented Generation (RAG) knowledge pipelines for vector store poisoning, malicious chunk injection, and cosine similarity spoofing.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "AI & LLM Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/rag-vector-poisoning-scanner-1.0.0.tar.gz",
+        "sha256": "5b6d4a68a158fd2b219917be7a3b7a90876641ebb1818e644ea32dc10a5c9156",
+        "size_bytes": 2052
       }
     },
     {
@@ -10278,7 +12082,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/rce-parameter-tester-1.0.0.tar.gz",
-        "sha256": "804c163ae8a81794d13c1d003045e14873120fa756686784156b7b068c7f9095",
+        "sha256": "d1502b16e9b0d1837b17f3051a974407458118e2548684926b51875c177d6bf2",
         "size_bytes": 1807
       }
     },
@@ -10360,7 +12164,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/rego-policy-enforcement-checker-1.0.0.tar.gz",
-        "sha256": "6f2f18738b314837c3f13c0144807e23b64df303ea02d94fa2da5f32e0efa194",
+        "sha256": "eb72cc245c51064f315c283cdaea06172bdf12410fb71471c565df2802778969",
         "size_bytes": 2030
       }
     },
@@ -10442,7 +12246,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/retire-js-vulnerable-libraries-1.0.0.tar.gz",
-        "sha256": "d81b34837e04942e1aebea65d6bd54efcfd68e2a0bf6a8a4d9184bc69f2560da",
+        "sha256": "d4a4b62d2c417fca0559fcd09926d2854c210c9640129d383d86307fac5023b1",
         "size_bytes": 2018
       }
     },
@@ -10524,7 +12328,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/reverse-dns-ptr-scanner-1.0.0.tar.gz",
-        "sha256": "59d0b83e53ec4db77616d61f5884fe782f72fa641aebb3d1ede3580d18747597",
+        "sha256": "b75147cd09f64a32895efbaf854c44061a0f4b8b423433392a695963c796590b",
         "size_bytes": 2010
       }
     },
@@ -10606,7 +12410,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ruby-bundler-security-auditor-1.0.0.tar.gz",
-        "sha256": "c7422376c3d292fc5d62368ecd19d925b0a10e144fcba2921155ab46f7cec52c",
+        "sha256": "3da1624291be763e605986c6427f0368908700c505501ff334900ea6b39f0235",
         "size_bytes": 2007
       }
     },
@@ -10688,7 +12492,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/rust-cargo-security-auditor-1.0.0.tar.gz",
-        "sha256": "806a48c3e6754bb2ebcc95076c456074bafc6f8dbc1b7baae2be9ca2be3b3660",
+        "sha256": "614f8a0c3c228acede845ad449039debd20c31fe3fe1af6991a417e16de60fd9",
         "size_bytes": 1997
       }
     },
@@ -10770,7 +12574,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/s3-bucket-encryption-check-1.0.0.tar.gz",
-        "sha256": "5748d322a3afbbd8f688714d2c7472d0bb236d5e6cf963a38bb6adba82ebd647",
+        "sha256": "2796712c80c1639c3dcd589d66e7d0bb1147355586204dcab33b18d8d2f05825",
         "size_bytes": 1823
       }
     },
@@ -10852,7 +12656,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/s3-bucket-enumerator-1.0.0.tar.gz",
-        "sha256": "cac1e1cca5716fac9fb7454391cc6bdc2625b788ce16523d2ecfe01c9531164c",
+        "sha256": "ba3d1ac4eeb5315a304e5df630b693f30c844eeb9a208cef91c1244fd0f25439",
         "size_bytes": 1805
       }
     },
@@ -10934,7 +12738,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/s3-public-bucket-detector-1.0.0.tar.gz",
-        "sha256": "49f4d838606a825b488efef417af61439447b0c36baf0ebf9f5000cb47426b69",
+        "sha256": "925ade84f224276bf08271ee60964771383c252d5d3637bbf22aaa489d0ec7da",
         "size_bytes": 1824
       }
     },
@@ -11016,7 +12820,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/saml-metadata-validator-1.0.0.tar.gz",
-        "sha256": "efe48717c85d633188733d4d6deab3c30ed3caf8ecff1890d00ae3a5d8f48ce3",
+        "sha256": "451d93a92defad6bf43f8e28793dbed9efda7360bd19f80cb6b9572ba1676601",
         "size_bytes": 1819
       }
     },
@@ -11094,7 +12898,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sample-dns-1.0.0.tar.gz",
-        "sha256": "e53b3d82c708e3d7e891664eb2aed736595d53b474d3b881583addb742510e2d",
+        "sha256": "7519b9feea0899fb2ff2bc4f6b510c8d017c4320acfbd1a488762b0d3e138d4a",
         "size_bytes": 2912
       }
     },
@@ -11173,7 +12977,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sast-source-scanner-1.0.0.tar.gz",
-        "sha256": "cccf62d81b99e95f98c0fea2b899631bc85e511f37438cafd09b567068644fb3",
+        "sha256": "e374e31991d797f5f1692da5ee653259fc77aa96bd79721d6c5e8c565bf8cda0",
         "size_bytes": 3663
       }
     },
@@ -11264,7 +13068,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sbom-dependency-audit-1.0.0.tar.gz",
-        "sha256": "102b4134bfebcc580b99e7a6e8c72e2f86df3e1631fa608021299a975837b6e3",
+        "sha256": "d77528f993d488b758f3bb2d9b07c032a67b044bab7b292bf892bb55406ec392",
         "size_bytes": 4074
       }
     },
@@ -11346,7 +13150,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sbom-generator-syft-1.0.0.tar.gz",
-        "sha256": "35333766ac19cad33cb05f5781d7df58de0ce262592c4b80b356c22c1d59a079",
+        "sha256": "2b35743c2fd900386b4acb6fa79b47dbc845da1541fd8503e9ea15f842a41d68",
         "size_bytes": 2002
       }
     },
@@ -11433,7 +13237,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sca-license-compliance-1.0.0.tar.gz",
-        "sha256": "85a17eec6e51a96e562c266ddb844e2085bdf00000daaabc909a48e60d983c00",
+        "sha256": "2267111a52954e8caa47a480e8fe2fb9177868a2612a5a740853a6a00295d30d",
         "size_bytes": 3619
       }
     },
@@ -11515,7 +13319,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/screenshot-asset-visualizer-1.0.0.tar.gz",
-        "sha256": "dea114c6e319ab156e8e593149bd33b09d6ff43618cb774cbce5133704d78663",
+        "sha256": "88234d7cc4589bb4ad18049df810a38b6ff3b0cbd2a34b6f15a20fc8a05a2961",
         "size_bytes": 2000
       }
     },
@@ -11594,7 +13398,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/secrets-leak-scanner-1.0.0.tar.gz",
-        "sha256": "139eaf5953d1aa18e584118225fece5ddefa4aab8a8ce854e57834703b179f2a",
+        "sha256": "e5444b4fb1b7437ff2975a60a9abbb78f660048dde0cd6d290eb6a7c8f05c449",
         "size_bytes": 3756
       }
     },
@@ -11673,8 +13477,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sensor-coverage-attack-1.0.0.tar.gz",
-        "sha256": "d0fc392daa3b69d60f01b459065cf816e2fb8302345e28d233e8f45eb9071864",
+        "sha256": "34927c9d702979fd52a5d16e1d86078f59049ae423d5703a8916ab435926749c",
         "size_bytes": 4068
+      }
+    },
+    {
+      "id": "service-mesh-mtls-auditor",
+      "name": "Service Mesh (Istio / Linkerd) mTLS Enforcement Auditor",
+      "description": "Audits Kubernetes service mesh configurations (Istio PeerAuthentication, Linkerd ServerAuthorization) to verify STRICT mutual TLS and prevent plaintext fallback.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Container & K8s",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/service-mesh-mtls-auditor-1.0.0.tar.gz",
+        "sha256": "d10d3734ec096f18540dca00abc1885e7dd0d1181c290879ad14e44aa31f700a",
+        "size_bytes": 2042
       }
     },
     {
@@ -11760,7 +13646,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/siem-connectors-1.0.0.tar.gz",
-        "sha256": "a5ac478969e9060d46b68e7425b6f0047d8855e39e03c42ba2b0bf5928a9a281",
+        "sha256": "23beee75fa3e898dbc6889cb1c6c8f8380275c2b66fe54d9524aec7624a0d050",
         "size_bytes": 3112
       }
     },
@@ -11851,8 +13737,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sigma-threat-hunting-1.0.0.tar.gz",
-        "sha256": "4575ca50a3d4be84f969108d0929f9c073de1e74993873e2a8523db70bb28734",
+        "sha256": "2ea3f24b749c15e8ca5c9a3398ef3dd4d9f21299dc0a7b5c0c02510f2ee752a8",
         "size_bytes": 3862
+      }
+    },
+    {
+      "id": "smart-contract-access-control-guard",
+      "name": "Smart Contract Access Control & Selfdestruct Guard",
+      "description": "Detects uninitialized contract proxies, missing 'onlyOwner' modifiers on critical state-modifying functions, and unprotected 'selfdestruct' opcodes.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web3 & Blockchain",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/smart-contract-access-control-guard-1.0.0.tar.gz",
+        "sha256": "1e8d07d7987def45e4bee955aa7ce68d96883851919d7096e85b601738679e75",
+        "size_bytes": 2050
       }
     },
     {
@@ -11933,7 +13901,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sourcemap-source-extractor-1.0.0.tar.gz",
-        "sha256": "5579a1d92d8ff80a0efcfbf1a57869390bebe5a3020fd7f8d7c9fc114cbd449b",
+        "sha256": "a2312eef7639bcf764e64c0e194563e09f8536e8cdda1f46581d021b0b380dd9",
         "size_bytes": 1987
       }
     },
@@ -12015,7 +13983,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sql-injection-fuzzer-1.0.0.tar.gz",
-        "sha256": "73955cee4830580c7fd77d7856069b00e20448d4120e78ffb8fac24bf6633097",
+        "sha256": "184511f006b8672cf68fe92ac2e33471ced1cc769393c7ec320bbec17c6ddb6d",
         "size_bytes": 1815
       }
     },
@@ -12097,7 +14065,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/sri-hash-verifier-1.0.0.tar.gz",
-        "sha256": "2b11f5ddd1905c09ace71a81a878721865cb166fcf220d2fb5b98ec9bdd3fbcf",
+        "sha256": "9f6739471da1aa673a9d2a6d4a91e1b1b2cb9eb33f0d4c99435f21c8b3baea89",
         "size_bytes": 1807
       }
     },
@@ -12200,7 +14168,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ssh-known-hosts-audit-1.0.0.tar.gz",
-        "sha256": "5fc2e0120c8242e3ca15da484867ca223150fbca7d64b87fd430c40840790236",
+        "sha256": "467694f7d2295c72daeed6da34e3f2c7db9d414ae8c9bf83a2ce8bf9b28b99e5",
         "size_bytes": 2393
       }
     },
@@ -12282,7 +14250,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ssh-weak-ciphers-audit-1.0.0.tar.gz",
-        "sha256": "22a324ef93f7d16f65725ea3b808560c95f77ba91459529307bf9e9e90931e9f",
+        "sha256": "bdf402299802a1869eb207ebe8acc36ca83b4d7f74f1b86451f52ae5368660a0",
         "size_bytes": 1830
       }
     },
@@ -12364,7 +14332,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ssrf-gopher-payload-generator-1.0.0.tar.gz",
-        "sha256": "1d7d867b86a227a8ec21dbe0ef829fe187c4dc072e423fb9918819c82d8349b6",
+        "sha256": "d577104a281393748861e226ef2254a294f5f261f990964625a05edb8fef3287",
         "size_bytes": 2003
       }
     },
@@ -12443,7 +14411,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ssrf-guard-validator-1.0.0.tar.gz",
-        "sha256": "d46604358c35c5513dcabdfbb983cd1e5ac73c4f906a9b24c52a979c86464e3f",
+        "sha256": "1247fc0dd0f5a8833fe3fae8c0be7b7cb83ce6bf3033435e6a9b444985c401d7",
         "size_bytes": 3847
       }
     },
@@ -12524,7 +14492,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/ssti-polyglot-engine-1.0.0.tar.gz",
-        "sha256": "46248f61ded0902b183bb26156b38816f74cab70f5cd11cc66838a7254bbb10f",
+        "sha256": "00d8abef537fed0bea474ef84e99391dedbb778a25cb7d8691f73f0274c46359",
         "size_bytes": 3248
       }
     },
@@ -12606,7 +14574,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/subdomain-passive-miner-1.0.0.tar.gz",
-        "sha256": "0b3addbfd633309d4e4d665e0a2d48c96047aa9d22c4352f6301acfea8cee6ef",
+        "sha256": "19d571647cf65969bd9d104b93965f6bb9e7af6a935194a98699be4cd9ca8d53",
         "size_bytes": 1976
       }
     },
@@ -12681,7 +14649,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/subdomain-takeover-audit-1.0.0.tar.gz",
-        "sha256": "76e6bd98341c3538d969c1ac5d7012a2a9f818e37386732336d8c0bd7c4160f0",
+        "sha256": "af65e2e25f1783a904728978ca0e70d0cbc298e630097c34a75751eac0aaf4c5",
         "size_bytes": 3328
       }
     },
@@ -12756,7 +14724,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/subresource-integrity-auditor-1.0.0.tar.gz",
-        "sha256": "c16c1b0e49d355b27c96dad5f07570fef9d1721188c6a70368e0b14361d2f4b5",
+        "sha256": "6545f74c906be4b9d7bc7b5aee75a559e5e95df2a3a01f526b314bce9d8f64e0",
         "size_bytes": 2013
       }
     },
@@ -12847,7 +14815,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/threat-intelligence-1.0.0.tar.gz",
-        "sha256": "4a9662b331d8233489d4263246730a13beeea552cbcfd7602d1b7272c94dc71f",
+        "sha256": "639c2ff252b53612a26fa08738f2d3330f8f282037923ae3eb40e0d739848c5d",
         "size_bytes": 3919
       }
     },
@@ -12934,7 +14902,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/threat-modeling-1.0.0.tar.gz",
-        "sha256": "7aca1c9633a1c34a971cf3ecfe52da86f3272dcbd2635583a189b42671c6f3eb",
+        "sha256": "f600d3f937e2bea2366f75c8ffc32732e0597270cf4652b56ae0e33e5e8c3ec5",
         "size_bytes": 3476
       }
     },
@@ -13016,7 +14984,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/tls-certificate-issuer-audit-1.0.0.tar.gz",
-        "sha256": "fec5492b607983dcc42ef42a00a4f89c250f8e27c265f0d5319976860abebe89",
+        "sha256": "185839bf53b9b58cf4ff0bb0292d7f5b242c56db90d0a705a7397d2bcc519a9c",
         "size_bytes": 1822
       }
     },
@@ -13102,7 +15070,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/tls-cryptography-1.0.0.tar.gz",
-        "sha256": "cb53eb43fd1368c4a057a718c6d7f6fadbab3c885973dc6114f1ca723b3d07b2",
+        "sha256": "4128c791273b5e2ced68f9f801e26a046bd28b936541ea8be896555349939274",
         "size_bytes": 3777
       }
     },
@@ -13184,7 +15152,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/tls-misconfiguration-scanner-1.0.0.tar.gz",
-        "sha256": "8d7d8fa32b801d0922c1f5bccfae2a93fca78ce6b4b579b7e86d17300c9814ca",
+        "sha256": "eefa9fc0cf4912257b71126363b76169f78ace74874ce610d5cc1c3c502ea467",
         "size_bytes": 1825
       }
     },
@@ -13266,7 +15234,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/tls-san-domain-extractor-1.0.0.tar.gz",
-        "sha256": "affe9208f4338882d772ea2996da9e64dcccec3f3bb729804ec9c979267ae553",
+        "sha256": "638c4c4eda995811386b26b67f03e7e2bbe29a47c48eb94026d20d8f260b1780",
         "size_bytes": 1991
       }
     },
@@ -13348,7 +15316,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/typosquatting-brand-monitor-1.0.0.tar.gz",
-        "sha256": "f134e4344d4a74d17696ec89a7ffc89116ac484fdb7d365e247bd3ca0884dd70",
+        "sha256": "38f042317509d644f6d0e076e5db922f9d0b009a3554e6e9c3fb0b41f4d3c7d5",
         "size_bytes": 1978
       }
     },
@@ -13430,7 +15398,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/url-parameter-replacer-1.0.0.tar.gz",
-        "sha256": "bb9300ef1727692a907ec26f39dd42e3ccf869aaed1a88336837e824e3fe7f9c",
+        "sha256": "826f2848a3c839c995655ddbf58fa9148c4b8d87636905d0b71525a55638397c",
         "size_bytes": 1985
       }
     },
@@ -13523,7 +15491,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/vulnerability-assessment-1.0.0.tar.gz",
-        "sha256": "216d629514049cfab8614ab03019fe7e4d8eff4b32f93e25e313e7ebd7156873",
+        "sha256": "13dc1a43ffcc2e4b2f47dbfb260e007ff838fd861e955ad13b5f778f3b5f090b",
         "size_bytes": 4160
       }
     },
@@ -13602,8 +15570,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/waf-evasion-defense-1.0.0.tar.gz",
-        "sha256": "4371dd60dba98d1c9ab807f600a6eaeb445a95470315d1d5b3d5ab4dc8cf37ec",
+        "sha256": "9090f155e8e399b179f8b51696455c8ef313e81ceb65fe48b38ac19f13ff3e7a",
         "size_bytes": 3316
+      }
+    },
+    {
+      "id": "wasm-security-bytecode-analyzer",
+      "name": "WebAssembly (Wasm) Binary Security & Logic Flaw Analyzer",
+      "description": "Disassembles and audits WebAssembly (.wasm) bytecode files for memory-safety boundary violations, unprotected linear memory imports, and hardcoded secrets.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Client & Desktop",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/wasm-security-bytecode-analyzer-1.0.0.tar.gz",
+        "sha256": "cb174fe52bda119e2cd5ebe2ffb73ae4978f1cd6c6c6d713559bcb526bac6d41",
+        "size_bytes": 2031
       }
     },
     {
@@ -13686,7 +15736,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/web-security-1.0.0.tar.gz",
-        "sha256": "9822eee34d87a2f27344a537e3dd5e7fa768c426d5ff70cd9acb9f8794c83fa6",
+        "sha256": "63f47e19bded7c744f9f1eb3bddaea1ded9bc708fea77dc453e23a0931844ca6",
         "size_bytes": 5151
       }
     },
@@ -13768,7 +15818,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/web-technology-fingerprinter-1.0.0.tar.gz",
-        "sha256": "8cb2d5e09a51effe239e04bd4740b4dd04cb6985b384b70ce32161b583ab3d3c",
+        "sha256": "93f93fc142e53fd4f3985aee6086ff197f7646524ab174f9d5e50ec155a9e50f",
         "size_bytes": 1999
       }
     },
@@ -13850,7 +15900,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/webhook-url-validator-1.0.0.tar.gz",
-        "sha256": "e90e5f73e35273f275682d6569617ba8ac2e5db6019c200844b60722d46aaa2e",
+        "sha256": "5fc1330903e7134d6b6b5b10e5a669662fc898d34b8df2246136def86947cf1f",
         "size_bytes": 1826
       }
     },
@@ -13932,8 +15982,90 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/websocket-origin-check-1.0.0.tar.gz",
-        "sha256": "82e70b66e5219c753c96f80108fd839f6e0659806cb9f35f266b1cf36d31885b",
+        "sha256": "eea9c8164fbffafac6de1d6ad99a408bea9873e1a16d04eef2709ff3fce741eb",
         "size_bytes": 1811
+      }
+    },
+    {
+      "id": "websocket-realtime-fuzzer",
+      "name": "WebSocket Real-Time Binary & Message Protocol Fuzzer",
+      "description": "Fuzzes bidirectional WebSocket channels, testing frame fragmentation, text vs binary frame confusion, mask validation, and real-time state machine corruption.",
+      "author": "Cyber Hashira Security Team",
+      "version": "1.0.0",
+      "min_host_version": "0.1.0",
+      "category": "Web Security",
+      "icon": "shield",
+      "banner_url": "",
+      "supported_os": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "supported_arch": [
+        "x86_64",
+        "aarch64"
+      ],
+      "required_dependencies": {},
+      "optional_dependencies": {},
+      "required_permissions": [
+        "network:connect",
+        "findings:write"
+      ],
+      "entry_point": {
+        "runtime": "python",
+        "executable": "worker.py",
+        "default_args": []
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {}
+      },
+      "contracts": {
+        "input_schema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "output_schema": {
+          "type": "object",
+          "properties": {
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "cwe": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "detected_at": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cwe",
+                  "title",
+                  "description",
+                  "evidence",
+                  "detected_at"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "artifact": {
+        "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/websocket-realtime-fuzzer-1.0.0.tar.gz",
+        "sha256": "e5746599ab8113193222a0384f598fd8289d40c87cc4a346b51e97b0add2e3b7",
+        "size_bytes": 2013
       }
     },
     {
@@ -14011,7 +16143,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/wireless-security-1.0.0.tar.gz",
-        "sha256": "9edbc72855594d40a00f70b34170f5f2b2e7f75ad40f0c3047f054fd57b6bb78",
+        "sha256": "2bf5f6eae06660f74723d64adb671f39580f4f5f266ae2627b0d3417250fd22e",
         "size_bytes": 3711
       }
     },
@@ -14093,7 +16225,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/wordlist-generator-cewl-1.0.0.tar.gz",
-        "sha256": "abeb0b14a44d0090e71291b214d43513b94d0d10a05f04c524bc9b7c13b85df0",
+        "sha256": "a1216536bfb1a6d328018170466a518fc3b4ba7a3b79d5d7943ff80b7c66a4ac",
         "size_bytes": 2009
       }
     },
@@ -14175,7 +16307,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/wordpress-security-auditor-1.0.0.tar.gz",
-        "sha256": "25151a1320f6cd4c955866088f1d37bb80de69ed0b73e73a828e18cd11bb8edd",
+        "sha256": "f25487b99c9c93c510521dc0677123f3a598690c6a34e353b7f66b45bae6ba95",
         "size_bytes": 1986
       }
     },
@@ -14257,7 +16389,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/xml-external-entity-scanner-1.0.0.tar.gz",
-        "sha256": "3bc93f486eb848c65ea18cd2f5cd46c80c6bd3ab92469f1262dc247c9acaac10",
+        "sha256": "19741990726ec05d471e77a588e8bfcdd09cb5a6fe9a9c25212553221d9d4c6f",
         "size_bytes": 1824
       }
     },
@@ -14339,7 +16471,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/xss-polyglot-auditor-1.0.0.tar.gz",
-        "sha256": "bf20fd1461a378c56306598c5274c6793078fafff55148fd3af4a0aec35c0cc1",
+        "sha256": "172e8b2d5e7e3dd39169d1c97289886e711a2d8777d8f18cbefc5bfe79c801f0",
         "size_bytes": 1989
       }
     },
@@ -14425,7 +16557,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/xxe-injection-auditor-1.0.0.tar.gz",
-        "sha256": "86178e38bbfc0c6f2783deaaf0200e2175d5cec8fb2d69f056a4af4a4252f3b7",
+        "sha256": "7e584185f91fa5241903e30df57c20270cb4da1bbaf1c20009c25cd84d8c3543",
         "size_bytes": 3563
       }
     },
@@ -14512,7 +16644,7 @@
       },
       "artifact": {
         "url": "https://github.com/VoidStudioos/Cyber-Hashira/releases/download/v1.0.0/yara-offline-scanner-1.0.0.tar.gz",
-        "sha256": "ba50f173a0fa8e097b8372246c77737c7e7f5e81651231e8523e58df24c5b6a3",
+        "sha256": "b2edb870aadf95e33ec04bca529e83edca05f3ed31f9f27cd739fa2ae0cd396a",
         "size_bytes": 3174
       }
     }

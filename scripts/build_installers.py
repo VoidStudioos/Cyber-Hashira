@@ -90,7 +90,7 @@ def create_windows_bundle(version="1.0.0"):
     run_tests_bat = win_stage / "Verify-All-Modules.bat"
     run_tests_bat.write_text(
         "@echo off\r\n"
-        "title Cyber Hashira - Verification Matrix (141 Modules)\r\n"
+        "title Cyber Hashira - Verification Matrix (200 Modules)\r\n"
         "python hashira.py matrix\r\n"
         "pause\r\n",
         encoding="utf-8"
