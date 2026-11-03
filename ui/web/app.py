@@ -102,10 +102,31 @@ def ipc_call(module_id: str, message: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Sys path for scripts & tests
+# Sys path for scripts & tests & engine
 # ---------------------------------------------------------------------------
+sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 sys.path.insert(0, str(REPO_ROOT / "tests"))
+
+try:
+    from engine import (
+        PlaybookEngine,
+        AICorrelationEngine,
+        EnterpriseReportingEngine,
+        FleetManager,
+        ThreatIntelHub
+    )
+    playbook_engine = PlaybookEngine()
+    ai_engine = AICorrelationEngine()
+    reporting_engine = EnterpriseReportingEngine()
+    fleet_manager = FleetManager()
+    threat_intel = ThreatIntelHub()
+except Exception as _eng_err:
+    playbook_engine = None
+    ai_engine = None
+    reporting_engine = None
+    fleet_manager = None
+    threat_intel = None
 
 try:
     from reporting_engine import (
@@ -362,6 +383,131 @@ def api_export_html():
         return app.response_class(html_str, mimetype="text/html")
     except Exception as exc:
         return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/api/playbooks", methods=["GET"])
+def api_list_playbooks():
+    """List all registered DAG attack and audit playbooks."""
+    if not playbook_engine:
+        return jsonify({"error": "Playbook engine not available"}), 500
+    try:
+        pbs = playbook_engine.list_playbooks()
+        return jsonify({"playbooks": pbs, "total": len(pbs)})
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/api/playbooks/run", methods=["POST"])
+def api_run_playbook():
+    """Execute a mission playbook across stages."""
+    if not playbook_engine:
+        return jsonify({"error": "Playbook engine not available"}), 500
+    body = request.get_json(silent=True) or {}
+    playbook_id = body.get("playbook_id", "owasp-llm-redteam")
+    target = body.get("target", "https://target.corp")
+    simulate = body.get("simulate", True)
+
+    try:
+        res = playbook_engine.execute_playbook(
+            playbook_id=playbook_id,
+            target=target,
+            scope_approved=True,
+            simulate=simulate
+        )
+        return jsonify(res)
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/api/ai/correlate", methods=["POST"])
+def api_ai_correlate():
+    """Correlate findings into multi-hop attack graphs and calculate CVSS v4.0."""
+    if not ai_engine:
+        return jsonify({"error": "AI correlation engine not available"}), 500
+    body = request.get_json(silent=True) or {}
+    findings = body.get("findings", [])
+
+    try:
+        corr = ai_engine.correlate(findings)
+        chains = [
+            {
+                "chain_id": c.chain_id,
+                "title": c.title,
+                "severity": c.severity,
+                "impact": c.impact,
+                "mitre_attack_tactics": c.mitre_attack_tactics,
+                "attack_steps": c.attack_steps,
+                "exploitability_score": c.exploitability_score,
+                "recommended_action": c.recommended_action
+            } for c in corr.chains
+        ]
+        return jsonify({
+            "total_findings": corr.total_findings,
+            "critical_count": corr.critical_count,
+            "high_count": corr.high_count,
+            "medium_count": corr.medium_count,
+            "low_count": corr.low_count,
+            "posture_score": corr.posture_score,
+            "chains": chains,
+            "remediations": corr.remediations
+        })
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/api/reports/pdf", methods=["POST"])
+def api_export_pdf():
+    """Export findings as executive printable PDF report."""
+    if not reporting_engine:
+        return jsonify({"error": "Enterprise reporting engine not available"}), 500
+    body = request.get_json(silent=True) or {}
+    findings = body.get("findings", [])
+    target = body.get("target", "https://api.target.corp")
+    title = body.get("title", "Cyber Hashira Security Assessment Report")
+
+    import tempfile
+    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+        tmp_path = tmp.name
+
+    try:
+        reporting_engine.generate_pdf_report(findings, target, tmp_path, title=title)
+        with open(tmp_path, "rb") as f:
+            pdf_bytes = f.read()
+        try:
+            os.remove(tmp_path)
+        except Exception:
+            pass
+        return app.response_class(
+            pdf_bytes,
+            mimetype="application/pdf",
+            headers={"Content-Disposition": f"attachment; filename=cyber-hashira-report.pdf"}
+        )
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/api/fleet/nodes", methods=["GET"])
+def api_fleet_nodes():
+    """Return active distributed scanner fleet nodes."""
+    if not fleet_manager:
+        return jsonify({"error": "Fleet manager not available"}), 500
+    return jsonify({"nodes": fleet_manager.list_nodes()})
+
+
+@app.route("/api/fleet/proxies", methods=["GET"])
+def api_fleet_proxies():
+    """Return proxy mesh status and latency telemetry."""
+    if not fleet_manager:
+        return jsonify({"error": "Fleet manager not available"}), 500
+    return jsonify({"proxies": fleet_manager.proxy_rotator.list_proxies()})
+
+
+@app.route("/api/threats/kev", methods=["GET"])
+def api_threats_kev():
+    """Return CISA Known Exploited Vulnerabilities catalog."""
+    if not threat_intel:
+        return jsonify({"error": "Threat intel hub not available"}), 500
+    return jsonify({"kevs": threat_intel.get_kev_catalog()})
 
 
 # ---------------------------------------------------------------------------

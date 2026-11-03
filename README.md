@@ -78,12 +78,39 @@ python hashira.py tui
 ```
 Navigate modules, run instant health checks, and execute scans directly in your terminal.
 
-### 3. Launch the Native Desktop App
+### 3. Launch the Standalone Desktop Workstation Window
+On Windows, you can double-click **`Launch-Desktop-App.bat`** or run:
 ```bash
 python hashira.py desktop
 ```
+This opens Cyber Hashira as a dedicated, frameless standalone workstation window using the native Windows WebView/Edge application runtime (with custom sizing, isolated session, no browser tabs, and zero external electron bloat).
 
-### 4. Execute a Headless Scan (CLI / CI/CD)
+### 4. Execute Multi-Stage DAG Battle Playbooks
+```bash
+# List all pre-built battle campaigns:
+python hashira.py playbook list
+
+# Execute an autonomous attack chain:
+python hashira.py playbook run --id ad-zero-to-hero --target "ad.dc1.corp"
+python hashira.py playbook run --id owasp-llm-redteam --target "https://ai.target.internal"
+python hashira.py playbook run --id smart-contract-defi-audit --target "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"
+```
+
+### 5. Generate Executive PDF, HTML & SARIF Reports
+```bash
+# Generate executive PDF report with CVSS v4.0 & MITRE ATT&CK compliance:
+python hashira.py report --target "https://api.target.corp" --output "reports/executive-report.pdf"
+
+# Export OASIS SARIF v2.1.0 for GitHub Security / GitLab CI/CD:
+python hashira.py report --target "https://api.target.corp" --output "reports/findings.sarif"
+```
+
+### 6. Inspect Distributed Scanner Fleet & Proxy Mesh
+```bash
+python hashira.py fleet
+```
+
+### 7. Execute a Direct Module Scan (CLI / CI/CD)
 ```bash
 # Direct scan against authorized target:
 python hashira.py scan --module api-security --target https://api.example.com --simulate
@@ -92,7 +119,7 @@ python hashira.py scan --module api-security --target https://api.example.com --
 python hashira.py scan --module network-security --target 192.168.1.10
 ```
 
-### 5. List Certified Modules
+### 8. List Certified Modules
 ```bash
 # List all 200 certified modules:
 python hashira.py list
@@ -102,7 +129,7 @@ python hashira.py list --category "Cloud"
 python hashira.py list --category "Web"
 ```
 
-### 6. Run the Full 200-Module Verification Matrix
+### 9. Run the Full 200-Module Verification Matrix
 ```bash
 python hashira.py matrix
 ```

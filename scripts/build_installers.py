@@ -50,7 +50,7 @@ def create_windows_bundle(version="1.0.0"):
     win_stage.mkdir(parents=True, exist_ok=True)
 
     # 1. Copy core directories
-    items_to_copy = ["modules", "registry", "ui", "scripts", "tests"]
+    items_to_copy = ["modules", "registry", "ui", "scripts", "tests", "engine", "reports"]
     for item in items_to_copy:
         src = REPO_ROOT / item
         dst = win_stage / item
@@ -58,8 +58,10 @@ def create_windows_bundle(version="1.0.0"):
             print(f"  -> Copying {item}/")
             shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.git*"))
 
-    # 2. Copy root launcher
+    # 2. Copy root launchers
     shutil.copy2(REPO_ROOT / "hashira.py", win_stage / "hashira.py")
+    if (REPO_ROOT / "Launch-Desktop-App.bat").is_file():
+        shutil.copy2(REPO_ROOT / "Launch-Desktop-App.bat", win_stage / "Launch-Desktop-App.bat")
 
     # 3. Copy frontend web assets
     dst_dist = win_stage / "web_dist"
@@ -148,7 +150,7 @@ def create_linux_bundle(version="1.0.0"):
     linux_stage.mkdir(parents=True, exist_ok=True)
 
     # 1. Copy core directories
-    items_to_copy = ["modules", "registry", "ui", "scripts", "tests"]
+    items_to_copy = ["modules", "registry", "ui", "scripts", "tests", "engine", "reports"]
     for item in items_to_copy:
         src = REPO_ROOT / item
         dst = linux_stage / item

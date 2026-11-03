@@ -74,12 +74,42 @@ python hashira.py web --host 0.0.0.0 --port 8080
 python hashira.py tui
 ```
 
-### ۳. اجرای اپلیکیشن دسکتاپ
+### ۳. اجرای نرم‌افزار دسکتاپ مستقل ویندوز (Desktop Window)
+در ویندوز می‌توانید با دو بار کلیک روی فایل **`Launch-Desktop-App.bat`** یا از طریق دستور زیر برنامه را در یک پنجره مستقل دسکتاپ (مشابه نرم‌افزارهای نصبی بدون تب و نوار آدرس مرورگر) اجرا نمایید:
 ```bash
 python hashira.py desktop
 ```
 
-### ۴. اسکن مستقیم یک هدف از خط فرمان (CI/CD)
+### ۴. اجرای سناریوهای زنجیره‌ای حمله و ممیزی (DAG Battle Playbooks)
+```bash
+# مشاهده لیست کمپین‌های آماده نفوذ و ممیزی:
+python hashira.py playbook list
+
+# اجرای سناریوی صفر تا Domain Admin در اکتیو دایرکتوری:
+python hashira.py playbook run --id ad-zero-to-hero --target "ad.dc1.corp"
+
+# اجرای سناریوی تست نفوذ هوش مصنوعی (OWASP LLM Red Team):
+python hashira.py playbook run --id owasp-llm-redteam --target "https://ai.target.internal"
+
+# ارزیابی قراردادهای هوشمند و پروتکل‌های دیفای:
+python hashira.py playbook run --id smart-contract-defi-audit --target "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"
+```
+
+### ۵. صدور گزارش رسمی سازمانی در قالب PDF، HTML و SARIF
+```bash
+# خروجی گزارش رسمی PDF با امتیازدهی CVSS v4.0 و نگاشت استانداردهای MITRE / PCI-DSS:
+python hashira.py report --target "https://api.target.corp" --output "reports/executive-report.pdf"
+
+# خروجی استاندارد SARIF v2.1.0 جهت اتصال به GitHub Security و CI/CD:
+python hashira.py report --target "https://api.target.corp" --output "reports/findings.sarif"
+```
+
+### ۶. مشاهده کلاستر نودهای توزیع‌شده و شبکه پروکسی
+```bash
+python hashira.py fleet
+```
+
+### ۷. اسکن مستقیم یک هدف از خط فرمان (CI/CD)
 ```bash
 # اسکن ای‌پی‌آی هدف با تست شبیه‌سازی ایمن:
 python hashira.py scan --module api-security --target https://api.example.com --simulate
@@ -88,7 +118,7 @@ python hashira.py scan --module api-security --target https://api.example.com --
 python hashira.py scan --module network-security --target 192.168.1.10
 ```
 
-### ۵. لیست ماژول‌های تایید شده
+### ۸. لیست ماژول‌های تایید شده
 ```bash
 # مشاهده تمام ۲۰۰ ماژول:
 python hashira.py list
@@ -98,7 +128,7 @@ python hashira.py list --category "Cloud"
 python hashira.py list --category "Web"
 ```
 
-### ۶. اجرای آزمون ماتریکس ۲۰۰ ماژول
+### ۹. اجرای آزمون ماتریکس ۲۰۰ ماژول
 ```bash
 python hashira.py matrix
 ```

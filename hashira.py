@@ -20,6 +20,14 @@ import argparse
 import subprocess
 from pathlib import Path
 
+# Force UTF-8 stream handling for Windows console compatibility
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 REPO_ROOT = Path(__file__).resolve().parent
 REGISTRY_PATH = REPO_ROOT / "registry" / "v1" / "modules.json"
 MODULES_DIR = REPO_ROOT / "modules"
@@ -69,37 +77,177 @@ def cmd_tui(args):
 
 
 def cmd_desktop(args):
-    """Launch or build the Tauri Desktop Application."""
-    desktop_dir = REPO_ROOT / "apps" / "desktop"
-    if not desktop_dir.is_dir():
-        print(f"[!] Error: Desktop app directory not found at {desktop_dir}")
-        sys.exit(1)
-
+    """Launch the dedicated Cyber Hashira Desktop Workstation Window."""
     print("=" * 70)
-    print("⚔️  CYBER HASHIRA — Launching Native Desktop App (Tauri / React)")
+    print("⚔️  CYBER HASHIRA — Launching Standalone Desktop Workstation Window")
     print("=" * 70)
 
-    npm_cmd = "npm.cmd" if os.name == "nt" else "npm"
-    subcmd = ["run", "tauri", "dev"] if args.dev else ["run", "tauri", "dev"]
+    if getattr(args, "tauri", False):
+        desktop_dir = REPO_ROOT / "apps" / "desktop"
+        npm_cmd = "npm.cmd" if os.name == "nt" else "npm"
+        try:
+            subprocess.run([npm_cmd, "run", "tauri", "dev"], cwd=str(desktop_dir))
+        except Exception as e:
+            print(f"[!] Tauri run error: {e}")
+        return
+
+    # Native Dedicated Desktop Window Mode (Edge/Chrome Standalone App Mode)
+    import threading
+    import time
+    import webbrowser
+
+    app_script = REPO_ROOT / "ui" / "web" / "app.py"
+    port = getattr(args, "port", 8080)
+    url = f"http://127.0.0.1:{port}"
+
+    # Start Flask web server in a separate background process
+    print(f"[*] Starting local backend daemon on {url}...")
+    proc = subprocess.Popen([sys.executable, str(app_script)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    time.sleep(1.8)
+
+    # Search for standalone desktop application runners
+    edge_paths = [
+        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+    ]
+    chrome_paths = [
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+    ]
+
+    browser_bin = None
+    for p in edge_paths + chrome_paths:
+        if os.path.isfile(p):
+            browser_bin = p
+            break
+
+    profile_dir = Path(os.environ.get("TEMP", "/tmp")) / "hashira-desktop-profile"
 
     try:
-        subprocess.run([npm_cmd] + subcmd, cwd=str(desktop_dir))
-    except FileNotFoundError:
-        print("[!] Error: npm is not installed or not in PATH.")
-        print("[*] You can still run the Web Panel (python hashira.py web) or Terminal TUI (python hashira.py tui).")
-        sys.exit(1)
+        if browser_bin:
+            print(f"[*] Launching dedicated window using native WebView ({Path(browser_bin).name})...")
+            cmd = [
+                browser_bin,
+                f"--app={url}",
+                "--window-size=1440,900",
+                f"--user-data-dir={profile_dir}"
+            ]
+            subprocess.run(cmd)
+        else:
+            print(f"[*] Opening desktop interface in default browser: {url}")
+            webbrowser.open(url)
+            proc.wait()
     except KeyboardInterrupt:
-        print("\n[*] Desktop app terminated.")
+        print("\n[*] Exiting desktop application...")
+    finally:
+        proc.terminate()
+        try:
+            proc.wait(timeout=2)
+        except Exception:
+            proc.kill()
 
 
 def cmd_matrix(args):
-    """Run the 120-Module Verification Matrix."""
+    """Run the 200-Module Verification Test Matrix."""
     matrix_script = REPO_ROOT / "tests" / "test_all_modules_matrix.py"
     if not matrix_script.is_file():
         print(f"[!] Error: Matrix test script not found at {matrix_script}")
         sys.exit(1)
 
     subprocess.run([sys.executable, str(matrix_script)])
+
+
+def cmd_playbook(args):
+    """Orchestrate DAG attack and security mission playbooks."""
+    sys.path.insert(0, str(REPO_ROOT))
+    from engine.playbooks import PlaybookEngine
+
+    engine = PlaybookEngine()
+    if args.action == "list":
+        pbs = engine.list_playbooks()
+        print("=" * 85)
+        print(f"⚔️  CYBER HASHIRA — REGISTERED MISSION PLAYBOOKS ({len(pbs)} Campaigns)")
+        print("=" * 85)
+        print(f"{'#':<3} | {'PLAYBOOK ID':<30} | {'CATEGORY':<25} | {'STAGES'}")
+        print("-" * 85)
+        for idx, p in enumerate(pbs, start=1):
+            print(f"{idx:<3} | {p['id']:<30} | {p['category']:<25} | {p['stage_count']} Stages")
+        print("=" * 85)
+    elif args.action == "run":
+        target = args.target or "https://target.corp"
+        print(f"[*] Launching Playbook '{args.id}' against '{target}'...")
+        res = engine.execute_playbook(
+            playbook_id=args.id,
+            target=target,
+            scope_approved=True,
+            simulate=not args.live
+        )
+        print(f"[+] Campaign Finished in {res['total_duration_sec']}s. Success: {res['overall_success']}")
+        print(f"[+] Total Discovered Findings: {res['total_findings']}")
+        for s_id, s_info in res["stages"].items():
+            status_symbol = "✔" if s_info["success"] else "✖"
+            print(f"    [{status_symbol}] {s_info['name']} ({s_info['module_id']}): {s_info['findings_count']} findings [{s_info['duration_ms']}ms]")
+
+
+def cmd_report(args):
+    """Generate executive PDF, HTML, or SARIF assessment report."""
+    sys.path.insert(0, str(REPO_ROOT))
+    from engine.reporting import EnterpriseReportingEngine
+
+    reporter = EnterpriseReportingEngine()
+    findings_file = Path(args.findings) if args.findings else None
+    findings = []
+    if findings_file and findings_file.is_file():
+        with open(findings_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            findings = data if isinstance(data, list) else data.get("findings", [])
+    else:
+        # Sample findings for demonstration
+        findings = [
+            {"module_id": "llm-prompt-injection-auditor", "title": "Indirect Prompt Injection in Autonomous Agent", "severity": "Critical", "cwe": "CWE-74"},
+            {"module_id": "adcs-esc-template-auditor", "title": "AD CS Certificate Template Privilege Escalation (ESC1)", "severity": "Critical", "cwe": "CWE-269"},
+            {"module_id": "ssrf-guard-validator", "title": "IMDSv1 Cloud Metadata SSRF Egress", "severity": "High", "cwe": "CWE-918"}
+        ]
+
+    output = args.output or "cyber-hashira-report.pdf"
+    target = args.target or "https://target.internal"
+
+    if output.endswith(".pdf"):
+        ok = reporter.generate_pdf_report(findings, target, output, title=args.title or "Cyber Hashira Security Assessment")
+        print(f"[+] PDF Report successfully written to {output}")
+    elif output.endswith(".sarif") or output.endswith(".json"):
+        sarif = reporter.export_sarif(findings, target)
+        with open(output, "w", encoding="utf-8") as f:
+            json.dump(sarif, f, indent=2)
+        print(f"[+] SARIF v2.1.0 Report written to {output}")
+    else:
+        html = reporter.generate_html_report(findings, target, title=args.title or "Cyber Hashira Security Assessment")
+        with open(output, "w", encoding="utf-8") as f:
+            f.write(html)
+        print(f"[+] Standalone Executive HTML Report written to {output}")
+
+
+def cmd_fleet(args):
+    """Manage distributed scanner nodes and rotating proxy mesh."""
+    sys.path.insert(0, str(REPO_ROOT))
+    from engine.distributed_fleet import FleetManager
+
+    fleet = FleetManager()
+    nodes = fleet.list_nodes()
+    proxies = fleet.proxy_rotator.list_proxies()
+
+    print("=" * 80)
+    print(f"⚔️  CYBER HASHIRA — DISTRIBUTED FLEET CLUSTER ({len(nodes)} Nodes)")
+    print("=" * 80)
+    for n in nodes:
+        print(f"[*] Node: {n['node_id']} | Host: {n['hostname']} ({n['ip_address']}) | Region: {n['region']} | Status: {n['status']}")
+    print("\n" + "=" * 80)
+    print(f"🌐 PROXY MESH & EGRESS ROUTING ({len(proxies)} Active Proxies)")
+    print("=" * 80)
+    for p in proxies:
+        ban_tag = "[BANNED]" if p['banned'] else "[ACTIVE]"
+        print(f"[*] {p['proxy_url']:<40} | Latency: {p['latency_ms']}ms | Success: {p['success_count']} | {ban_tag}")
+    print("=" * 80)
 
 
 def cmd_list(args):
@@ -188,13 +336,36 @@ def main():
     p_tui.set_defaults(func=cmd_tui)
 
     # Desktop
-    p_desk = subparsers.add_parser("desktop", help="Start the Native Desktop App (Tauri / React)")
-    p_desk.add_argument("--dev", action="store_true", help="Run in dev mode")
+    p_desk = subparsers.add_parser("desktop", help="Start the Native Dedicated Desktop App Window")
+    p_desk.add_argument("--tauri", action="store_true", help="Launch via Tauri dev runner")
+    p_desk.add_argument("--port", type=int, default=8080, help="Local port (default: 8080)")
     p_desk.set_defaults(func=cmd_desktop)
 
     # Matrix
-    p_matrix = subparsers.add_parser("matrix", help="Run the full 120-module verification test matrix")
+    p_matrix = subparsers.add_parser("matrix", help="Run the full 200-module verification test matrix")
     p_matrix.set_defaults(func=cmd_matrix)
+
+    # Playbook (DAG Attack Chaining)
+    p_playbook = subparsers.add_parser("playbook", help="Orchestrate DAG attack and security mission playbooks")
+    p_pb_sub = p_playbook.add_subparsers(dest="action", required=True)
+    p_pb_list = p_pb_sub.add_parser("list", help="List all available battle playbooks")
+    p_pb_run = p_pb_sub.add_parser("run", help="Execute a multi-stage attack playbook")
+    p_pb_run.add_argument("--id", required=True, help="Playbook ID (e.g. owasp-llm-redteam, ad-zero-to-hero)")
+    p_pb_run.add_argument("--target", required=True, help="Target host, FQDN or endpoint")
+    p_pb_run.add_argument("--live", action="store_true", help="Perform live tests instead of simulated audits")
+    p_playbook.set_defaults(func=cmd_playbook)
+
+    # Report (Enterprise Reporting & CVSS v4)
+    p_report = subparsers.add_parser("report", help="Generate executive PDF, HTML, or SARIF assessment report")
+    p_report.add_argument("--target", default="https://target.internal", help="Target domain or system")
+    p_report.add_argument("--findings", help="Path to findings JSON file")
+    p_report.add_argument("--output", default="cyber-hashira-report.pdf", help="Output file path (.pdf, .html, .sarif)")
+    p_report.add_argument("--title", default="Cyber Hashira Security Assessment Report", help="Report document title")
+    p_report.set_defaults(func=cmd_report)
+
+    # Fleet (Distributed Scanner Mesh)
+    p_fleet = subparsers.add_parser("fleet", help="View distributed scanner fleet and rotating proxy mesh")
+    p_fleet.set_defaults(func=cmd_fleet)
 
     # List
     p_list = subparsers.add_parser("list", help="List registered modules")

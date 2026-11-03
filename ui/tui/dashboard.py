@@ -2,11 +2,11 @@
 """
 Cyber Hashira — Interactive Terminal User Interface (TUI) Dashboard
 A fast, lightweight, zero-dependency ANSI console interface for:
-  - Exploring the 114 certified security modules
+  - Exploring the 200 certified security modules
   - Running instant IPC HealthChecks
   - Executing target scans through ScopeGuard
-  - Launching Red-Team Attack Chains
-  - Generating and viewing OASIS SARIF v2.1.0 reports
+  - Launching DAG Battle Playbooks & Red-Team Chains
+  - Generating and viewing OASIS SARIF & Executive PDF reports
 """
 
 import os
@@ -15,6 +15,14 @@ import json
 import time
 import subprocess
 from pathlib import Path
+
+# Force UTF-8 encoding in Windows Terminal
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 # Paths
 REPO_ROOT = Path(__file__).parent.parent.parent
@@ -281,17 +289,49 @@ def launch_web_panel():
         input(f"\n{DIM}[Press Enter to return to main menu]{RESET}")
 
 
+def run_mission_playbooks():
+    print_banner()
+    print(f"{BOLD}[*] LAUNCH DAG BATTLE MISSION PLAYBOOKS{RESET}\n")
+
+    sys.path.insert(0, str(REPO_ROOT))
+    from engine.playbooks import PlaybookEngine
+
+    engine = PlaybookEngine()
+    playbooks = engine.list_playbooks()
+
+    for idx, p in enumerate(playbooks, start=1):
+        print(f"  {CYAN}{idx}.{RESET} {BOLD}{p['name']}{RESET} [{YELLOW}{p['category']}{RESET}] - {p['stage_count']} Stages")
+
+    print(f"\n  {DIM}Target: https://target.corp (Simulated Campaign){RESET}")
+    pb_idx = input(f"\n{BOLD}Select Playbook [1-{len(playbooks)}] (or Enter to cancel): {RESET}").strip()
+    if not pb_idx or not pb_idx.isdigit() or int(pb_idx) < 1 or int(pb_idx) > len(playbooks):
+        return
+
+    chosen = playbooks[int(pb_idx) - 1]
+    print(f"\n[*] Executing '{chosen['name']}'...")
+    res = engine.execute_playbook(chosen['id'], target="https://target.corp", scope_approved=True, simulate=True)
+
+    print(f"\n{GREEN}[+] Campaign Completed in {res['total_duration_sec']}s! Success: {res['overall_success']}{RESET}")
+    print(f"{BOLD}Total Discovered Vulnerabilities: {res['total_findings']}{RESET}\n")
+    for s_id, s_info in res["stages"].items():
+        sym = f"{GREEN}[PASS]{RESET}" if s_info["success"] else f"{RED}[FAIL]{RESET}"
+        print(f"  {sym} {s_info['name']}: {s_info['findings_count']} findings ({s_info['duration_ms']}ms)")
+
+    input(f"\n{DIM}[Press Enter to return to main menu]{RESET}")
+
+
 def main_menu():
     while True:
         print_banner()
         print(f"""
-  {BOLD}MAIN MENU{RESET}
-  {CYAN}1.{RESET} List All Certified Security Modules (114)
+  {BOLD}MAIN MENU (200 CERTIFIED MODULES MATRIX){RESET}
+  {CYAN}1.{RESET} List All Certified Security Modules (200)
   {CYAN}2.{RESET} Run Batch IPC HealthChecks
   {CYAN}3.{RESET} Run Target Security Scan (ScopeGuard Protected)
   {CYAN}4.{RESET} Execute Red-Team Attack Chains Matrix (5 Chains)
-  {CYAN}5.{RESET} Generate OASIS SARIF v2.1.0 Compliance Audit
-  {CYAN}6.{RESET} Launch Modern Web Panel UI (http://localhost:8080)
+  {CYAN}5.{RESET} Launch DAG Battle Mission Playbooks (6 Campaigns)
+  {CYAN}6.{RESET} Generate Executive PDF & OASIS SARIF Reports
+  {CYAN}7.{RESET} Launch Modern Web Panel UI (http://localhost:8080)
   {CYAN}0.{RESET} Exit
 
         """)
@@ -306,8 +346,10 @@ def main_menu():
         elif choice == "4":
             run_attack_chains()
         elif choice == "5":
-            generate_sarif_report()
+            run_mission_playbooks()
         elif choice == "6":
+            generate_sarif_report()
+        elif choice == "7":
             launch_web_panel()
         elif choice in ("0", "q", "exit"):
             print(f"\n{GREEN}[*] Exiting Cyber Hashira. Stay secure!{RESET}\n")
