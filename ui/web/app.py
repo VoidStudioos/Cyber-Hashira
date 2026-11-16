@@ -21,7 +21,14 @@ from flask_cors import CORS
 # ---------------------------------------------------------------------------
 # Path resolution
 # ---------------------------------------------------------------------------
-REPO_ROOT = Path(__file__).parent.parent.parent
+if getattr(sys, "frozen", False):
+    REPO_ROOT = Path(sys.executable).resolve().parent
+else:
+    REPO_ROOT = Path(__file__).parent.parent.parent
+
+TEMPLATES_DIR = REPO_ROOT / "ui" / "web" / "templates"
+STATIC_DIR = REPO_ROOT / "ui" / "web" / "static"
+
 MODULES_DIR = REPO_ROOT / "modules"
 REGISTRY_CATALOG = REPO_ROOT / "registry" / "v1" / "modules.json"
 
@@ -30,7 +37,11 @@ MODULE_ALIASES = {
     "vulnerability": "vulnerability-assessment"
 }
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder=str(TEMPLATES_DIR),
+    static_folder=str(STATIC_DIR)
+)
 app.secret_key = os.environ.get("HASHIRA_SECRET_KEY", secrets.token_hex(32))
 CORS(app)  # Enable CORS for local development
 

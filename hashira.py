@@ -28,7 +28,10 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-REPO_ROOT = Path(__file__).resolve().parent
+if getattr(sys, "frozen", False):
+    REPO_ROOT = Path(sys.executable).resolve().parent
+else:
+    REPO_ROOT = Path(__file__).resolve().parent
 REGISTRY_PATH = REPO_ROOT / "registry" / "v1" / "modules.json"
 MODULES_DIR = REPO_ROOT / "modules"
 
@@ -77,6 +80,17 @@ def cmd_web(args):
     if getattr(args, "no_auth", False):
         env["HASHIRA_NO_AUTH"] = "1"
     
+    if getattr(sys, "frozen", False):
+        sys.path.insert(0, str(REPO_ROOT / "ui" / "web"))
+        sys.path.insert(0, str(REPO_ROOT))
+        try:
+            from ui.web.app import app
+            app.run(host=args.host, port=args.port, debug=False)
+            return
+        except Exception as e:
+            print(f"[!] Frozen web app launch error: {e}")
+            sys.exit(1)
+
     try:
         subprocess.run([sys.executable, str(app_script)], env=env)
     except KeyboardInterrupt:
@@ -122,8 +136,23 @@ def cmd_desktop(args):
 
     # Start Flask web server in a separate background process
     print(f"[*] Starting local backend daemon on {url}...")
-    proc = subprocess.Popen([sys.executable, str(app_script)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    time.sleep(1.8)
+    proc = None
+    if getattr(sys, "frozen", False):
+        sys.path.insert(0, str(REPO_ROOT / "ui" / "web"))
+        sys.path.insert(0, str(REPO_ROOT))
+        try:
+            from ui.web.app import app
+            server_thread = threading.Thread(
+                target=lambda: app.run(host="127.0.0.1", port=port, debug=False),
+                daemon=True
+            )
+            server_thread.start()
+            time.sleep(1.5)
+        except Exception as e:
+            print(f"[!] Frozen desktop server start error: {e}")
+    else:
+        proc = subprocess.Popen([sys.executable, str(app_script)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        time.sleep(1.8)
 
     # Search for standalone desktop application runners
     edge_paths = [
@@ -160,11 +189,12 @@ def cmd_desktop(args):
     except KeyboardInterrupt:
         print("\n[*] Exiting desktop application...")
     finally:
-        proc.terminate()
-        try:
-            proc.wait(timeout=2)
-        except Exception:
-            proc.kill()
+        if proc:
+            proc.terminate()
+            try:
+                proc.wait(timeout=2)
+            except Exception:
+                proc.kill()
 
 
 def cmd_matrix(args):
@@ -402,8 +432,13 @@ def main():
     p_scan.set_defaults(func=cmd_scan)
 
     if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(0)
+        print("=" * 70)
+        print("⚔️  CYBER HASHIRA — Modular Cybersecurity Workstation")
+        print("=" * 70)
+        print("[*] No CLI arguments specified. Launching Desktop Workstation Window...")
+        print("[*] Tip: Run 'cyber-hashira.exe --help' to view all CLI & scanning commands.")
+        print("=" * 70)
+        sys.argv.append("desktop")
 
     args = parser.parse_args()
     if hasattr(args, "func"):

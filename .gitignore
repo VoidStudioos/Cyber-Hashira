@@ -22,6 +22,9 @@ __pycache__/
 .venv/
 venv/
 ENV/
+*.spec
+build/
+*.exe
 
 # Databases & local state
 *.db
