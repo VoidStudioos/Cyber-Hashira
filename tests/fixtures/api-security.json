@@ -1,0 +1,13 @@
+{
+  "target": "example.com",
+  "action": "execute",
+  "payload": {
+    "task_id": "regression-api-security-001",
+    "target": "example.com",
+    "scope_approved": true,
+    "options": {
+      "simulate_vulnerabilities": true
+    }
+  },
+  "expected_key": "findings"
+}

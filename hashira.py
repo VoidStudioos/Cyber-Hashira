@@ -32,6 +32,20 @@ REPO_ROOT = Path(__file__).resolve().parent
 REGISTRY_PATH = REPO_ROOT / "registry" / "v1" / "modules.json"
 MODULES_DIR = REPO_ROOT / "modules"
 
+MODULE_ALIASES = {
+    "forensics": "digital-forensics",
+    "vulnerability": "vulnerability-assessment"
+}
+
+
+def resolve_module_id(mod_id: str) -> str:
+    """Resolves deprecated aliases to canonical module IDs."""
+    if mod_id in MODULE_ALIASES:
+        canonical = MODULE_ALIASES[mod_id]
+        print(f"[!] DEPRECATION WARNING: Module alias '{mod_id}' is deprecated. Redirecting to '{canonical}'.")
+        return canonical
+    return mod_id
+
 
 def get_catalog():
     if not REGISTRY_PATH.is_file():
@@ -46,6 +60,10 @@ def cmd_web(args):
     print("=" * 70)
     print("⚔️  CYBER HASHIRA — Launching Web Security Dashboard")
     print(f"[*] Serving on http://{args.host}:{args.port}")
+    if getattr(args, "no_auth", False):
+        print("⚠️  [SECURITY WARNING] Authentication & CSRF protection are DISABLED via --no-auth!")
+    else:
+        print("[*] Operator Authentication: ENABLED (Default username: 'admin')")
     print("=" * 70)
     
     app_script = REPO_ROOT / "ui" / "web" / "app.py"
@@ -56,6 +74,8 @@ def cmd_web(args):
     env = os.environ.copy()
     env["FLASK_RUN_HOST"] = args.host
     env["FLASK_RUN_PORT"] = str(args.port)
+    if getattr(args, "no_auth", False):
+        env["HASHIRA_NO_AUTH"] = "1"
     
     try:
         subprocess.run([sys.executable, str(app_script)], env=env)
@@ -269,13 +289,14 @@ def cmd_list(args):
 
 def cmd_scan(args):
     """Execute a single module directly on a target."""
+    canonical_id = resolve_module_id(args.module)
     catalog = get_catalog()
-    mod = next((m for m in catalog.get("modules", []) if m["id"] == args.module), None)
+    mod = next((m for m in catalog.get("modules", []) if m["id"] == canonical_id), None)
     if not mod:
-        print(f"[!] Error: Module '{args.module}' not found in registry.")
+        print(f"[!] Error: Module '{args.module}' (canonical: '{canonical_id}') not found in registry.")
         sys.exit(1)
 
-    worker_script = MODULES_DIR / args.module / "worker.py"
+    worker_script = MODULES_DIR / canonical_id / "worker.py"
     if not worker_script.is_file():
         print(f"[!] Error: Module worker not found at {worker_script}")
         sys.exit(1)
@@ -293,7 +314,7 @@ def cmd_scan(args):
         }
     }
 
-    print(f"[*] Executing '{args.module}' against target '{args.target}'...")
+    print(f"[*] Executing '{canonical_id}' against target '{args.target}'...")
     try:
         proc = subprocess.Popen(
             [sys.executable, str(worker_script)],
@@ -329,6 +350,7 @@ def main():
     p_web = subparsers.add_parser("web", help="Start the Web Dashboard UI (Flask)")
     p_web.add_argument("--port", type=int, default=8080, help="Port to listen on (default: 8080)")
     p_web.add_argument("--host", default="0.0.0.0", help="Host interface (default: 0.0.0.0)")
+    p_web.add_argument("--no-auth", action="store_true", help="Disable web dashboard authentication and CSRF (Insecure)")
     p_web.set_defaults(func=cmd_web)
 
     # TUI

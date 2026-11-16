@@ -1,0 +1,103 @@
+{
+  "id": "bec-business-email-compromise-simulator",
+  "name": "Business Email Compromise (BEC) Simulator",
+  "description": "Simulates executive invoice fraud, CEO impersonation headers, and SPF/DKIM lookalike domain weaknesses (MailSpoof / Fierce).",
+  "author": "Cyber Hashira Security Team",
+  "version": "1.0.0",
+  "min_host_version": "0.1.0",
+  "category": "Purple Team & Adversary Simulation",
+  "supported_os": [
+    "windows",
+    "linux",
+    "macos"
+  ],
+  "supported_arch": [
+    "x86_64",
+    "aarch64"
+  ],
+  "required_permissions": [
+    "network:connect",
+    "findings:write"
+  ],
+  "optional_permissions": [
+    "evidence:write"
+  ],
+  "entry_point": {
+    "runtime": "python",
+    "executable": "worker.py",
+    "default_args": []
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "simulate_vulnerabilities": {
+        "type": "boolean",
+        "default": true,
+        "description": "Simulate findings safely without active invasive exploitation."
+      }
+    }
+  },
+  "contracts": {
+    "input_schema": {
+      "type": "object",
+      "required": [
+        "task_id",
+        "target"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "scope_approved": {
+          "type": "boolean"
+        },
+        "options": {
+          "type": "object"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "task_id",
+        "success",
+        "findings"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "title",
+              "severity"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "severity": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

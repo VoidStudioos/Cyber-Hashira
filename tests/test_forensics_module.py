@@ -21,7 +21,9 @@ import tempfile
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REGISTRY_CATALOG = os.path.join(REPO_ROOT, "registry", "v1", "modules.json")
 ARTIFACTS_DIR = os.path.join(REPO_ROOT, "registry", "artifacts")
-WORKER_SCRIPT = os.path.join(REPO_ROOT, "modules", "forensics", "worker.py")
+WORKER_SCRIPT = os.path.join(REPO_ROOT, "modules", "digital-forensics", "worker.py")
+if not os.path.isfile(WORKER_SCRIPT):
+    WORKER_SCRIPT = os.path.join(REPO_ROOT, "modules", "forensics", "worker.py")
 
 def run_test(name, fn):
     sys.stdout.write(f"[*] Running test: {name} ... ")

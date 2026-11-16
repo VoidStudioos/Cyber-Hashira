@@ -7,11 +7,15 @@ Flask API server that bridges the browser UI to module workers via stdio IPC.
 import datetime
 import json
 import os
+import secrets
 import subprocess
 import sys
+import time
 from pathlib import Path
+from typing import Dict, List
 
-from flask import Flask, jsonify, render_template, request
+import bcrypt
+from flask import Flask, jsonify, render_template, request, session, redirect, url_for
 from flask_cors import CORS
 
 # ---------------------------------------------------------------------------
@@ -21,10 +25,50 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 MODULES_DIR = REPO_ROOT / "modules"
 REGISTRY_CATALOG = REPO_ROOT / "registry" / "v1" / "modules.json"
 
+MODULE_ALIASES = {
+    "forensics": "digital-forensics",
+    "vulnerability": "vulnerability-assessment"
+}
+
 app = Flask(__name__)
+app.secret_key = os.environ.get("HASHIRA_SECRET_KEY", secrets.token_hex(32))
 CORS(app)  # Enable CORS for local development
 
-IPC_TIMEOUT = 5  # seconds
+IPC_TIMEOUT = 10  # seconds
+
+# ---------------------------------------------------------------------------
+# Security & Authentication Configuration
+# ---------------------------------------------------------------------------
+AUTH_ENABLED = ("--no-auth" not in sys.argv) and (os.environ.get("HASHIRA_NO_AUTH") != "1")
+
+DEFAULT_ADMIN_USER = os.environ.get("HASHIRA_ADMIN_USER", "admin")
+DEFAULT_ADMIN_PASS = os.environ.get("HASHIRA_ADMIN_PASSWORD", "HashiraAdmin2026!")
+ADMIN_PASS_HASH = bcrypt.hashpw(DEFAULT_ADMIN_PASS.encode("utf-8"), bcrypt.gensalt())
+
+if not AUTH_ENABLED:
+    print("\n" + "=" * 70)
+    print("⚠️  [SECURITY WARNING] Cyber Hashira Web Dashboard running with --no-auth!")
+    print("⚠️  Session authentication & CSRF protection are DISABLED.")
+    print("⚠️  Do NOT expose this service on public, shared, or untrusted networks!")
+    print("=" * 70 + "\n")
+else:
+    print(f"[*] Cyber Hashira Authentication: ENABLED (Default user: '{DEFAULT_ADMIN_USER}')")
+
+# In-memory rate limiter table: ip -> list of timestamps
+RATE_LIMIT_STORE: Dict[str, List[float]] = {}
+
+def check_rate_limit(ip: str, max_requests: int = 30, window_sec: int = 60) -> bool:
+    """Sliding-window rate limiter per client IP."""
+    now = time.time()
+    timestamps = RATE_LIMIT_STORE.get(ip, [])
+    # Filter out entries older than window
+    timestamps = [t for t in timestamps if now - t < window_sec]
+    if len(timestamps) >= max_requests:
+        RATE_LIMIT_STORE[ip] = timestamps
+        return False
+    timestamps.append(now)
+    RATE_LIMIT_STORE[ip] = timestamps
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -42,11 +86,15 @@ def load_catalog() -> dict:
 
 def get_worker_path(module_id: str) -> Path | None:
     """Return the path to a module's worker.py, or None if not found."""
-    # Try direct module dir
-    mod_dir = MODULES_DIR / module_id
+    canonical_id = MODULE_ALIASES.get(module_id, module_id)
+    mod_dir = MODULES_DIR / canonical_id
     manifest_file = mod_dir / "manifest.json"
     if not manifest_file.is_file():
-        return None
+        # Fallback check direct
+        mod_dir = MODULES_DIR / module_id
+        manifest_file = mod_dir / "manifest.json"
+        if not manifest_file.is_file():
+            return None
     try:
         with open(manifest_file, "r", encoding="utf-8") as fh:
             manifest = json.load(fh)
@@ -59,46 +107,51 @@ def get_worker_path(module_id: str) -> Path | None:
 
 def ipc_call(module_id: str, message: dict) -> dict:
     """
-    Run a module worker via subprocess, send a JSON message to stdin,
-    and return the first parseable JSON line from stdout.
+    Run a module worker via sandboxed subprocess, send a JSON message to stdin,
+    and return the parsed JSON response.
     Raises RuntimeError on failure or timeout.
     """
     worker = get_worker_path(module_id)
     if worker is None:
         raise RuntimeError(f"Worker script not found for module '{module_id}'")
 
-    cmd = [sys.executable, str(worker)]
     try:
-        proc = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            cwd=str(worker.parent),
+        from engine.sandbox import execute_sandboxed_worker, SandboxingMode
+        res_json, stderr, exit_code = execute_sandboxed_worker(
+            worker_path=worker,
+            message=message,
+            timeout_sec=IPC_TIMEOUT,
+            sandbox_mode=SandboxingMode.STANDARD
         )
-        payload_str = json.dumps(message) + "\n"
-        stdout, stderr = proc.communicate(input=payload_str, timeout=IPC_TIMEOUT)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        proc.communicate()
-        raise RuntimeError(f"Module '{module_id}' timed out after {IPC_TIMEOUT}s")
-    except Exception as exc:
-        raise RuntimeError(f"IPC error for '{module_id}': {exc}") from exc
-
-    # Parse the first valid JSON line from stdout
-    for line in stdout.strip().split("\n"):
-        line = line.strip()
-        if not line:
-            continue
+        if res_json is not None:
+            return res_json
+        err_preview = stderr.strip()[:300] if stderr else f"exit code {exit_code}"
+        raise RuntimeError(f"No valid JSON from module '{module_id}'. Details: {err_preview}")
+    except ImportError:
+        # Fallback if engine sandbox is not in path
+        cmd = [sys.executable, str(worker)]
         try:
-            return json.loads(line)
-        except json.JSONDecodeError:
-            continue
-
-    # If nothing parseable came back, include stderr in error
-    err_preview = stderr.strip()[:300] if stderr else "(no stderr)"
-    raise RuntimeError(f"No valid JSON from module '{module_id}'. stderr: {err_preview}")
+            proc = subprocess.Popen(
+                cmd,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                cwd=str(worker.parent),
+            )
+            payload_str = json.dumps(message) + "\n"
+            stdout, stderr = proc.communicate(input=payload_str, timeout=IPC_TIMEOUT)
+            for line in stdout.strip().split("\n"):
+                line = line.strip()
+                if line:
+                    try:
+                        return json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+            err_preview = stderr.strip()[:300] if stderr else "(no stderr)"
+            raise RuntimeError(f"No valid JSON from module '{module_id}'. stderr: {err_preview}")
+        except Exception as exc:
+            raise RuntimeError(f"IPC error for '{module_id}': {exc}") from exc
 
 
 # ---------------------------------------------------------------------------
@@ -116,6 +169,8 @@ try:
         FleetManager,
         ThreatIntelHub
     )
+    from engine.audit_log import audit_logger
+    from engine.scopeguard import verify as scopeguard_verify
     playbook_engine = PlaybookEngine()
     ai_engine = AICorrelationEngine()
     reporting_engine = EnterpriseReportingEngine()
@@ -127,6 +182,8 @@ except Exception as _eng_err:
     reporting_engine = None
     fleet_manager = None
     threat_intel = None
+    audit_logger = None
+    scopeguard_verify = None
 
 try:
     from reporting_engine import (
@@ -145,12 +202,119 @@ except ImportError:
 
 
 # ---------------------------------------------------------------------------
+# Security & Authentication Middleware
+# ---------------------------------------------------------------------------
+
+@app.before_request
+def security_boundary_check():
+    if not AUTH_ENABLED:
+        return None
+
+    # Static assets, login endpoints, and csrf token discovery
+    if request.path.startswith("/static/") or request.endpoint in ("login", "logout", "api_csrf_token"):
+        return None
+
+    # Check session authentication
+    if not session.get("authenticated"):
+        if request.path.startswith("/api/"):
+            return jsonify({"error": "Authentication required. Please authenticate at /login"}), 401
+        return redirect(url_for("login"))
+
+    # CSRF Verification on modifying HTTP verbs
+    if request.method in ("POST", "PUT", "DELETE"):
+        token = request.headers.get("X-CSRF-Token")
+        if not token and request.is_json:
+            token = (request.get_json(silent=True) or {}).get("csrf_token")
+        if not token and request.form:
+            token = request.form.get("csrf_token")
+
+        expected_token = session.get("csrf_token")
+        if not token or token != expected_token:
+            return jsonify({"error": "CSRF verification failed. Missing or invalid X-CSRF-Token."}), 403
+
+    # Rate Limiting on active scan executions
+    if request.path.endswith("/run"):
+        client_ip = request.remote_addr or "127.0.0.1"
+        if not check_rate_limit(client_ip, max_requests=30, window_sec=60):
+            return jsonify({"error": "Rate limit exceeded (30 scans per minute). Please throttle requests."}), 429
+
+    return None
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+
+        if username == DEFAULT_ADMIN_USER and bcrypt.checkpw(password.encode("utf-8"), ADMIN_PASS_HASH):
+            session["authenticated"] = True
+            session["user"] = username
+            session["csrf_token"] = secrets.token_hex(24)
+            return redirect(url_for("index"))
+        return render_template("login.html", error="Invalid operator credentials. Access denied.")
+
+    if session.get("authenticated"):
+        return redirect(url_for("index"))
+    return render_template("login.html")
+
+
+@app.route("/logout", methods=["GET", "POST"])
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+@app.route("/api/csrf-token", methods=["GET"])
+def api_csrf_token():
+    """Return active session CSRF token and auth status."""
+    if not session.get("csrf_token"):
+        session["csrf_token"] = secrets.token_hex(24)
+    return jsonify({
+        "csrf_token": session.get("csrf_token"),
+        "auth_enabled": AUTH_ENABLED,
+        "authenticated": bool(session.get("authenticated"))
+    })
+
+
+@app.route("/api/audit/logs", methods=["GET"])
+def api_audit_logs():
+    """Return recent immutable audit log records."""
+    if not audit_logger or not audit_logger.log_path.is_file():
+        return jsonify({"logs": [], "total": 0})
+    logs = []
+    try:
+        with open(audit_logger.log_path, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    logs.append(json.loads(line.strip()))
+        return jsonify({"logs": logs[-100:], "total": len(logs)})
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/api/audit/verify", methods=["POST"])
+def api_audit_verify():
+    """Verify cryptographic hash-chain integrity of audit logs."""
+    if not audit_logger:
+        return jsonify({"error": "Audit logger not available"}), 500
+    is_valid, count, err = audit_logger.verify_chain_integrity()
+    return jsonify({
+        "valid": is_valid,
+        "records_verified": count,
+        "error": err
+    })
+
+
+# ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if not session.get("csrf_token"):
+        session["csrf_token"] = secrets.token_hex(24)
+    return render_template("index.html", csrf_token=session.get("csrf_token", ""))
 
 
 @app.route("/api/modules", methods=["GET"])
@@ -208,6 +372,30 @@ def api_module_run(module_id: str):
     target = body.get("target", "example.com")
     options = body.get("options", {})
 
+    # Low-level ScopeGuard boundary check
+    if scopeguard_verify:
+        try:
+            scopeguard_verify(target, authorized_targets=[target], scope_approved=True)
+        except Exception as scope_err:
+            if audit_logger:
+                audit_logger.record_event(
+                    actor=session.get("user", "web_operator"),
+                    module_id=module_id,
+                    target=target,
+                    action="RunTask",
+                    scope_approved=False,
+                    status="BLOCKED_BY_SCOPE",
+                    findings_count=0,
+                    metadata={"error": str(scope_err)}
+                )
+            return jsonify({
+                "module_id": module_id,
+                "target": target,
+                "success": False,
+                "findings": [],
+                "error": f"ScopeGuard boundary violation: {scope_err}"
+            }), 403
+
     message = {
         "type": "RunTask",
         "action": "execute",
@@ -232,6 +420,18 @@ def api_module_run(module_id: str):
         payload = result.get("payload", result.get("result", {}))
         if isinstance(payload, dict):
             findings = payload.get("findings", [])
+
+        if audit_logger:
+            audit_logger.record_event(
+                actor=session.get("user", "web_operator"),
+                module_id=module_id,
+                target=target,
+                action="RunTask",
+                scope_approved=True,
+                status="SUCCESS" if success else "FAILED",
+                findings_count=len(findings)
+            )
+
         return jsonify({
             "module_id": module_id,
             "target": target,

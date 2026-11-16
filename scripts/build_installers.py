@@ -50,7 +50,7 @@ def create_windows_bundle(version="1.0.0"):
     win_stage.mkdir(parents=True, exist_ok=True)
 
     # 1. Copy core directories
-    items_to_copy = ["modules", "registry", "ui", "scripts", "tests", "engine", "reports"]
+    items_to_copy = ["modules", "registry", "ui", "scripts", "tests", "engine", "docs", "reports"]
     for item in items_to_copy:
         src = REPO_ROOT / item
         dst = win_stage / item
@@ -150,7 +150,7 @@ def create_linux_bundle(version="1.0.0"):
     linux_stage.mkdir(parents=True, exist_ok=True)
 
     # 1. Copy core directories
-    items_to_copy = ["modules", "registry", "ui", "scripts", "tests", "engine", "reports"]
+    items_to_copy = ["modules", "registry", "ui", "scripts", "tests", "engine", "docs", "reports"]
     for item in items_to_copy:
         src = REPO_ROOT / item
         dst = linux_stage / item

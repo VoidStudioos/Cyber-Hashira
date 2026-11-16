@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Cyber Hashira — Advanced Security Workstation & Module Matrix</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1108,6 +1109,21 @@
 
     <!-- Logic Script -->
     <script>
+        // Automatic CSRF token interceptor for all mutating requests
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+        const _origFetch = window.fetch;
+        window.fetch = function(url, opts = {}) {
+            if (opts.method && opts.method.toUpperCase() !== 'GET') {
+                opts.headers = opts.headers || {};
+                if (opts.headers instanceof Headers) {
+                    opts.headers.set('X-CSRF-Token', csrfToken);
+                } else {
+                    opts.headers['X-CSRF-Token'] = csrfToken;
+                }
+            }
+            return _origFetch(url, opts);
+        };
+
         let allModules = [];
         let currentCategory = 'all';
         let currentLang = 'en';
@@ -1195,6 +1211,9 @@
                 const data = await res.json();
                 allModules = data.modules || [];
                 document.getElementById('stat-total-modules').innerText = allModules.length;
+                document.getElementById('badge-matrix').innerText = `${allModules.length}/${allModules.length} CERTIFIED`;
+                document.getElementById('tab-modules-label').innerText = `Modules Registry (${allModules.length})`;
+                document.getElementById('search-input').placeholder = `Search ${allModules.length} modules by name, ID, or capability...`;
 
                 // Load categories
                 const categories = {};

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
 Cyber Hashira - Master Matrix Verification Harness for All Certified Modules
-Implements Gate 1 & Gate 2 verification required by CYBER_HASHIRA_MODULE_AUDIT_AND_ROADMAP.md:
-  - Manifest validation (Schema, ID, Version, Entrypoint, OS Support)
-  - Registry artifact presence & SHA-256 checksum integrity
-  - Stdio IPC HealthCheck contract test
-  - ScopeGuard enforcement (unauthorized scope rejection)
-  - Authorized execution test on deterministic test target
+Implements 6-Gate verification:
+  - Gate 1: Manifest validation (Schema, ID, Version, Entrypoint, OS Support)
+  - Gate 2: Registry artifact presence & SHA-256 checksum integrity
+  - Gate 3: Stdio IPC HealthCheck contract test
+  - Gate 4: ScopeGuard enforcement (unauthorized scope rejection)
+  - Gate 5: Authorized execution test on deterministic test target
+  - Gate 6: Regression Gate (Known fixtures verification or SKIPPED pending fixture)
 """
 
 import os
@@ -16,10 +17,14 @@ import hashlib
 import subprocess
 import time
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODULES_DIR = os.path.join(REPO_ROOT, "modules")
 REGISTRY_CATALOG = os.path.join(REPO_ROOT, "registry", "v1", "modules.json")
 ARTIFACTS_DIR = os.path.join(REPO_ROOT, "registry", "artifacts")
+FIXTURES_DIR = os.path.join(REPO_ROOT, "tests", "fixtures")
 
 def load_catalog():
     if not os.path.isfile(REGISTRY_CATALOG):
@@ -39,10 +44,12 @@ def verify_module(module_id, catalog_entry, catalog):
         "health_check_pass": False,
         "scope_guard_pass": False,
         "run_task_pass": False,
+        "regression_pass": False,
+        "regression_status": "SKIPPED",
         "error": None
     }
     
-    # 1. Manifest Check
+    # 1. Gate 1: Manifest Check
     if not os.path.isfile(manifest_file):
         res["error"] = "manifest.json missing"
         return res
@@ -60,7 +67,7 @@ def verify_module(module_id, catalog_entry, catalog):
         res["error"] = f"Manifest invalid: {e}"
         return res
 
-    # 2. Registry Artifact & SHA-256 Check
+    # 2. Gate 2: Registry Artifact & SHA-256 Check
     cat_entry = catalog_entry or catalog.get(actual_id)
     if cat_entry:
         version = cat_entry.get("version", manifest.get("version", "1.0.0"))
@@ -80,7 +87,7 @@ def verify_module(module_id, catalog_entry, catalog):
         else:
             res["error"] = f"Archive {archive_name} missing"
 
-    # 3. Worker Executable
+    # Worker Executable Check
     exec_rel = manifest["entry_point"]["executable"]
     worker_script = os.path.join(mod_path, exec_rel)
     if not os.path.isfile(worker_script):
@@ -89,7 +96,7 @@ def verify_module(module_id, catalog_entry, catalog):
 
     cmd = [sys.executable, worker_script]
 
-    # 4. IPC HealthCheck Test
+    # 3. Gate 3: IPC HealthCheck Test
     try:
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         stdout, stderr = proc.communicate(input=json.dumps({"type": "HealthCheck"}) + "\n", timeout=5)
@@ -109,7 +116,7 @@ def verify_module(module_id, catalog_entry, catalog):
         res["error"] = f"HealthCheck failed: {e}"
         return res
 
-    # 5. IPC RunTask / Execute with unauthorized scope (ScopeGuard enforcement)
+    # 4. Gate 4: IPC RunTask / ScopeGuard unauthorized rejection
     try:
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         task_req = {
@@ -144,7 +151,7 @@ def verify_module(module_id, catalog_entry, catalog):
         res["error"] = f"ScopeGuard test failed: {e}"
         return res
 
-    # 6. IPC RunTask / Execute with authorized scope and simulation/safe target
+    # 5. Gate 5: IPC RunTask / Authorized execution test
     try:
         proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         task_req = {
@@ -176,21 +183,67 @@ def verify_module(module_id, catalog_entry, catalog):
         res["error"] = f"Authorized RunTask failed: {e}"
         return res
 
+    # 6. Gate 6: Regression Gate (Known Fixtures Verification)
+    fixture_file = os.path.join(FIXTURES_DIR, f"{actual_id}.json")
+    if os.path.isfile(fixture_file):
+        try:
+            with open(fixture_file, "r", encoding="utf-8") as ff:
+                fixture = json.load(ff)
+            proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            f_req = {
+                "type": "RunTask",
+                "action": fixture.get("action", "execute"),
+                "target": fixture.get("target", "example.com"),
+                "authorized_targets": [fixture.get("target", "example.com")],
+                "payload": fixture.get("payload", {})
+            }
+            stdout, _ = proc.communicate(input=json.dumps(f_req) + "\n", timeout=5)
+            fixture_ok = False
+            for line in stdout.strip().split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    msg = json.loads(line)
+                    expected_key = fixture.get("expected_key")
+                    if (msg.get("type") == "TaskCompleted" and msg.get("payload", {}).get("success") is True) or (msg.get("status") == "success"):
+                        if not expected_key or expected_key in str(msg):
+                            fixture_ok = True
+                            break
+                except Exception:
+                    continue
+            if fixture_ok:
+                res["regression_pass"] = True
+                res["regression_status"] = "OK"
+            else:
+                res["regression_pass"] = False
+                res["regression_status"] = "FAIL"
+                res["error"] = "Regression fixture expectation failed"
+        except Exception as e:
+            res["regression_pass"] = False
+            res["regression_status"] = "FAIL"
+            res["error"] = f"Regression check error: {e}"
+    else:
+        # Fixture pending; designated as non-blocking skip
+        res["regression_pass"] = True
+        res["regression_status"] = "SKIPPED"
+
     return res
 
 def main():
     catalog = load_catalog()
     modules = sorted([d for d in os.listdir(MODULES_DIR) if os.path.isdir(os.path.join(MODULES_DIR, d))])
-    print("=" * 80)
-    print(f"CYBER HASHIRA - COMPLETE REGISTRY TEST MATRIX ({len(modules)} MODULES)")
-    print("=" * 80)
+    print("=" * 95)
+    print(f"CYBER HASHIRA - COMPLETE 6-GATE REGISTRY TEST MATRIX ({len(modules)} MODULES)")
+    print("=" * 95)
     
     results = []
     print(f"[*] Discovered {len(modules)} module directories. Executing test matrix...\n")
     
-    header = f"{'#':<3} | {'Module ID':<28} | {'Manifest':<8} | {'Artifact':<8} | {'Health':<6} | {'Scope':<6} | {'RunTask':<7}"
+    header = f"{'#':<3} | {'Module ID':<28} | {'Manifest':<8} | {'Artifact':<8} | {'Health':<6} | {'Scope':<6} | {'RunTask':<7} | {'Regression':<10}"
     print(header)
     print("-" * len(header))
+    sys.stdout.flush()
     
     passed_count = 0
     for idx, mod_id in enumerate(modules, start=1):
@@ -203,19 +256,26 @@ def main():
         h_str = "OK" if res["health_check_pass"] else "FAIL"
         s_str = "OK" if res["scope_guard_pass"] else "FAIL"
         r_str = "OK" if res["run_task_pass"] else "FAIL"
+        reg_str = res["regression_status"]
         
-        all_passed = res["manifest_valid"] and res["artifact_verified"] and res["health_check_pass"] and res["scope_guard_pass"] and res["run_task_pass"]
+        all_passed = (res["manifest_valid"] and res["artifact_verified"] and 
+                      res["health_check_pass"] and res["scope_guard_pass"] and 
+                      res["run_task_pass"] and res["regression_pass"])
         if all_passed:
             passed_count += 1
             status_symbol = "[PASS]"
         else:
             status_symbol = "[FAIL]"
             
-        print(f"{idx:<3} | {mod_id:<28} | {m_str:<8} | {a_str:<8} | {h_str:<6} | {s_str:<6} | {r_str:<7} {status_symbol}")
+        print(f"{idx:<3} | {mod_id:<28} | {m_str:<8} | {a_str:<8} | {h_str:<6} | {s_str:<6} | {r_str:<7} | {reg_str:<10} {status_symbol}")
+        sys.stdout.flush()
     
     print("-" * len(header))
-    print(f"\nMatrix Summary: {passed_count}/{len(modules)} modules fully certified across all 5 verification gates.")
-    print("=" * 80)
+    print(f"\nMatrix Summary: {passed_count}/{len(modules)} modules fully certified across all 6 verification gates.")
+    print("=" * 95)
+    
+    if passed_count != len(modules):
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

@@ -450,6 +450,10 @@ def test_chain_5_web_panel_ipc_integration():
     from app import app as flask_app
     client = flask_app.test_client()
 
+    # Authenticate operator session
+    login_res = client.post("/login", data={"username": "admin", "password": "HashiraAdmin2026!"})
+    assert login_res.status_code == 302, "Login should redirect to index"
+
     resp_index = client.get("/")
     assert resp_index.status_code == 200
     assert b"CYBER HASHIRA" in resp_index.data
