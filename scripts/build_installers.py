@@ -38,7 +38,7 @@ def ensure_frontend_built():
         print("[OK] Frontend assets verified in apps/desktop/dist")
 
 
-def create_windows_bundle(version="1.0.0"):
+def create_windows_bundle(version="1.2.0"):
     """Package standalone portable bundle for Windows."""
     print("\n" + "=" * 60)
     print(f"[*] Packaging Windows x64 Standalone Bundle v{version}...")
@@ -138,7 +138,7 @@ def create_windows_bundle(version="1.0.0"):
     return zip_path
 
 
-def create_linux_bundle(version="1.0.0"):
+def create_linux_bundle(version="1.2.0"):
     """Package standalone portable bundle for Linux."""
     print("\n" + "=" * 60)
     print(f"[*] Packaging Linux x64 Standalone Bundle v{version}...")
