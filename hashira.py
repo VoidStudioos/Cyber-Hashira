@@ -8,6 +8,7 @@ Usage:
   python hashira.py web [--port 8080] [--host 0.0.0.0]
   python hashira.py tui
   python hashira.py desktop [--dev]
+  python hashira.py proxy [--port 8081] [--host 127.0.0.1]
   python hashira.py matrix
   python hashira.py list [--category <name>]
   python hashira.py scan --module <id> --target <url/ip>
@@ -369,12 +370,45 @@ def cmd_scan(args):
         print(f"[!] Execution failed: {e}")
 
 
+def cmd_proxy(args):
+    """Start the standalone HTTP/HTTPS inspection proxy server."""
+    from engine.proxy import start_proxy, stop_proxy
+    import time
+    print("=" * 70)
+    print("⚔️  CYBER HASHIRA — HTTP/S Inspection Proxy Server")
+    print("=" * 70)
+    print(f"[*] Binding proxy listener to http://{args.host}:{args.port}")
+    print(f"[*] Configure your browser / HTTP client to use proxy {args.host}:{args.port}")
+    print("[*] Captured requests and TLS CONNECT tunnels stream to the Repeater Studio.")
+    print("[*] Press Ctrl+C to stop the proxy server.")
+    print("=" * 70)
+
+    started = start_proxy(host=args.host, port=args.port)
+    if not started:
+        print(f"[!] Failed to bind proxy to {args.host}:{args.port}")
+        sys.exit(1)
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\n[*] Shutting down proxy server...")
+        stop_proxy()
+        print("[+] Proxy stopped cleanly.")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Cyber Hashira — Master Security Platform Launcher (Windows & Linux)",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     subparsers = parser.add_subparsers(dest="command", help="Available interface or action")
+
+    # Proxy
+    p_proxy = subparsers.add_parser("proxy", help="Start the standalone HTTP/S traffic inspection proxy")
+    p_proxy.add_argument("--port", type=int, default=8081, help="Proxy listen port (default: 8081)")
+    p_proxy.add_argument("--host", default="127.0.0.1", help="Proxy listen host (default: 127.0.0.1)")
+    p_proxy.set_defaults(func=cmd_proxy)
 
     # Web
     p_web = subparsers.add_parser("web", help="Start the Web Dashboard UI (Flask)")

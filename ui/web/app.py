@@ -182,17 +182,34 @@ try:
     )
     from engine.audit_log import audit_logger
     from engine.scopeguard import verify as scopeguard_verify
+    from engine.repeater import RepeaterEngine
+    from engine.proxy import (
+        start_proxy,
+        stop_proxy,
+        get_proxy_status,
+        get_traffic_history,
+        clear_traffic_history
+    )
     playbook_engine = PlaybookEngine()
     ai_engine = AICorrelationEngine()
     reporting_engine = EnterpriseReportingEngine()
     fleet_manager = FleetManager()
     threat_intel = ThreatIntelHub()
+    repeater_engine = RepeaterEngine()
 except Exception as _eng_err:
     playbook_engine = None
     ai_engine = None
     reporting_engine = None
     fleet_manager = None
     threat_intel = None
+    audit_logger = None
+    scopeguard_verify = None
+    repeater_engine = None
+    start_proxy = None
+    stop_proxy = None
+    get_proxy_status = lambda: {"running": False, "captured_count": 0}
+    get_traffic_history = lambda limit=100, filter_host=None: []
+    clear_traffic_history = lambda: None
     audit_logger = None
     scopeguard_verify = None
 
@@ -315,6 +332,107 @@ def api_audit_verify():
         "records_verified": count,
         "error": err
     })
+
+
+# ---------------------------------------------------------------------------
+# Repeater & Inspection Proxy API Endpoints
+# ---------------------------------------------------------------------------
+
+@app.route("/api/repeater/send", methods=["POST"])
+def api_repeater_send():
+    """Dispatches manual HTTP/S request via RepeaterEngine with ScopeGuard verification."""
+    if not repeater_engine:
+        return jsonify({"error": "Repeater engine not initialized"}), 500
+
+    data = request.get_json(force=True, silent=True) or {}
+    method = data.get("method", "GET")
+    url = data.get("url", "").strip()
+    headers = data.get("headers", {})
+    body = data.get("body", "")
+    verify_ssl = bool(data.get("verify_ssl", False))
+    timeout = int(data.get("timeout", 15))
+
+    if not url:
+        return jsonify({"error": "Target URL is required"}), 400
+
+    authorized_targets = data.get("authorized_targets")
+    if not authorized_targets and url:
+        from engine.scopeguard import normalize_target
+        target_host = normalize_target(url)
+        authorized_targets = [target_host]
+
+    result = repeater_engine.send_request(
+        method=method,
+        url=url,
+        headers=headers,
+        body=body,
+        authorized_targets=authorized_targets,
+        timeout=timeout,
+        verify_ssl=verify_ssl
+    )
+    return jsonify(result)
+
+
+@app.route("/api/repeater/history", methods=["GET"])
+def api_repeater_history():
+    """Returns past repeater executions."""
+    if not repeater_engine:
+        return jsonify({"history": []})
+    limit = request.args.get("limit", 50, type=int)
+    return jsonify({"history": repeater_engine.get_history(limit=limit)})
+
+
+@app.route("/api/repeater/clear", methods=["POST"])
+def api_repeater_clear():
+    """Clears saved repeater request history."""
+    if repeater_engine:
+        repeater_engine.clear_history()
+    return jsonify({"success": True})
+
+
+@app.route("/api/proxy/status", methods=["GET"])
+def api_proxy_status():
+    """Returns current state of the HTTP/S inspection proxy."""
+    if not get_proxy_status:
+        return jsonify({"running": False, "captured_count": 0})
+    return jsonify(get_proxy_status())
+
+
+@app.route("/api/proxy/toggle", methods=["POST"])
+def api_proxy_toggle():
+    """Starts or stops the local inspection proxy listener."""
+    data = request.get_json(force=True, silent=True) or {}
+    port = int(data.get("port", 8081))
+    status = get_proxy_status() if get_proxy_status else {"running": False}
+
+    enable = data.get("enable")
+    if enable is None:
+        enable = not status.get("running", False)
+
+    if enable:
+        started = start_proxy(host="127.0.0.1", port=port) if start_proxy else False
+        return jsonify({"success": started, "status": get_proxy_status() if get_proxy_status else {}})
+    else:
+        if stop_proxy:
+            stop_proxy()
+        return jsonify({"success": True, "status": get_proxy_status() if get_proxy_status else {}})
+
+
+@app.route("/api/proxy/traffic", methods=["GET"])
+def api_proxy_traffic():
+    """Returns live stream of captured HTTP transactions."""
+    limit = request.args.get("limit", 100, type=int)
+    filter_host = request.args.get("filter", None)
+    items = get_traffic_history(limit=limit, filter_host=filter_host) if get_traffic_history else []
+    return jsonify({"traffic": items})
+
+
+@app.route("/api/proxy/clear", methods=["POST"])
+def api_proxy_clear():
+    """Clears the live traffic capture buffer."""
+    if clear_traffic_history:
+        clear_traffic_history()
+    return jsonify({"success": True})
 
 
 # ---------------------------------------------------------------------------

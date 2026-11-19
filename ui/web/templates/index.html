@@ -756,6 +756,133 @@
         }
         .modal-close:hover { color: #ffffff; }
 
+        /* Repeater & Proxy Studio Styles */
+        .repeater-container {
+            display: grid;
+            grid-template-columns: 240px 1fr 1fr;
+            gap: 16px;
+            min-height: 580px;
+        }
+        @media (max-width: 1100px) {
+            .repeater-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .repeater-history-sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 640px;
+            overflow-y: auto;
+        }
+        .repeater-history-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .repeater-history-item:hover {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateX(2px);
+        }
+        .repeater-history-item.active {
+            border-color: var(--cyan);
+            background: rgba(0, 240, 255, 0.12);
+        }
+        .repeater-pane {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 560px;
+        }
+        .repeater-pane-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 8px;
+        }
+        .code-editor-area {
+            width: 100%;
+            background: #04070c;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #d1d5db;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.5;
+            padding: 10px 12px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .code-editor-area:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+        }
+        .subtab-pill {
+            padding: 4px 10px;
+            font-size: 11px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .subtab-pill.active {
+            background: rgba(0, 240, 255, 0.15);
+            color: var(--cyan);
+            border-color: var(--cyan);
+        }
+        .status-badge-2xx {
+            background: rgba(0, 255, 157, 0.15);
+            color: var(--emerald);
+            border: 1px solid rgba(0, 255, 157, 0.4);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+        .status-badge-3xx {
+            background: rgba(0, 240, 255, 0.15);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+        .status-badge-4xx {
+            background: rgba(255, 183, 0, 0.15);
+            color: var(--amber);
+            border: 1px solid rgba(255, 183, 0, 0.4);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+        .status-badge-5xx {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--crimson);
+            border: 1px solid rgba(255, 51, 102, 0.4);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             header { padding: 12px 16px; }
@@ -830,6 +957,10 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
             <span id="tab-modules-label">Modules Registry (114)</span>
         </button>
+        <button class="tab-btn" onclick="switchTab('repeater', this)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+            <span id="tab-repeater-label">Repeater & Proxy Studio</span>
+        </button>
         <button class="tab-btn" onclick="switchTab('chains', this)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             <span id="tab-chains-label">Red-Team Attack Chains</span>
@@ -862,6 +993,191 @@
             <div class="modules-grid" id="modules-container">
                 <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
                     Loading modules matrix...
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Repeater & Proxy Studio -->
+        <div id="tab-repeater" class="tab-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h2 style="font-size: 18px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                        <span>⚔️ Repeater & Traffic Studio</span>
+                        <span class="badge badge-cyan" style="font-size: 10px;">BUG BOUNTY WORKBENCH</span>
+                    </h2>
+                    <p style="font-size: 13px; color: var(--text-muted);">Interactive HTTP/S request replay, live inspection proxy, and header tampering for manual web vulnerability auditing.</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <div id="proxy-status-pill" class="badge badge-amber" style="padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
+                        <span class="pulse-dot" style="background: var(--amber);" id="proxy-pulse"></span>
+                        <span id="proxy-status-text">Proxy: 127.0.0.1:8081 (Inactive)</span>
+                    </div>
+                    <button class="btn btn-cyan" id="btn-toggle-proxy" onclick="toggleProxyServer()">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                        <span id="btn-toggle-proxy-text">Start Proxy</span>
+                    </button>
+                    <div style="display: flex; background: rgba(255,255,255,0.06); padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                        <button class="subtab-pill active" id="subtab-btn-repeater" onclick="switchRepeaterView('repeater')">⚡ Repeater</button>
+                        <button class="subtab-pill" id="subtab-btn-proxy" onclick="switchRepeaterView('proxy')">📡 Live Traffic (<span id="proxy-traffic-count">0</span>)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View 1: Repeater Studio -->
+            <div id="repeater-view-repeater" class="repeater-container">
+                <!-- History Drawer -->
+                <div class="repeater-history-sidebar">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px;">
+                        <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Request History</span>
+                        <button class="btn btn-ghost" style="padding: 2px 6px; font-size: 10px;" onclick="clearRepeaterHistory()">Clear</button>
+                    </div>
+                    <div id="repeater-history-list" style="display: flex; flex-direction: column; gap: 6px; overflow-y: auto;">
+                        <div style="color: var(--text-dim); font-size: 11px; text-align: center; padding: 20px 0;">No past requests recorded yet. Send a request to see history.</div>
+                    </div>
+                </div>
+
+                <!-- Request Pane -->
+                <div class="repeater-pane">
+                    <div class="repeater-pane-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-weight: 700; font-size: 13px; color: var(--cyan);">REQUEST</span>
+                            <span style="font-size: 11px; color: var(--text-dim);">Edit Method, URL, Headers & Body</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <select id="repeater-template-select" class="form-control" style="font-size: 11px; padding: 3px 8px; width: auto; background: #0c111a;" onchange="applyRepeaterTemplate(this.value)">
+                                <option value="">Templates & Payloads...</option>
+                                <option value="json-api">REST JSON API Probe</option>
+                                <option value="auth-bearer">Bearer Token Authorization</option>
+                                <option value="idor-test">IDOR / BOLA Parameter Tamper</option>
+                                <option value="cors-origin">CORS Origin Reflection Test</option>
+                                <option value="sqli-probe">SQLi Error Fingerprint Probe</option>
+                                <option value="xss-header">Header XSS Reflection Probe</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Target URL Bar -->
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <select id="repeater-method" class="form-control" style="width: 105px; font-weight: 700; color: var(--cyan); background: #0c111a;">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                            <option value="PATCH">PATCH</option>
+                            <option value="HEAD">HEAD</option>
+                            <option value="OPTIONS">OPTIONS</option>
+                        </select>
+                        <input type="text" id="repeater-url" class="form-control" placeholder="https://example.com/api/v1/user" value="https://httpbin.org/get" style="flex: 1; font-family: var(--font-mono); font-size: 12px;">
+                        <button class="btn btn-emerald" id="btn-send-request" onclick="sendRepeaterRequest()" style="padding: 9px 18px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            <span>Send</span>
+                        </button>
+                    </div>
+
+                    <!-- Request Options -->
+                    <div style="display: flex; gap: 14px; font-size: 11px; color: var(--text-muted); align-items: center;">
+                        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                            <input type="checkbox" id="repeater-verify-ssl">
+                            <span>Verify SSL Certificate</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px;">
+                            <span>Timeout:</span>
+                            <input type="number" id="repeater-timeout" value="15" style="width: 45px; background: #0c111a; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 4px; padding: 2px 4px; font-size: 11px;">s
+                        </label>
+                        <span style="color: var(--text-dim); margin-left: auto;">Press <kbd style="background: #1e2633; padding: 2px 5px; border-radius: 4px; border: 1px solid #30363d; font-family: var(--font-mono); font-size: 10px;">Ctrl+Enter</kbd> to Send</span>
+                    </div>
+
+                    <!-- Headers Editor -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Headers (Key: Value per line)</label>
+                            <button class="btn btn-ghost" style="padding: 1px 6px; font-size: 10px;" onclick="formatHeadersToJson()">Format</button>
+                        </div>
+                        <textarea id="repeater-headers" class="code-editor-area" rows="4" placeholder="User-Agent: CyberHashira-SecurityWorkstation&#10;Accept: application/json&#10;Authorization: Bearer token123">User-Agent: CyberHashira-SecurityWorkstation
+Accept: application/json</textarea>
+                    </div>
+
+                    <!-- Body Editor -->
+                    <div style="flex: 1; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Request Body (POST/PUT/PATCH)</label>
+                            <button class="btn btn-ghost" style="padding: 1px 6px; font-size: 10px;" onclick="prettifyRequestBody()">Prettify JSON</button>
+                        </div>
+                        <textarea id="repeater-body" class="code-editor-area" style="flex: 1; min-height: 140px;" placeholder='{\n  "query": "sample",\n  "limit": 10\n}'></textarea>
+                    </div>
+                </div>
+
+                <!-- Response Pane -->
+                <div class="repeater-pane">
+                    <div class="repeater-pane-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-weight: 700; font-size: 13px; color: var(--emerald);">RESPONSE</span>
+                            <span id="response-status-badge" class="badge" style="font-family: var(--font-mono); font-size: 11px;">Awaiting Request</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; font-size: 11px; font-family: var(--font-mono);">
+                            <span id="response-time" style="color: var(--cyan);">0 ms</span>
+                            <span id="response-size" style="color: var(--text-muted);">0 B</span>
+                        </div>
+                    </div>
+
+                    <!-- Subtabs for Response: Body / Headers / Raw -->
+                    <div style="display: flex; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 6px;">
+                        <button class="subtab-pill active" id="resp-tab-body" onclick="switchResponseView('body')">Formatted Body</button>
+                        <button class="subtab-pill" id="resp-tab-headers" onclick="switchResponseView('headers')">Headers (<span id="resp-headers-count">0</span>)</button>
+                        <button class="subtab-pill" id="resp-tab-raw" onclick="switchResponseView('raw')">Raw View</button>
+                        <button class="btn btn-ghost" style="margin-left: auto; padding: 2px 8px; font-size: 10px;" onclick="copyResponseBody()">Copy</button>
+                    </div>
+
+                    <!-- Response Views -->
+                    <div id="resp-view-body" style="flex: 1; display: flex; flex-direction: column;">
+                        <textarea id="repeater-response-body" class="code-editor-area" style="flex: 1; min-height: 380px;" readonly placeholder="Server response will appear here..."></textarea>
+                    </div>
+
+                    <div id="resp-view-headers" style="display: none; flex: 1; overflow-y: auto;">
+                        <div id="repeater-response-headers-list" style="display: flex; flex-direction: column; gap: 4px; font-family: var(--font-mono); font-size: 11px;">
+                            <div style="color: var(--text-dim); text-align: center; padding: 20px;">No response headers received yet.</div>
+                        </div>
+                    </div>
+
+                    <div id="resp-view-raw" style="display: none; flex: 1; display: flex; flex-direction: column;">
+                        <textarea id="repeater-response-raw" class="code-editor-area" style="flex: 1; min-height: 380px;" readonly placeholder="Raw HTTP transaction stream..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View 2: Live Proxy Traffic Stream -->
+            <div id="repeater-view-proxy" style="display: none;">
+                <div class="table-container" style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <input type="text" id="proxy-filter-input" class="form-control" placeholder="Filter captured traffic by domain (e.g. example.com)..." style="width: 320px; font-size: 12px;" oninput="fetchProxyTraffic()">
+                            <button class="btn btn-ghost" onclick="fetchProxyTraffic()">Refresh</button>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-ghost" onclick="clearProxyTraffic()">Clear Stream</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th style="width: 90px;">Time</th>
+                                <th style="width: 80px;">Method</th>
+                                <th style="width: 180px;">Host</th>
+                                <th>Path / URL</th>
+                                <th style="width: 80px;">Status</th>
+                                <th style="width: 80px;">Latency</th>
+                                <th style="width: 140px; text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proxy-traffic-table-body">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                    Proxy is ready. Click "Start Proxy" above and configure your browser proxy to <code>127.0.0.1:8081</code> to capture live traffic.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1479,8 +1795,498 @@
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        // -------------------------------------------------------------
+        // Repeater & Traffic Studio Logic
+        // -------------------------------------------------------------
+        let currentRepeaterHistory = [];
+        let proxyPollInterval = null;
+
+        function switchRepeaterView(viewName) {
+            document.querySelectorAll('#tab-repeater .subtab-pill').forEach(b => b.classList.remove('active'));
+            if (viewName === 'repeater') {
+                document.getElementById('subtab-btn-repeater').classList.add('active');
+                document.getElementById('repeater-view-repeater').style.display = 'grid';
+                document.getElementById('repeater-view-proxy').style.display = 'none';
+                loadRepeaterHistory();
+            } else {
+                document.getElementById('subtab-btn-proxy').classList.add('active');
+                document.getElementById('repeater-view-repeater').style.display = 'none';
+                document.getElementById('repeater-view-proxy').style.display = 'block';
+                fetchProxyTraffic();
+            }
+        }
+
+        function switchResponseView(viewName) {
+            document.getElementById('resp-tab-body').classList.remove('active');
+            document.getElementById('resp-tab-headers').classList.remove('active');
+            document.getElementById('resp-tab-raw').classList.remove('active');
+
+            document.getElementById('resp-view-body').style.display = 'none';
+            document.getElementById('resp-view-headers').style.display = 'none';
+            document.getElementById('resp-view-raw').style.display = 'none';
+
+            if (viewName === 'body') {
+                document.getElementById('resp-tab-body').classList.add('active');
+                document.getElementById('resp-view-body').style.display = 'flex';
+            } else if (viewName === 'headers') {
+                document.getElementById('resp-tab-headers').classList.add('active');
+                document.getElementById('resp-view-headers').style.display = 'block';
+            } else if (viewName === 'raw') {
+                document.getElementById('resp-tab-raw').classList.add('active');
+                document.getElementById('resp-view-raw').style.display = 'flex';
+            }
+        }
+
+        function applyRepeaterTemplate(tmpl) {
+            if (!tmpl) return;
+            const targetUrl = document.getElementById('repeater-url');
+            const methodSelect = document.getElementById('repeater-method');
+            const headersArea = document.getElementById('repeater-headers');
+            const bodyArea = document.getElementById('repeater-body');
+
+            if (tmpl === 'json-api') {
+                methodSelect.value = 'POST';
+                headersArea.value = 'User-Agent: CyberHashira-SecurityWorkstation\nContent-Type: application/json\nAccept: application/json';
+                bodyArea.value = JSON.stringify({ action: "query_profile", user_id: 1042, debug: false }, null, 2);
+            } else if (tmpl === 'auth-bearer') {
+                headersArea.value = 'User-Agent: CyberHashira-SecurityWorkstation\nAuthorization: Bearer YOUR_JWT_OR_API_TOKEN_HERE\nAccept: application/json';
+            } else if (tmpl === 'idor-test') {
+                methodSelect.value = 'GET';
+                targetUrl.value = 'https://httpbin.org/get?user_id=1043&role=admin';
+                headersArea.value = 'User-Agent: CyberHashira-SecurityWorkstation\nX-User-Id: 1043\nX-Role: admin';
+                bodyArea.value = '';
+            } else if (tmpl === 'cors-origin') {
+                methodSelect.value = 'OPTIONS';
+                headersArea.value = 'User-Agent: CyberHashira-SecurityWorkstation\nOrigin: https://attacker-controlled.xyz\nAccess-Control-Request-Method: POST\nAccess-Control-Request-Headers: Content-Type, Authorization';
+            } else if (tmpl === 'sqli-probe') {
+                methodSelect.value = 'GET';
+                targetUrl.value = 'https://httpbin.org/get?search=item%27%20OR%201=1--';
+                bodyArea.value = '';
+            } else if (tmpl === 'xss-header') {
+                headersArea.value = 'User-Agent: CyberHashira-SecurityWorkstation\nX-Forwarded-For: <script>alert(1)</script>\nReferer: https://evil.test';
+            }
+            document.getElementById('repeater-template-select').value = '';
+        }
+
+        function formatHeadersToJson() {
+            const raw = document.getElementById('repeater-headers').value;
+            const lines = raw.split('\n');
+            const headers = {};
+            lines.forEach(l => {
+                const idx = l.indexOf(':');
+                if (idx > -1) {
+                    const k = l.substring(0, idx).trim();
+                    const v = l.substring(idx + 1).trim();
+                    if (k) headers[k] = v;
+                }
+            });
+            logConsole(`Parsed ${Object.keys(headers).length} request headers.`, 'cyan');
+        }
+
+        function prettifyRequestBody() {
+            const raw = document.getElementById('repeater-body').value.trim();
+            if (!raw) return;
+            try {
+                const parsed = JSON.parse(raw);
+                document.getElementById('repeater-body').value = JSON.stringify(parsed, null, 2);
+            } catch (err) {
+                logConsole(`Cannot prettify body: Not valid JSON (${err.message})`, 'amber');
+            }
+        }
+
+        function copyResponseBody() {
+            const text = document.getElementById('repeater-response-body').value;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                logConsole("Response body copied to clipboard.", "green");
+            }).catch(e => {
+                logConsole(`Clipboard error: ${e.message}`, "red");
+            });
+        }
+
+        async function sendRepeaterRequest() {
+            const btn = document.getElementById('btn-send-request');
+            const method = document.getElementById('repeater-method').value;
+            const url = document.getElementById('repeater-url').value.trim();
+            const rawHeaders = document.getElementById('repeater-headers').value;
+            const body = document.getElementById('repeater-body').value;
+            const verifySsl = document.getElementById('repeater-verify-ssl').checked;
+            const timeout = parseInt(document.getElementById('repeater-timeout').value) || 15;
+
+            if (!url) {
+                alert("Target URL cannot be empty!");
+                return;
+            }
+
+            const headers = {};
+            rawHeaders.split('\n').forEach(line => {
+                const idx = line.indexOf(':');
+                if (idx > -1) {
+                    const k = line.substring(0, idx).trim();
+                    const v = line.substring(idx + 1).trim();
+                    if (k) headers[k] = v;
+                }
+            });
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="pulse-dot" style="background:#fff;"></span><span>Sending...</span>`;
+            document.getElementById('response-status-badge').className = 'badge';
+            document.getElementById('response-status-badge').innerText = 'Request In Flight...';
+
+            logConsole(`Repeater: Dispatching ${method} -> ${url}...`, 'cyan');
+
+            try {
+                const res = await fetch('/api/repeater/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        method,
+                        url,
+                        headers,
+                        body,
+                        verify_ssl: verifySsl,
+                        timeout
+                    })
+                });
+                const data = await res.json();
+
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg><span>Send</span>`;
+
+                if (!data.success) {
+                    document.getElementById('response-status-badge').className = 'badge badge-crimson';
+                    document.getElementById('response-status-badge').innerText = data.scope_blocked ? 'SCOPE VIOLATION' : `ERROR ${data.status_code || 500}`;
+                    document.getElementById('repeater-response-body').value = data.error || 'Unknown Error';
+                    document.getElementById('response-time').innerText = `${data.elapsed_ms || 0} ms`;
+                    document.getElementById('response-size').innerText = '0 B';
+                    logConsole(`[FAIL] Repeater: ${data.error}`, 'red');
+                    return;
+                }
+
+                const resp = data.response;
+                const sc = resp.status_code;
+
+                let badgeClass = 'status-badge-2xx';
+                if (sc >= 500) badgeClass = 'status-badge-5xx';
+                else if (sc >= 400) badgeClass = 'status-badge-4xx';
+                else if (sc >= 300) badgeClass = 'status-badge-3xx';
+
+                const badge = document.getElementById('response-status-badge');
+                badge.className = `badge ${badgeClass}`;
+                badge.innerText = `${sc} ${resp.reason || ''}`;
+
+                document.getElementById('response-time').innerText = `${resp.elapsed_ms} ms`;
+                document.getElementById('response-size').innerText = `${resp.size_bytes} B`;
+
+                let bodyFormatted = resp.body || '';
+                try {
+                    const parsed = JSON.parse(bodyFormatted);
+                    bodyFormatted = JSON.stringify(parsed, null, 2);
+                } catch (_) {}
+                document.getElementById('repeater-response-body').value = bodyFormatted;
+
+                const hdrsList = document.getElementById('repeater-response-headers-list');
+                const hdrEntries = Object.entries(resp.headers || {});
+                document.getElementById('resp-headers-count').innerText = hdrEntries.length;
+                if (hdrEntries.length === 0) {
+                    hdrsList.innerHTML = `<div style="color:var(--text-dim); text-align:center; padding:20px;">No response headers received.</div>`;
+                } else {
+                    hdrsList.innerHTML = hdrEntries.map(([k, v]) => `
+                        <div style="display:flex; gap:8px; border-bottom:1px solid rgba(255,255,255,0.04); padding:3px 0;">
+                            <span style="color:var(--cyan); font-weight:600; min-width:180px;">${escapeHtml(k)}:</span>
+                            <span style="color:#d1d5db; word-break:break-all;">${escapeHtml(String(v))}</span>
+                        </div>
+                    `).join('');
+                }
+
+                let rawText = `HTTP/1.1 ${sc} ${resp.reason || 'OK'}\n`;
+                for (const [k, v] of hdrEntries) {
+                    rawText += `${k}: ${v}\n`;
+                }
+                rawText += `\n${resp.body || ''}`;
+                document.getElementById('repeater-response-raw').value = rawText;
+
+                logConsole(`[OK] Repeater: Received ${sc} in ${resp.elapsed_ms}ms (${resp.size_bytes} bytes).`, 'green');
+
+                loadRepeaterHistory();
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg><span>Send</span>`;
+                logConsole(`Repeater Network Error: ${err.message}`, 'red');
+            }
+        }
+
+        async function loadRepeaterHistory() {
+            try {
+                const res = await fetch('/api/repeater/history');
+                const data = await res.json();
+                currentRepeaterHistory = data.history || [];
+                const container = document.getElementById('repeater-history-list');
+                if (currentRepeaterHistory.length === 0) {
+                    container.innerHTML = `<div style="color: var(--text-dim); font-size: 11px; text-align: center; padding: 20px 0;">No past requests recorded.</div>`;
+                    return;
+                }
+
+                container.innerHTML = currentRepeaterHistory.map((item, idx) => {
+                    const req = item.request || {};
+                    const resp = item.response || {};
+                    const sc = resp.status_code || 0;
+                    let scColor = 'var(--emerald)';
+                    if (sc >= 500) scColor = 'var(--crimson)';
+                    else if (sc >= 400) scColor = 'var(--amber)';
+                    else if (sc >= 300) scColor = 'var(--cyan)';
+
+                    let pathDisplay = req.url;
+                    try {
+                        const parsed = new URL(req.url);
+                        pathDisplay = parsed.pathname + (parsed.search || '');
+                    } catch (_) {}
+
+                    return `
+                        <div class="repeater-history-item" onclick="loadHistoryItemIntoEditor(${idx}, this)">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight:700; color:var(--cyan);">${escapeHtml(req.method || 'GET')}</span>
+                                <span style="font-weight:700; color:${scColor}; font-family:var(--font-mono);">${sc}</span>
+                            </div>
+                            <div style="color:var(--text-main); font-family:var(--font-mono); font-size:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(req.url)}">
+                                ${escapeHtml(pathDisplay)}
+                            </div>
+                            <div style="display:flex; justify-content:space-between; color:var(--text-dim); font-size:9px;">
+                                <span>${escapeHtml(item.timestamp || '')}</span>
+                                <span>${resp.elapsed_ms || 0}ms</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (_) {}
+        }
+
+        function loadHistoryItemIntoEditor(idx, el) {
+            const item = currentRepeaterHistory[idx];
+            if (!item) return;
+
+            document.querySelectorAll('.repeater-history-item').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+
+            const req = item.request || {};
+            const resp = item.response || {};
+
+            document.getElementById('repeater-method').value = req.method || 'GET';
+            document.getElementById('repeater-url').value = req.url || '';
+            
+            let hdrsStr = '';
+            for (const [k, v] of Object.entries(req.headers || {})) {
+                hdrsStr += `${k}: ${v}\n`;
+            }
+            document.getElementById('repeater-headers').value = hdrsStr.trim();
+            document.getElementById('repeater-body').value = req.body || '';
+
+            if (resp.status_code) {
+                const sc = resp.status_code;
+                let badgeClass = 'status-badge-2xx';
+                if (sc >= 500) badgeClass = 'status-badge-5xx';
+                else if (sc >= 400) badgeClass = 'status-badge-4xx';
+                else if (sc >= 300) badgeClass = 'status-badge-3xx';
+
+                const badge = document.getElementById('response-status-badge');
+                badge.className = `badge ${badgeClass}`;
+                badge.innerText = `${sc} ${resp.reason || ''}`;
+
+                document.getElementById('response-time').innerText = `${resp.elapsed_ms} ms`;
+                document.getElementById('response-size').innerText = `${resp.size_bytes} B`;
+
+                let bodyFormatted = resp.body || '';
+                try {
+                    const parsed = JSON.parse(bodyFormatted);
+                    bodyFormatted = JSON.stringify(parsed, null, 2);
+                } catch (_) {}
+                document.getElementById('repeater-response-body').value = bodyFormatted;
+
+                const hdrsList = document.getElementById('repeater-response-headers-list');
+                const hdrEntries = Object.entries(resp.headers || {});
+                document.getElementById('resp-headers-count').innerText = hdrEntries.length;
+                hdrsList.innerHTML = hdrEntries.map(([k, v]) => `
+                    <div style="display:flex; gap:8px; border-bottom:1px solid rgba(255,255,255,0.04); padding:3px 0;">
+                        <span style="color:var(--cyan); font-weight:600; min-width:180px;">${escapeHtml(k)}:</span>
+                        <span style="color:#d1d5db; word-break:break-all;">${escapeHtml(String(v))}</span>
+                    </div>
+                `).join('');
+
+                let rawText = `HTTP/1.1 ${sc} ${resp.reason || 'OK'}\n`;
+                for (const [k, v] of hdrEntries) {
+                    rawText += `${k}: ${v}\n`;
+                }
+                rawText += `\n${resp.body || ''}`;
+                document.getElementById('repeater-response-raw').value = rawText;
+            }
+        }
+
+        async function clearRepeaterHistory() {
+            if (!confirm("Clear all repeater request history?")) return;
+            try {
+                await fetch('/api/repeater/clear', { method: 'POST' });
+                loadRepeaterHistory();
+                logConsole("Repeater history cleared.", "cyan");
+            } catch (_) {}
+        }
+
+        // Proxy management
+        async function fetchProxyStatus() {
+            try {
+                const res = await fetch('/api/proxy/status');
+                const data = await res.json();
+                updateProxyUI(data);
+            } catch (_) {}
+        }
+
+        function updateProxyUI(status) {
+            const isRunning = status && status.running;
+            const pill = document.getElementById('proxy-status-pill');
+            const pulse = document.getElementById('proxy-pulse');
+            const text = document.getElementById('proxy-status-text');
+            const btn = document.getElementById('btn-toggle-proxy');
+            const btnText = document.getElementById('btn-toggle-proxy-text');
+            const trafficBadge = document.getElementById('proxy-traffic-count');
+
+            if (trafficBadge) trafficBadge.innerText = status.captured_count || 0;
+
+            if (isRunning) {
+                pill.className = 'badge badge-emerald';
+                pulse.style.background = 'var(--emerald)';
+                text.innerText = `Proxy: ${status.host}:${status.port} (ACTIVE)`;
+                btn.className = 'btn btn-crimson';
+                btnText.innerText = 'Stop Proxy';
+            } else {
+                pill.className = 'badge badge-amber';
+                pulse.style.background = 'var(--amber)';
+                text.innerText = `Proxy: 127.0.0.1:8081 (Inactive)`;
+                btn.className = 'btn btn-cyan';
+                btnText.innerText = 'Start Proxy';
+            }
+        }
+
+        async function toggleProxyServer() {
+            try {
+                const res = await fetch('/api/proxy/toggle', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ port: 8081 })
+                });
+                const data = await res.json();
+                updateProxyUI(data.status);
+                if (data.status && data.status.running) {
+                    logConsole(`[+] HTTP Inspection Proxy started on 127.0.0.1:8081. Configure client to route traffic.`, 'green');
+                    startProxyPolling();
+                } else {
+                    logConsole(`[*] HTTP Inspection Proxy stopped.`, 'amber');
+                    stopProxyPolling();
+                }
+            } catch (err) {
+                logConsole(`Proxy toggle error: ${err.message}`, 'red');
+            }
+        }
+
+        function startProxyPolling() {
+            if (proxyPollInterval) clearInterval(proxyPollInterval);
+            proxyPollInterval = setInterval(fetchProxyTraffic, 3000);
+        }
+
+        function stopProxyPolling() {
+            if (proxyPollInterval) clearInterval(proxyPollInterval);
+            proxyPollInterval = null;
+        }
+
+        async function fetchProxyTraffic() {
+            const filter = document.getElementById('proxy-filter-input')?.value.trim() || '';
+            try {
+                const res = await fetch(`/api/proxy/traffic?limit=100&filter=${encodeURIComponent(filter)}`);
+                const data = await res.json();
+                renderProxyTraffic(data.traffic || []);
+                fetchProxyStatus();
+            } catch (_) {}
+        }
+
+        function renderProxyTraffic(items) {
+            const tbody = document.getElementById('proxy-traffic-table-body');
+            if (!tbody) return;
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: var(--text-muted);">No traffic captured matching filter.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = items.map((item, idx) => {
+                const sc = item.status_code || 0;
+                let badgeClass = 'status-badge-2xx';
+                if (sc >= 500) badgeClass = 'status-badge-5xx';
+                else if (sc >= 400) badgeClass = 'status-badge-4xx';
+                else if (sc >= 300) badgeClass = 'status-badge-3xx';
+
+                let pathOnly = item.url;
+                try {
+                    const u = new URL(item.url);
+                    pathOnly = u.pathname + (u.search || '');
+                } catch (_) {}
+
+                return `
+                    <tr>
+                        <td style="font-family: var(--font-mono); color: var(--text-dim);">${items.length - idx}</td>
+                        <td style="font-size: 11px; color: var(--text-muted);">${escapeHtml(item.timestamp ? item.timestamp.split(' ')[1] : '')}</td>
+                        <td><span style="font-weight: 700; color: var(--cyan);">${escapeHtml(item.method)}</span></td>
+                        <td style="font-family: var(--font-mono); font-size: 11px;">${escapeHtml(item.host)}</td>
+                        <td style="font-family: var(--font-mono); font-size: 11px; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(item.url)}">${escapeHtml(pathOnly)}</td>
+                        <td><span class="${badgeClass}">${sc}</span></td>
+                        <td style="font-family: var(--font-mono); font-size: 11px;">${item.elapsed_ms || 0}ms</td>
+                        <td style="text-align: center;">
+                            <button class="btn btn-cyan" style="padding: 2px 8px; font-size: 10px;" onclick="sendTrafficItemToRepeater(${idx})">⚡ To Repeater</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function sendTrafficItemToRepeater(idx) {
+            const filter = document.getElementById('proxy-filter-input')?.value.trim() || '';
+            const res = await fetch(`/api/proxy/traffic?limit=100&filter=${encodeURIComponent(filter)}`);
+            const data = await res.json();
+            const item = (data.traffic || [])[idx];
+            if (!item) return;
+
+            document.getElementById('repeater-method').value = item.method || 'GET';
+            document.getElementById('repeater-url').value = item.url || '';
+
+            let hdrsStr = '';
+            for (const [k, v] of Object.entries(item.request_headers || {})) {
+                hdrsStr += `${k}: ${v}\n`;
+            }
+            document.getElementById('repeater-headers').value = hdrsStr.trim();
+            document.getElementById('repeater-body').value = item.request_body || '';
+
+            switchRepeaterView('repeater');
+            logConsole(`Captured transaction [${item.method} ${item.host}] loaded into Repeater.`, 'green');
+        }
+
+        async function clearProxyTraffic() {
+            try {
+                await fetch('/api/proxy/clear', { method: 'POST' });
+                fetchProxyTraffic();
+                logConsole("Proxy traffic stream cleared.", "cyan");
+            } catch (_) {}
+        }
+
+        // Global hotkey: Ctrl+Enter in repeater executes send
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                const activeTab = document.querySelector('.tab-panel.active');
+                if (activeTab && activeTab.id === 'tab-repeater') {
+                    sendRepeaterRequest();
+                }
+            }
+        });
+
         // Initialize
         loadModules();
+        fetchProxyStatus();
+        loadRepeaterHistory();
     </script>
 </body>
 </html>
