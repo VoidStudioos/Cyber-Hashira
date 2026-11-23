@@ -9,6 +9,9 @@ Usage:
   python hashira.py tui
   python hashira.py desktop [--dev]
   python hashira.py proxy [--port 8081] [--host 127.0.0.1]
+  python hashira.py crawl --target <url> [--depth 2]
+  python hashira.py fuzz --target <url> [--threads 15]
+  python hashira.py fingerprint --target <url>
   python hashira.py matrix
   python hashira.py list [--category <name>]
   python hashira.py scan --module <id> --target <url/ip>
@@ -397,6 +400,74 @@ def cmd_proxy(args):
         print("[+] Proxy stopped cleanly.")
 
 
+def cmd_crawl(args):
+    """Run the web spider crawler against an authorized target."""
+    from engine.crawler import WebCrawler
+    crawler = WebCrawler()
+    print("=" * 70)
+    print("🕷️  CYBER HASHIRA — Target Web Spider & Endpoint Crawler")
+    print("=" * 70)
+    print(f"[*] Crawling target: {args.target} (Max depth: {args.depth}, Max pages: {args.max_pages})")
+    res = crawler.crawl(start_url=args.target, max_depth=args.depth, max_pages=args.max_pages)
+    if not res.get("success"):
+        print(f"[!] Crawl blocked/failed: {res.get('error')}")
+        sys.exit(1)
+    print(f"[+] Crawl Complete in {res['elapsed_seconds']}s. Pages: {res['pages_crawled']}, Endpoints: {len(res['endpoints'])}, Forms: {len(res['forms'])}, Params: {len(res['parameters'])}")
+    print("\n--- Discovered Endpoints ---")
+    for ep in res["endpoints"][:30]:
+        print(f"  • {ep}")
+    if len(res["endpoints"]) > 30:
+        print(f"  ... and {len(res['endpoints']) - 30} more")
+    if res["forms"]:
+        print(f"\n--- Discovered HTML Forms ({len(res['forms'])}) ---")
+        for f in res["forms"][:10]:
+            print(f"  [{f['method']}] {f['action']} (inputs: {', '.join([i['name'] for i in f['inputs']])})")
+    if res["parameters"]:
+        print(f"\n--- Discovered Parameters ({len(res['parameters'])}) ---")
+        print("  " + ", ".join(res["parameters"][:30]))
+
+
+def cmd_fuzz(args):
+    """Run concurrent endpoint & directory fuzzing against an authorized target."""
+    from engine.fuzzer import EndpointFuzzer
+    fuzzer = EndpointFuzzer()
+    print("=" * 70)
+    print("⚡  CYBER HASHIRA — High-Speed Endpoint & Directory Fuzzer")
+    print("=" * 70)
+    print(f"[*] Fuzzing target: {args.target} with {args.threads} threads...")
+    res = fuzzer.fuzz(target_url=args.target, threads=args.threads)
+    if not res.get("success"):
+        print(f"[!] Fuzzing blocked/failed: {res.get('error')}")
+        sys.exit(1)
+    print(f"[+] Tested {res['probes_count']} probes in {res['elapsed_seconds']}s. Discovered hits: {res['hits_count']}")
+    print("\nSTATUS | LENGTH | PATH")
+    print("-" * 50)
+    for hit in res["results"]:
+        print(f"[{hit['status_code']}]  | {hit['content_length']:>6}b | {hit['path']}")
+
+
+def cmd_fingerprint(args):
+    """Identify software stack and analyze security headers for an authorized target."""
+    from engine.fingerprint import TechFingerprinter
+    fingerprinter = TechFingerprinter()
+    print("=" * 70)
+    print("🏷️  CYBER HASHIRA — Technology & Security Header Fingerprinter")
+    print("=" * 70)
+    print(f"[*] Fingerprinting target: {args.target}...")
+    res = fingerprinter.fingerprint(target_url=args.target)
+    if not res.get("success"):
+        print(f"[!] Fingerprinting blocked/failed: {res.get('error')}")
+        sys.exit(1)
+    print(f"[+] Posture Score: {res['posture_score']}% ({res['elapsed_seconds']}s)")
+    print("\n--- Identified Technologies ---")
+    for t in res["technologies"]:
+        print(f"  ✓ {t}")
+    print("\n--- Security Header Audit ---")
+    for h in res["security_headers"]:
+        status = "✅ PASS" if h["status"] == "PASS" else "❌ MISSING"
+        print(f"  {status} {h['header']}: {h['value'] if h['value'] else h['description']}")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Cyber Hashira — Master Security Platform Launcher (Windows & Linux)",
@@ -409,6 +480,24 @@ def main():
     p_proxy.add_argument("--port", type=int, default=8081, help="Proxy listen port (default: 8081)")
     p_proxy.add_argument("--host", default="127.0.0.1", help="Proxy listen host (default: 127.0.0.1)")
     p_proxy.set_defaults(func=cmd_proxy)
+
+    # Crawl
+    p_crawl = subparsers.add_parser("crawl", help="Spider an authorized web target and map endpoints & forms")
+    p_crawl.add_argument("--target", required=True, help="Target URL (e.g. https://target.corp)")
+    p_crawl.add_argument("--depth", type=int, default=2, help="Max recursion depth (default: 2)")
+    p_crawl.add_argument("--max-pages", type=int, default=40, help="Max pages to crawl (default: 40)")
+    p_crawl.set_defaults(func=cmd_crawl)
+
+    # Fuzz
+    p_fuzz = subparsers.add_parser("fuzz", help="High-speed concurrent endpoint & directory fuzzer")
+    p_fuzz.add_argument("--target", required=True, help="Target URL (e.g. https://target.corp)")
+    p_fuzz.add_argument("--threads", type=int, default=15, help="Concurrent worker threads (default: 15)")
+    p_fuzz.set_defaults(func=cmd_fuzz)
+
+    # Fingerprint
+    p_fp = subparsers.add_parser("fingerprint", help="Identify technologies, frameworks, and security headers")
+    p_fp.add_argument("--target", required=True, help="Target URL (e.g. https://target.corp)")
+    p_fp.set_defaults(func=cmd_fingerprint)
 
     # Web
     p_web = subparsers.add_parser("web", help="Start the Web Dashboard UI (Flask)")

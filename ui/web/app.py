@@ -190,12 +190,18 @@ try:
         get_traffic_history,
         clear_traffic_history
     )
+    from engine.crawler import WebCrawler
+    from engine.fuzzer import EndpointFuzzer
+    from engine.fingerprint import TechFingerprinter
     playbook_engine = PlaybookEngine()
     ai_engine = AICorrelationEngine()
     reporting_engine = EnterpriseReportingEngine()
     fleet_manager = FleetManager()
     threat_intel = ThreatIntelHub()
     repeater_engine = RepeaterEngine()
+    crawler_engine = WebCrawler()
+    fuzzer_engine = EndpointFuzzer()
+    fingerprint_engine = TechFingerprinter()
 except Exception as _eng_err:
     playbook_engine = None
     ai_engine = None
@@ -205,6 +211,9 @@ except Exception as _eng_err:
     audit_logger = None
     scopeguard_verify = None
     repeater_engine = None
+    crawler_engine = None
+    fuzzer_engine = None
+    fingerprint_engine = None
     start_proxy = None
     stop_proxy = None
     get_proxy_status = lambda: {"running": False, "captured_count": 0}
@@ -433,6 +442,71 @@ def api_proxy_clear():
     if clear_traffic_history:
         clear_traffic_history()
     return jsonify({"success": True})
+
+
+# ---------------------------------------------------------------------------
+# Reconnaissance & Discovery API Endpoints
+# ---------------------------------------------------------------------------
+
+@app.route("/api/recon/crawl", methods=["POST"])
+def api_recon_crawl():
+    """Runs recursive web spider against target URL within ScopeGuard boundary."""
+    if not crawler_engine:
+        return jsonify({"error": "Crawler engine not available"}), 500
+    data = request.get_json(force=True, silent=True) or {}
+    url = data.get("url", "").strip()
+    if not url:
+        return jsonify({"error": "Target URL is required"}), 400
+    depth = int(data.get("depth", 2))
+    max_pages = int(data.get("max_pages", 40))
+    authorized_targets = data.get("authorized_targets")
+    result = crawler_engine.crawl(
+        start_url=url,
+        max_depth=depth,
+        max_pages=max_pages,
+        authorized_targets=authorized_targets
+    )
+    return jsonify(result)
+
+
+@app.route("/api/recon/fuzz", methods=["POST"])
+def api_recon_fuzz():
+    """Runs concurrent endpoint fuzzing against target URL."""
+    if not fuzzer_engine:
+        return jsonify({"error": "Fuzzer engine not available"}), 500
+    data = request.get_json(force=True, silent=True) or {}
+    url = data.get("url", "").strip()
+    if not url:
+        return jsonify({"error": "Target URL is required"}), 400
+    threads = int(data.get("threads", 15))
+    wordlist = data.get("wordlist")
+    status_codes = data.get("status_codes")
+    authorized_targets = data.get("authorized_targets")
+    result = fuzzer_engine.fuzz(
+        target_url=url,
+        wordlist=wordlist,
+        threads=threads,
+        status_codes=status_codes,
+        authorized_targets=authorized_targets
+    )
+    return jsonify(result)
+
+
+@app.route("/api/recon/fingerprint", methods=["POST"])
+def api_recon_fingerprint():
+    """Fingerprints technologies and security headers for target URL."""
+    if not fingerprint_engine:
+        return jsonify({"error": "Fingerprint engine not available"}), 500
+    data = request.get_json(force=True, silent=True) or {}
+    url = data.get("url", "").strip()
+    if not url:
+        return jsonify({"error": "Target URL is required"}), 400
+    authorized_targets = data.get("authorized_targets")
+    result = fingerprint_engine.fingerprint(
+        target_url=url,
+        authorized_targets=authorized_targets
+    )
+    return jsonify(result)
 
 
 # ---------------------------------------------------------------------------

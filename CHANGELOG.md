@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2026-11-22
+
+### 🚀 Added
+- **Interactive Request Repeater Studio (`engine/repeater.py`):**
+  - Full HTTP/HTTPS request crafting, header manipulation, diffing, and latency profiling.
+  - ScopeGuard boundary validation preventing unauthorized out-of-scope targets and cloud metadata probes.
+  - Persistent session history in `evidence_vault/repeater_history.json` and cryptographic `AuditLog` records.
+- **Local HTTP/S Traffic Inspection Proxy (`engine/proxy.py`):**
+  - Real-time traffic interception on port 8081 with thread-safe ring buffer and HTTPS CONNECT tunneling.
+  - One-click "⚡ Send to Repeater" bridging from captured traffic directly to the Repeater editor.
+  - Dedicated CLI command: `python hashira.py proxy [--port 8081]`.
+- **Target Reconnaissance & Asset Discovery Studio:**
+  - **Web Spider & Link Crawler (`engine/crawler.py`):** Recursive endpoint discovery, HTML form extraction, and query parameter mining.
+  - **High-Speed Directory Fuzzer (`engine/fuzzer.py`):** Concurrent multi-threaded path discovery with curated wordlists (sensitive environment files, database backups, admin portals, API schemas).
+  - **Technology & Header Fingerprinter (`engine/fingerprint.py`):** Stack detection (Nginx, Apache, PHP, Node.js, Django, WordPress) and defensive security header auditing (HSTS, CSP, X-Frame-Options).
+  - CLI integration: `python hashira.py crawl`, `python hashira.py fuzz`, `python hashira.py fingerprint`.
+- **Automated Windows Installation Subsystem:**
+  - `scripts/install_windows.ps1` & `scripts/uninstall_windows.ps1` for one-click installation into Windows programs, Desktop shortcut, Start Menu shortcut, and System PATH registration.
+- **Testing & Continuous Integration:**
+  - Added `tests/test_repeater_proxy_engine.py` (10/10 PASS).
+  - Added `tests/test_recon_discovery_engine.py` (10/10 PASS).
+  - Reached 185 total automated regression and unit tests (185/185 PASS).
+  - Updated GitHub Actions CI workflow (`.github/workflows/ci.yml`).
+
+---
+
 ## [1.2.0] - 2026-11-16
 
 ### 🚀 Added

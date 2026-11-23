@@ -961,6 +961,10 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
             <span id="tab-repeater-label">Repeater & Proxy Studio</span>
         </button>
+        <button class="tab-btn" onclick="switchTab('recon', this)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span id="tab-recon-label">Recon & Discovery Studio</span>
+        </button>
         <button class="tab-btn" onclick="switchTab('chains', this)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             <span id="tab-chains-label">Red-Team Attack Chains</span>
@@ -1178,6 +1182,189 @@ Accept: application/json</textarea>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Recon & Asset Discovery Studio -->
+        <div id="tab-recon" class="tab-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h2 style="font-size: 18px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                        <span>🔍 Recon & Asset Discovery Studio</span>
+                        <span class="badge badge-cyan" style="font-size: 10px;">BUG BOUNTY RECON</span>
+                    </h2>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+                        Autonomous spidering, directory fuzzing, and technology fingerprinting within ScopeGuard boundaries.
+                    </p>
+                </div>
+                <!-- Subtab Navigation -->
+                <div style="display: flex; gap: 8px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 8px; border: 1px solid var(--border-glass);">
+                    <button class="subtab-pill active" id="recon-subtab-spider" onclick="switchReconSubtab('spider')">🕷️ Web Spider</button>
+                    <button class="subtab-pill" id="recon-subtab-fuzzer" onclick="switchReconSubtab('fuzzer')">⚡ Directory Fuzzer</button>
+                    <button class="subtab-pill" id="recon-subtab-fingerprint" onclick="switchReconSubtab('fingerprint')">🏷️ Tech Fingerprint</button>
+                </div>
+            </div>
+
+            <!-- Subtab 1: Web Spider -->
+            <div id="recon-view-spider">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+                        <div style="flex: 2; min-width: 250px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 6px;">Target URL</label>
+                            <input type="text" id="recon-spider-url" class="form-input" placeholder="https://target.corp" style="width: 100%; font-family: var(--font-mono); font-size: 13px;">
+                        </div>
+                        <div style="width: 120px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 6px;">Max Depth</label>
+                            <select id="recon-spider-depth" class="form-input" style="width: 100%;">
+                                <option value="1">1 (Fast)</option>
+                                <option value="2" selected>2 (Standard)</option>
+                                <option value="3">3 (Deep)</option>
+                            </select>
+                        </div>
+                        <div style="width: 130px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 6px;">Max Pages</label>
+                            <select id="recon-spider-pages" class="form-input" style="width: 100%;">
+                                <option value="20">20 Pages</option>
+                                <option value="40" selected>40 Pages</option>
+                                <option value="100">100 Pages</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-cyan" id="btn-run-spider" onclick="startReconSpider()" style="height: 42px; padding: 0 20px;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <span>Start Spider Crawl</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Spider Results Section -->
+                <div id="recon-spider-results" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                        <!-- Discovered Endpoints -->
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px;">
+                            <h3 style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                                <span>Mapped Endpoints</span>
+                                <span class="badge badge-cyan" id="spider-endpoints-count">0</span>
+                            </h3>
+                            <div id="spider-endpoints-list" style="max-height: 350px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; font-family: var(--font-mono); font-size: 12px;"></div>
+                        </div>
+
+                        <!-- Discovered Parameters & Forms -->
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Query Parameters -->
+                            <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px;">
+                                <h3 style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                                    <span>Discovered Query Parameters</span>
+                                    <span class="badge badge-emerald" id="spider-params-count">0</span>
+                                </h3>
+                                <div id="spider-params-list" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+                            </div>
+
+                            <!-- Discovered HTML Forms -->
+                            <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px; flex: 1;">
+                                <h3 style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; justify-content: space-between;">
+                                    <span>Interactive HTML Forms</span>
+                                    <span class="badge badge-purple" id="spider-forms-count">0</span>
+                                </h3>
+                                <div id="spider-forms-list" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 2: Directory Fuzzer -->
+            <div id="recon-view-fuzzer" style="display: none;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+                        <div style="flex: 2; min-width: 250px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 6px;">Target URL</label>
+                            <input type="text" id="recon-fuzz-url" class="form-input" placeholder="https://target.corp" style="width: 100%; font-family: var(--font-mono); font-size: 13px;">
+                        </div>
+                        <div style="width: 140px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 6px;">Worker Threads</label>
+                            <select id="recon-fuzz-threads" class="form-input" style="width: 100%;">
+                                <option value="10">10 Threads</option>
+                                <option value="15" selected>15 Threads</option>
+                                <option value="25">25 Threads</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-purple" id="btn-run-fuzz" onclick="startReconFuzz()" style="height: 42px; padding: 0 20px;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            <span>Launch Path Fuzzer</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Fuzz Results Table -->
+                <div id="recon-fuzz-results" style="display: none; background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="font-size: 14px; font-weight: 700; color: #fff;">
+                            Fuzzer Discovered Paths (<span id="fuzz-hits-count">0</span> hits)
+                        </h3>
+                        <span id="fuzz-elapsed" style="font-size: 12px; color: var(--text-dim); font-family: var(--font-mono);"></span>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 90px;">STATUS</th>
+                                    <th>PATH</th>
+                                    <th style="width: 100px;">LENGTH</th>
+                                    <th style="width: 80px;">WORDS</th>
+                                    <th style="width: 100px;">LATENCY</th>
+                                    <th style="width: 130px; text-align: right;">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fuzz-results-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 3: Tech Fingerprint -->
+            <div id="recon-view-fingerprint" style="display: none;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+                        <div style="flex: 2; min-width: 250px;">
+                            <label style="font-size: 11px; text-transform: uppercase; color: var(--text-dim); font-weight: 700; display: block; margin-bottom: 6px;">Target URL</label>
+                            <input type="text" id="recon-fp-url" class="form-input" placeholder="https://target.corp" style="width: 100%; font-family: var(--font-mono); font-size: 13px;">
+                        </div>
+                        <button class="btn btn-emerald" id="btn-run-fingerprint" onclick="startReconFingerprint()" style="height: 42px; padding: 0 20px;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <span>Analyze Stack & Headers</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Fingerprint Results Section -->
+                <div id="recon-fp-results" style="display: none;">
+                    <!-- Posture Bar -->
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                        <div>
+                            <div style="font-size: 12px; text-transform: uppercase; color: var(--text-dim); font-weight: 700;">Security Posture Score</div>
+                            <div id="fp-posture-text" style="font-size: 24px; font-weight: 800; color: #10b981; font-family: var(--font-mono); margin-top: 4px;">0%</div>
+                        </div>
+                        <div style="flex: 1; max-width: 400px;">
+                            <div style="height: 10px; background: rgba(255,255,255,0.06); border-radius: 5px; overflow: hidden;">
+                                <div id="fp-posture-bar" style="height: 100%; width: 0%; background: #10b981; transition: width 0.5s ease;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <!-- Technologies -->
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px;">
+                            <h3 style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px;">Identified Software & Frameworks</h3>
+                            <div id="fp-tech-list" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                        </div>
+
+                        <!-- Security Headers Audit -->
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px;">
+                            <h3 style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px;">Defensive Security Headers</h3>
+                            <div id="fp-headers-list" style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2282,6 +2469,235 @@ Accept: application/json</textarea>
                 }
             }
         });
+
+        // -------------------------------------------------------------
+        // Recon & Discovery Studio JavaScript
+        // -------------------------------------------------------------
+        function switchReconSubtab(viewName) {
+            document.querySelectorAll('#tab-recon .subtab-pill').forEach(b => b.classList.remove('active'));
+            document.getElementById('recon-subtab-' + viewName).classList.add('active');
+            document.getElementById('recon-view-spider').style.display = viewName === 'spider' ? 'block' : 'none';
+            document.getElementById('recon-view-fuzzer').style.display = viewName === 'fuzzer' ? 'block' : 'none';
+            document.getElementById('recon-view-fingerprint').style.display = viewName === 'fingerprint' ? 'block' : 'none';
+        }
+
+        async function startReconSpider() {
+            const url = document.getElementById('recon-spider-url').value.trim();
+            if (!url) {
+                alert('Please enter a target URL.');
+                return;
+            }
+            const depth = parseInt(document.getElementById('recon-spider-depth').value, 10);
+            const maxPages = parseInt(document.getElementById('recon-spider-pages').value, 10);
+            const btn = document.getElementById('btn-run-spider');
+            btn.disabled = true;
+            btn.innerHTML = '<span>Spidering target...</span>';
+            logConsole(`Starting web spider against ${url} (depth ${depth}, max ${maxPages} pages)...`, 'cyan');
+
+            try {
+                const res = await fetch('/api/recon/crawl', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': activeCsrfToken },
+                    body: JSON.stringify({ url: url, depth: depth, max_pages: maxPages })
+                });
+                const data = await res.json();
+                if (!data.success) {
+                    logConsole(`Spider failed: ${data.error || 'Blocked by ScopeGuard'}`, 'red');
+                    alert(data.error || 'Spider blocked by ScopeGuard.');
+                    return;
+                }
+
+                document.getElementById('recon-spider-results').style.display = 'block';
+                document.getElementById('spider-endpoints-count').innerText = (data.endpoints || []).length;
+                document.getElementById('spider-params-count').innerText = (data.parameters || []).length;
+                document.getElementById('spider-forms-count').innerText = (data.forms || []).length;
+
+                // Render endpoints
+                const epList = document.getElementById('spider-endpoints-list');
+                epList.innerHTML = '';
+                (data.endpoints || []).forEach(ep => {
+                    const row = document.createElement('div');
+                    row.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: rgba(255,255,255,0.02); border-radius: 4px;';
+                    row.innerHTML = `<span style="color: #67e8f9; word-break: break-all;">${ep}</span>
+                        <button class="btn btn-ghost" style="padding: 2px 6px; font-size: 10px;" onclick="loadUrlIntoRepeater('${data.base_url || ''}${ep}', 'GET')">⚡ Repeater</button>`;
+                    epList.appendChild(row);
+                });
+
+                // Render params
+                const paramList = document.getElementById('spider-params-list');
+                paramList.innerHTML = '';
+                (data.parameters || []).forEach(p => {
+                    const tag = document.createElement('span');
+                    tag.className = 'badge badge-emerald';
+                    tag.innerText = p;
+                    paramList.appendChild(tag);
+                });
+
+                // Render forms
+                const formsList = document.getElementById('spider-forms-list');
+                formsList.innerHTML = '';
+                (data.forms || []).forEach(f => {
+                    const card = document.createElement('div');
+                    card.style.cssText = 'padding: 8px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); font-family: var(--font-mono); font-size: 11px;';
+                    const inpNames = (f.inputs || []).map(i => i.name).join(', ') || 'none';
+                    card.innerHTML = `<div style="display: flex; justify-content: space-between;">
+                        <span style="color: #c084fc; font-weight: 700;">[${f.method}]</span>
+                        <button class="btn btn-ghost" style="padding: 2px 6px; font-size: 10px;" onclick="loadUrlIntoRepeater('${f.action}', '${f.method}')">⚡ Repeater</button>
+                    </div>
+                    <div style="color: #fff; margin: 4px 0; word-break: break-all;">${f.action}</div>
+                    <div style="color: var(--text-dim);">Inputs: ${inpNames}</div>`;
+                    formsList.appendChild(card);
+                });
+
+                logConsole(`Spider crawl completed: ${data.endpoints.length} endpoints, ${data.forms.length} forms in ${data.elapsed_seconds}s.`, 'green');
+            } catch (err) {
+                logConsole(`Spider error: ${err.message}`, 'red');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>Start Spider Crawl</span>`;
+            }
+        }
+
+        async function startReconFuzz() {
+            const url = document.getElementById('recon-fuzz-url').value.trim();
+            if (!url) {
+                alert('Please enter a target URL.');
+                return;
+            }
+            const threads = parseInt(document.getElementById('recon-fuzz-threads').value, 10);
+            const btn = document.getElementById('btn-run-fuzz');
+            btn.disabled = true;
+            btn.innerHTML = '<span>Fuzzing paths...</span>';
+            logConsole(`Launching directory fuzzer against ${url} with ${threads} threads...`, 'cyan');
+
+            try {
+                const res = await fetch('/api/recon/fuzz', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': activeCsrfToken },
+                    body: JSON.stringify({ url: url, threads: threads })
+                });
+                const data = await res.json();
+                if (!data.success) {
+                    logConsole(`Fuzzer failed: ${data.error || 'Blocked by ScopeGuard'}`, 'red');
+                    alert(data.error || 'Fuzzing blocked by ScopeGuard.');
+                    return;
+                }
+
+                document.getElementById('recon-fuzz-results').style.display = 'block';
+                document.getElementById('fuzz-hits-count').innerText = data.hits_count || 0;
+                document.getElementById('fuzz-elapsed').innerText = `${data.probes_count} probes in ${data.elapsed_seconds}s`;
+
+                const tbody = document.getElementById('fuzz-results-tbody');
+                tbody.innerHTML = '';
+                (data.results || []).forEach(r => {
+                    const tr = document.createElement('tr');
+                    let badgeClass = 'status-badge-200';
+                    if (r.status_code >= 300 && r.status_code < 400) badgeClass = 'status-badge-300';
+                    else if (r.status_code >= 400 && r.status_code < 500) badgeClass = 'status-badge-400';
+                    else if (r.status_code >= 500) badgeClass = 'status-badge-500';
+
+                    tr.innerHTML = `<td><span class="${badgeClass}">${r.status_code}</span></td>
+                        <td style="font-family: var(--font-mono); color: #fff;">${r.path} ${r.redirect_to ? '<span style="color:var(--text-dim);">-> ' + r.redirect_to + '</span>' : ''}</td>
+                        <td style="font-family: var(--font-mono);">${r.content_length} b</td>
+                        <td style="font-family: var(--font-mono);">${r.words}</td>
+                        <td style="font-family: var(--font-mono); color: #67e8f9;">${r.elapsed_ms}ms</td>
+                        <td style="text-align: right;">
+                            <button class="btn btn-ghost" style="padding: 2px 8px; font-size: 11px;" onclick="loadUrlIntoRepeater('${r.url}', 'GET')">⚡ Repeater</button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+
+                logConsole(`Fuzzing complete: ${data.hits_count} paths identified in ${data.elapsed_seconds}s.`, 'green');
+            } catch (err) {
+                logConsole(`Fuzzing error: ${err.message}`, 'red');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Launch Path Fuzzer</span>`;
+            }
+        }
+
+        async function startReconFingerprint() {
+            const url = document.getElementById('recon-fp-url').value.trim();
+            if (!url) {
+                alert('Please enter a target URL.');
+                return;
+            }
+            const btn = document.getElementById('btn-run-fingerprint');
+            btn.disabled = true;
+            btn.innerHTML = '<span>Analyzing...</span>';
+            logConsole(`Fingerprinting stack & headers for ${url}...`, 'cyan');
+
+            try {
+                const res = await fetch('/api/recon/fingerprint', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': activeCsrfToken },
+                    body: JSON.stringify({ url: url })
+                });
+                const data = await res.json();
+                if (!data.success) {
+                    logConsole(`Fingerprint failed: ${data.error || 'Blocked by ScopeGuard'}`, 'red');
+                    alert(data.error || 'Fingerprint blocked by ScopeGuard.');
+                    return;
+                }
+
+                document.getElementById('recon-fp-results').style.display = 'block';
+                document.getElementById('fp-posture-text').innerText = `${data.posture_score}%`;
+                document.getElementById('fp-posture-bar').style.width = `${data.posture_score}%`;
+                document.getElementById('fp-posture-bar').style.background = data.posture_score > 70 ? '#10b981' : (data.posture_score > 40 ? '#f59e0b' : '#ef4444');
+                document.getElementById('fp-posture-text').style.color = data.posture_score > 70 ? '#10b981' : (data.posture_score > 40 ? '#f59e0b' : '#ef4444');
+
+                // Render technologies
+                const techList = document.getElementById('fp-tech-list');
+                techList.innerHTML = '';
+                if ((data.technologies || []).length === 0) {
+                    techList.innerHTML = '<span style="color: var(--text-dim);">No specific framework headers exposed.</span>';
+                } else {
+                    data.technologies.forEach(t => {
+                        const tag = document.createElement('span');
+                        tag.className = 'badge badge-purple';
+                        tag.style.fontSize = '12px';
+                        tag.innerText = t;
+                        techList.appendChild(tag);
+                    });
+                }
+
+                // Render security headers
+                const hdrList = document.getElementById('fp-headers-list');
+                hdrList.innerHTML = '';
+                (data.security_headers || []).forEach(h => {
+                    const row = document.createElement('div');
+                    row.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: rgba(255,255,255,0.02); border-radius: 6px;';
+                    const isPass = h.status === 'PASS';
+                    row.innerHTML = `<div>
+                        <div style="font-weight: 700; color: #fff;">${h.header}</div>
+                        <div style="color: var(--text-dim); font-size: 11px;">${h.description}</div>
+                    </div>
+                    <span class="badge ${isPass ? 'badge-emerald' : 'badge-red'}">${h.status}</span>`;
+                    hdrList.appendChild(row);
+                });
+
+                logConsole(`Fingerprint complete for ${data.target} (Posture: ${data.posture_score}%).`, 'green');
+            } catch (err) {
+                logConsole(`Fingerprint error: ${err.message}`, 'red');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Analyze Stack & Headers</span>`;
+            }
+        }
+
+        function loadUrlIntoRepeater(targetUrl, method) {
+            document.getElementById('repeater-method').value = method || 'GET';
+            document.getElementById('repeater-url').value = targetUrl || '';
+            const allTabs = document.querySelectorAll('.tab-btn');
+            for (let i = 0; i < allTabs.length; i++) {
+                if (allTabs[i].getAttribute('onclick') && allTabs[i].getAttribute('onclick').includes("'repeater'")) {
+                    switchTab('repeater', allTabs[i]);
+                    break;
+                }
+            }
+            switchRepeaterView('repeater');
+            logConsole(`Target URL ${targetUrl} loaded into Repeater.`, 'green');
+        }
 
         // Initialize
         loadModules();
